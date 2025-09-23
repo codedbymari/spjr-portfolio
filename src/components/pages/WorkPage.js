@@ -184,7 +184,7 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
               transition={{ 
                 duration: 1.5, 
                 ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 1.5 : 0 
+                delay: isLoadingComplete ? 0.5 : 0 
               }}
               viewport={{ once: true }}
             >
