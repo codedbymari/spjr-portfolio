@@ -101,7 +101,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                 {/* Close Button - Enhanced for Mobile */}
                 <div className="flex justify-between items-center mb-8 sm:mb-10 md:mb-12">
                   <div className="text-white text-xs sm:text-sm font-mono uppercase tracking-wide opacity-70">
-                    Navigation
                   </div>
                   <motion.button
                     className="text-white text-sm sm:text-base font-mono uppercase tracking-wide hover:opacity-70 transition-opacity p-2 -m-2"
@@ -168,7 +167,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                 >
                   {/* Social Links Header */}
                   <div className="text-white text-xs sm:text-sm font-mono uppercase tracking-wide opacity-50 mb-4 sm:mb-6">
-                    Connect
                   </div>
                   
                   <div className="grid grid-cols-1 gap-3 sm:gap-4">
@@ -193,7 +191,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
 
                   {/* Copyright or additional info */}
                   <div className="text-white text-xs font-mono uppercase tracking-wide opacity-30 mt-6 sm:mt-8">
-                    © 2024 SPJr
+                    © 2025 SPJr
                   </div>
                 </motion.div>
               </div>
