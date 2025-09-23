@@ -162,11 +162,11 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
               <div className="flex items-center justify-start mb-2">
                 <div className="w-12 h-[1px] bg-[#ffffff] opacity-30 mr-6"></div>
                 <h2 className="text-[#ffffff] text-[24px] md:text-[32px] font-light tracking-[-0.01em] uppercase font-mono">
-                  SHORT STORIES
+                  WRITING 
                 </h2>
               </div>
               <p className="text-[#ffffff] text-[14px] opacity-60 font-mono uppercase tracking-[-0.01em] ml-18">
-                LITERARY WORKS & REFLECTIONS
+                SHORT STORIES & REFLECTIONS
               </p>
             </motion.div>
             
