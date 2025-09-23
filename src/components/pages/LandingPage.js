@@ -322,7 +322,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         {/* View All Button - Fixed visibility */}
         <div className="flex items-center justify-center w-full pt-10 sm:pt-12 md:pt-14 lg:pt-16">
           <motion.button
-            initial={getInitialState({ opacity: 0 })}
             whileInView={getAnimateState({ opacity: 1 })}
             transition={{ 
               duration: 0.6, 
