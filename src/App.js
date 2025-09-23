@@ -73,18 +73,20 @@ const App = () => {
     };
   }, []);
   
-  // Reset page to beginning
-  const resetPageState = () => {
+  // Reset page to beginning - with option to skip full reload
+  const resetPageState = (skipReload = false) => {
     // Scroll to top immediately
     window.scrollTo(0, 0);
     
     // Reset cursor
     document.body.style.cursor = 'default';
     
-    // Force page re-render by updating key
-    setPageKey(prev => prev + 1);
+    // Only force re-render if not skipping reload
+    if (!skipReload) {
+      setPageKey(prev => prev + 1);
+    }
     
-    // Reset any global animations or states
+    // Reset any global animations or states (but keep this lightweight)
     const animatedElements = document.querySelectorAll('[class*="animate"]');
     animatedElements.forEach(el => {
       el.style.animationPlayState = 'running';
@@ -94,11 +96,14 @@ const App = () => {
   
   // Handle browser back/forward buttons
   useEffect(() => {
-    const handlePopState = () => {
+    const handlePopState = (event) => {
       const newPage = getInitialPage();
       setCurrentPage(newPage);
       stopAudio();
-      resetPageState();
+      
+      // Skip full reload for browser navigation (mobile swipe back)
+      // This preserves the component state and prevents jarring reloads
+      resetPageState(true); // Pass true to skip the pageKey increment
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -130,13 +135,13 @@ const App = () => {
     }
   }, [hasLoadedOnce, currentPage]);
 
-  // Navigation handler with URL update
+  // Navigation handler with URL update - this is for intentional navigation
   const navigateTo = (page) => {
     setCurrentPage(page);
     stopAudio();
     
-    // Reset page state when navigating
-    resetPageState();
+    // For intentional navigation, we do want a fresh page state
+    resetPageState(false); // Keep the full reset for intentional navigation
     
     const url = page === 'landing' ? '/' : `/${page}`;
     window.history.pushState({ page }, '', url);
