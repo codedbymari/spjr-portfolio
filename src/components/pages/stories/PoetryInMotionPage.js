@@ -23,30 +23,36 @@ const PoetryInMotionPage = ({
     return () => clearTimeout(timer);
   }, []);
 
-  const storyParagraphs = [
+   const storyParagraphs = [
     "The streetlights illuminate a maze of roads and alleyways in the Walthamstow Estate; a small town riddled with hope, drama, and tragedy. Jubilant children battle the heat of cramped streets, where caramel feet tread without rest, enchanted by the absence of pain.",
     
     "Hungry bellies roar like racing car engines. Some beg, some steal, others have found peace. Then, there are the defiant few. With big red permanent markers for feet, they seek to rewrite their script with every step.",
     
     "Like inspectors with infrared specs, we follow their footsteps. We pass boys gambling, throwing pennies at the wall like it was a wishing well. We turn the corner and hear a youthful voice prevail through a sound system:",
     
-    "The nights for the big steppers, go-getters. If you wanna soar with us, then grow feathers. We hunt through the darkness to find treasures. So, faking a brave heart is never clever!",
+    "\"The nights for the big steppers, go-getters. If you wanna soar with us, then grow feathers. We hunt through the darkness to find treasures. So, faking a brave heart is never clever!\"",
+    
+    "Police sirens ring in the distance. The red footsteps lead to a humble house in the beating heart of the estate. The windows are wide open. The night's news flows through the curtains like a welcome breeze. So, we too oblige and enter through the kitchen window. We observe a woman at the stove, with a young girl sitting beside her and paying close attention. A young man barges through the kitchen door, attempting to pick food from a boiling pot. Smack! He recoils at the immediate warning; the young girl laughs at his failed attempt. We follow the defeated young man down a tight, cluttered hallway. It is stacked with brown boxes and dusty black bin bags. They are bursting with treasures accumulated over the years. We skip a bustling living room. Bright red footsteps lead upstairs into a dimly lit room.",
     
     "Peeking through the gap in the door, we find our protagonist, Solo. He sits against the wall on a single bed. Beside him is a makeshift bookshelf. Decorated by Garvey, Socrates, Bell Hooks, and other great writers.",
     
-    "We observe as Solo starts to clear his throat. His voice is wide open. The nights have flown through the window. We observe a woman at the stove, with a young girl sitting beside her and paying close attention. A young man bangs through the kitchen door, interrupting a light family moment and startling everyone.",
+    "We examine as Solo stands up and stretches his 5-foot-10, muscular body. He sizes himself up against a poster above the mirror. It shows a victorious Muhammad Ali standing over a defeated Sonny Liston. Through the mirror, we see three moles form a perfect crescent underneath his left eye. His eyelids open to reveal glossy dark brown eyes, spaced evenly on both sides of his broad black nose. Solo starts to smile. His burgundy-brown lips part, revealing crooked teeth, incomplete with a missing tooth. His smile turns into a cheeky grin, followed by a cocky chuckle. We see \"God\", \"Family\", and \"Greatness\" tattooed on Solo's right arm as he reaches for a container beside the bookcase. Out of the container comes a pearly white denture that Solo fixes into his mouth.",
     
-    "The woman puts down the pot and walks toward the lights at the failed attempt. We follow the dejected young man down a tight, criticised hallway. It is stacked with brown boxes and dusty black bin bags. They are bursting with discarded accumulated possessions.",
+    "Solo sits back down and picks up the pile of paper on his bed. We are now comfortable on the bean bag in the corner of Solo's prison-sized bedroom. Flicking through his thoughts in physical form, Solo picks a page and begins to read:",
     
-    "Solo picks a page and begins to write: 'I always thought of you and meant it so. You, I believed I had the potential, but doubt stopped me from believing. This world sees my confidence, but all I see I cannot change. My friend Barry advised me to try it before I even understood it or got trapped in it, but confidence takes time to come down.'",
+    "\"I've always thought of you and aspired to be you. I believed I had the potential, but doubt stopped me from believing. The world sees my confidence, but at 25 I started therapy. My friend Benny advised me to try it before I even turned 21. I never felt like I needed it. But she understood my ambitions in depth. A close friend of mind, with different skin, gender, and interests. It is quite telling that I hold her in high regard. Her challenges and intellect will be common in these memoirs I write for you, the silent watchers. I will entitle them Letters to My Future Self – The President.\"",
     
-    "This led me to think about my trajectory and my current environment. During the two together, where would I be in 10 years? Would I be closer to my dreams or would the things I carry domestically swallow me whole? I'm torn between fighting for my engine and fuel for a fire that burns everything down.",
+    "\"The link between starting therapy when I was fine and the mention of Benny is a mentality. I am relentless, philosophical, and intuitive at my best. Benny recognised something in that that required attention. The attention that at that time I felt capable of administering to myself, but she replied 'Prevention is better than cure!'.\"",
     
-    "Solo's meditations were violently ended by further piercing through the window above him. Solo looks through the window outside. The mind looks upon his life and idea into the distance. He saw other young people down the street; it makes him wish he would be more like them.",
+    "\"This led me to think about my trajectory and my current environment. Putting the two together, where would I be in 20 years? Would I be closer to my dreams or would the weight of my surroundings swallow me whole? It's hard to distinguish between fuel for the engine and fuel for a fire that burns everything to…\"",
     
-    "Solo returned to his room and although we were no longer in there with him, we could deduce what he did next. Solo would have picked up a blank page and written these words to himself: 'Is this poetry in motion?'"
+    "Solo's meditations were viciously ended by bullets piercing the flesh of windows. Even the night tales that blew through the curtains ceased. The once lively estate fell silent without warning. At this point, we as watchers had already fled to the safety and shelter of our seats in the sky. We saw Solo's head stretch out from his bedroom window. He looked down at the streets, once filled with jubilant children. Their melted caramel feet were now riddled with bullets.",
+    
+    "Police sirens flooded in, bringing noise back to the streets. It was like awakening from a strange dream to the crescendo of beating rain. Helpless mothers' hearts burst through weary window panes.",
+    
+    "Solo returned to his room and although we were no longer in there with him, we could deduce what he did next: Solo would have picked out a blank page from his puddle of thoughts and with his pen that now seemed to be filled with the blood spilled on the streets, the same colour of defiant red that seemed to grace Solo's feet, he would write down 5 last words before going to sleep - \"Is this poetry in motion?\""
   ];
-
+  
   const isQuote = (text) => {
     return text.includes('"') && (text.includes('nights for the big steppers') || text.includes('Is this poetry in motion'));
   };
@@ -132,7 +138,7 @@ const PoetryInMotionPage = ({
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="w-16 h-[1px] bg-white/30"></div>
                 <span className="text-white/60 text-[14px] font-mono uppercase tracking-[0.2em]">
-                  A JOURNEY THROUGH WALTHAMSTOW
+                  A JOURNEY THROUGH WALTHAMSTOW ESTATE
                 </span>
                 <div className="w-16 h-[1px] bg-white/30"></div>
               </div>
@@ -180,7 +186,7 @@ const PoetryInMotionPage = ({
                 >
                   {isQuote(paragraph) ? (
                     <div className="my-12 px-8">
-                      <p className="text-white/95 text-[20px] md:text-[22px] leading-[1.8] font-light tracking-[-0.01em] text-center italic border-l-4 border-yellow-400 pl-6">
+                      <p className="text-white/95 text-[20px] md:text-[22px] leading-[1.8] font-light tracking-[-0.01em] text-center italic border-l-4 pl-6">
                         {paragraph.replace(/"/g, '')}
                       </p>
                     </div>
