@@ -134,7 +134,6 @@ const AppContent = () => {
       const newPage = getInitialPage();
       setCurrentPage(newPage);
       stopAudio();
-      resetPageState(true, true); // Use smooth scroll for browser navigation
     };
 
     window.addEventListener('popstate', handlePopState);
