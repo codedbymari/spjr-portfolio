@@ -507,7 +507,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                         fontSize: 'clamp(10px, 2.4vw, 12px)' // Slightly larger for mobile
                       }}
                     >
-                      Read Full Story
+                      Read More
                     </span>
                     
                     {/* Arrow icon */}
@@ -642,7 +642,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                         fontSize: 'clamp(9px, 2.2vw, 12px)'
                       }}
                     >
-                      Read Full Story
+                      Read More
                     </span>
                     
                     {/* Arrow icon */}
