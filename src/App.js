@@ -1,7 +1,9 @@
 // src/App.js 
 import React, { useState, useEffect } from 'react';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { useAudio } from './hooks/useAudio';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
+
 // Components
 import LoadingScreen from './components/LoadingScreen';
 // Page components
@@ -20,12 +22,11 @@ import WithIntentionsPage from './components/pages/music/WithIntentionsPage';
 // Styles
 import './styles/animations.css';
 
-const App = () => {
+const AppContent = () => {
   // Get initial page from URL
   const getInitialPage = () => {
     const path = window.location.pathname;
-    const page = path.substring(1) || 'landing'; // Remove leading slash, default to landing
-    // Validate that the page exists
+    const page = path.substring(1) || 'landing';
     const validPages = [
       'landing', 
       'work', 
@@ -45,9 +46,35 @@ const App = () => {
   const [isReadingMode, setIsReadingMode] = useState(false);
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [animationStage, setAnimationStage] = useState('loading');
-  const [pageKey, setPageKey] = useState(0); // Force page re-render
+  const [pageKey, setPageKey] = useState(0);
+  const [loadingProgress, setLoadingProgress] = useState(0);
   
   const { isAudioPlaying, audioRef, toggleAudio, stopAudio } = useAudio();
+  
+  // Smooth scroll utility function
+  const smoothScrollTo = (targetY, duration = 800) => {
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const startTime = performance.now();
+    
+    const easeInOutCubic = (t) => {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    };
+    
+    const animateScroll = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      
+      window.scrollTo(0, startY + distance * easedProgress);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+    
+    requestAnimationFrame(animateScroll);
+  };
   
   // Calculate if loading is complete
   const isLoadingComplete = hasLoadedOnce && animationStage === 'complete';
@@ -55,38 +82,20 @@ const App = () => {
   // Only show loading screen on landing page and only once
   const shouldShowLoadingScreen = currentPage === 'landing' && !hasLoadedOnce && animationStage !== 'complete';
   
-  // Set black overscroll background on body and html
-  useEffect(() => {
-    // Set black background for overscroll areas
-    document.body.style.backgroundColor = '#000000';
-    document.documentElement.style.backgroundColor = '#000000';
+  // Reset page to beginning - with option to skip full reload and smooth scroll
+  const resetPageState = (skipReload = false, useSmootScroll = false) => {
+    if (useSmootScroll) {
+      smoothScrollTo(0, 600); // Smooth scroll to top with 600ms duration
+    } else {
+      window.scrollTo(0, 0); // Instant scroll to top
+    }
     
-    // Set overscroll behavior for smooth experience
-    document.body.style.overscrollBehavior = 'contain';
-    document.documentElement.style.overscrollBehavior = 'contain';
-    
-    // Cleanup function
-    return () => {
-      // Reset to default if needed (optional)
-      // document.body.style.backgroundColor = '';
-      // document.documentElement.style.backgroundColor = '';
-    };
-  }, []);
-  
-  // Reset page to beginning - with option to skip full reload
-  const resetPageState = (skipReload = false) => {
-    // Scroll to top immediately
-    window.scrollTo(0, 0);
-    
-    // Reset cursor
     document.body.style.cursor = 'default';
     
-    // Only force re-render if not skipping reload
     if (!skipReload) {
       setPageKey(prev => prev + 1);
     }
     
-    // Reset any global animations or states (but keep this lightweight)
     const animatedElements = document.querySelectorAll('[class*="animate"]');
     animatedElements.forEach(el => {
       el.style.animationPlayState = 'running';
@@ -94,54 +103,103 @@ const App = () => {
     });
   };
   
+  // Enhanced scroll to element function
+  const scrollToElement = (elementId, offset = 0) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      const elementTop = element.getBoundingClientRect().top + window.scrollY;
+      const targetPosition = elementTop - offset;
+      smoothScrollTo(targetPosition, 800);
+    }
+  };
+  
+  // Add CSS for smooth scrolling behavior
+  useEffect(() => {
+    // Add smooth scroll behavior to html element
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Optional: Add scroll padding for fixed headers
+    document.documentElement.style.scrollPaddingTop = '2rem';
+    
+    return () => {
+      // Clean up on unmount
+      document.documentElement.style.scrollBehavior = '';
+      document.documentElement.style.scrollPaddingTop = '';
+    };
+  }, []);
+  
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event) => {
       const newPage = getInitialPage();
       setCurrentPage(newPage);
       stopAudio();
-      
-      // Skip full reload for browser navigation (mobile swipe back)
-      // This preserves the component state and prevents jarring reloads
-      resetPageState(true); // Pass true to skip the pageKey increment
+      resetPageState(true, true); // Use smooth scroll for browser navigation
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, [stopAudio]);
 
+  // Progress simulation function
+  const simulateProgress = () => {
+    setLoadingProgress(0);
+    
+    // Phase 1: Quick initial load (0-30%)
+    setTimeout(() => setLoadingProgress(30), 500);
+    
+    // Phase 2: Slower content loading (30-70%)
+    setTimeout(() => setLoadingProgress(50), 1500);
+    setTimeout(() => setLoadingProgress(70), 2500);
+    
+    // Phase 3: Finalization (70-100%)
+    setTimeout(() => setLoadingProgress(85), 3500);
+    setTimeout(() => setLoadingProgress(95), 4500);
+    setTimeout(() => setLoadingProgress(100), 5000);
+  };
+  
   // Initial loading sequence - only happens once and only on landing page
   useEffect(() => {
     if (!hasLoadedOnce && currentPage === 'landing') {
+      const progressInterval = simulateProgress();
+      
       // Stage 1: Switch to revealing earlier
       const revealTimer = setTimeout(() => {
         setAnimationStage('revealing');
-      }, 1000); // 1s instead of 3000ms
+        setLoadingProgress(85);
+      }, 1000);
 
       // Stage 2: Fade out later but keep total ~7s
       const completeTimer = setTimeout(() => {
         setAnimationStage('complete');
+        setLoadingProgress(100);
         setHasLoadedOnce(true);
-      }, 5000); // 7s instead of 8000ms
+        clearInterval(progressInterval);
+      }, 5000);
 
       return () => {
         clearTimeout(revealTimer);
         clearTimeout(completeTimer);
+        clearInterval(progressInterval);
       };
     } else if (currentPage !== 'landing' && !hasLoadedOnce) {
       // If first visit is not landing page, skip loading screen
       setHasLoadedOnce(true);
       setAnimationStage('complete');
+      setLoadingProgress(100);
     }
   }, [hasLoadedOnce, currentPage]);
 
-  // Navigation handler with URL update - this is for intentional navigation
-  const navigateTo = (page) => {
+  // Navigation handler with URL update and smooth scroll
+  const navigateTo = (page, options = {}) => {
+    const { scrollToTop = true, useSmootScroll = true } = options;
+    
     setCurrentPage(page);
     stopAudio();
     
-    // For intentional navigation, we do want a fresh page state
-    resetPageState(false); // Keep the full reset for intentional navigation
+    if (scrollToTop) {
+      resetPageState(false, useSmootScroll);
+    }
     
     const url = page === 'landing' ? '/' : `/${page}`;
     window.history.pushState({ page }, '', url);
@@ -154,13 +212,15 @@ const App = () => {
     const pageProps = {
       currentPage,
       onNavigate: navigateTo,
+      scrollToElement, // Pass scroll function to pages
+      smoothScrollTo, // Pass smooth scroll utility
       isAudioPlaying,
       onToggleAudio: toggleAudio,
       isReadingMode,
       onToggleReadingMode: () => setIsReadingMode(!isReadingMode),
       audioRef,
       isInitialLoad: !hasLoadedOnce,
-      key: pageKey // Force re-render when page changes
+      key: pageKey
     };
     
     switch (currentPage) {
@@ -170,6 +230,8 @@ const App = () => {
             key={`landing-${pageKey}`}
             currentPage={currentPage} 
             onNavigate={navigateTo} 
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
             isInitialLoad={!hasLoadedOnce}
             isLoadingComplete={isLoadingComplete}
           />
@@ -179,7 +241,9 @@ const App = () => {
           <WorkPage 
             key={`work-${pageKey}`}
             currentPage={currentPage} 
-            onNavigate={navigateTo} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
             isLoadingComplete={isLoadingComplete} 
           />
         );
@@ -188,7 +252,9 @@ const App = () => {
           <AboutPage 
             key={`about-${pageKey}`}
             currentPage={currentPage} 
-            onNavigate={navigateTo} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
           />
         );
       case 'pen2purpose': 
@@ -197,6 +263,8 @@ const App = () => {
             key={`pen2purpose-${pageKey}`}
             currentPage={currentPage} 
             onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
             isLoadingComplete={isLoadingComplete}
           />
         );
@@ -215,7 +283,9 @@ const App = () => {
           <WithIntentionsPage 
             key={`music-project-${pageKey}`}
             currentPage={currentPage} 
-            onNavigate={setCurrentPage} 
+            onNavigate={setCurrentPage}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
             isLoadingComplete={isLoadingComplete} 
           />
         );
@@ -224,7 +294,9 @@ const App = () => {
           <LandingPage 
             key={`default-${pageKey}`}
             currentPage={currentPage} 
-            onNavigate={navigateTo} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
             isInitialLoad={!hasLoadedOnce}
             isLoadingComplete={isLoadingComplete}
           />
@@ -235,21 +307,32 @@ const App = () => {
   const showLoadingScreen = shouldShowLoadingScreen;
   
   return (
-    <div className="relative min-h-screen bg-black">
-      {/* Loading Screen Component */}
+    <div className="relative min-h-screen theme-transition">
+      {/* Loading Screen Component with progress prop */}
       {showLoadingScreen && (
-        <LoadingScreen animationStage={animationStage} />
+        <LoadingScreen 
+          animationStage={animationStage} 
+          progress={loadingProgress}
+        />
       )}
       
       {/* Main Content */}
       <div className={`
-        min-h-screen
-        transition-all duration-1000 ease-out
+        min-h-screen theme-transition
         ${showLoadingScreen ? 'opacity-0' : 'opacity-100'}
       `}>
         {renderCurrentPage()}
       </div>
     </div>
+  );
+};
+
+// Main App component with ThemeProvider
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 };
 

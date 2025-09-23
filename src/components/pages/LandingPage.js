@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
 
 const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingComplete = true }) => {
@@ -7,6 +8,9 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const heroRef = useRef(null);
   
+  // Get theme context
+const { isDark, colors } = useTheme();
+
   // Parallax scroll tracking for hero section only
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -46,7 +50,10 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
   };
 
   return (
-    <div className="w-screen min-h-screen bg-[#000000] overflow-x-hidden relative">
+    <div 
+      className="w-screen min-h-screen overflow-x-hidden relative transition-colors duration-500"
+      style={{ backgroundColor: colors.primary }}
+    >
       {/* Header */}
       <Header 
         currentPage={currentPage}
@@ -59,19 +66,23 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
       />
 
       {/* Hero Section - Enhanced Mobile/Tablet Responsiveness */}
-      <section className="flex flex-col justify-end min-h-[75vh] sm:min-h-[80vh] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative bg-[#000000] overflow-hidden z-10">
+      <section 
+        className="flex flex-col justify-end min-h-[75vh] sm:min-h-[80vh] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative overflow-hidden z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}
+      >
         
         {/* Title + Subtitle Row - Improved Mobile Layout */}
         <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 md:mb-12 lg:mb-[40px]">
           
           {/* Left Title - Better Mobile Typography */}
           <motion.div
-            className="text-[#fbf9f7] font-normal uppercase"
+            className="font-normal uppercase transition-colors duration-500"
             style={{
               fontFamily: 'Fahkwang, sans-serif',
-              fontSize: 'clamp(28px, 7.5vw, 84px)', // Slightly smaller minimum for better mobile fit
-              lineHeight: '0.85', // Tighter line height for mobile
-              letterSpacing: '-0.02em', // Better letter spacing
+              fontSize: 'clamp(28px, 7.5vw, 84px)',
+              lineHeight: '0.85',
+              letterSpacing: '-0.02em',
+              color: colors.text.primary
             }}
             initial={getInitialState({ opacity: 0, y: 100 })}
             animate={getAnimateState({ opacity: 1, y: 0 })}
@@ -82,12 +93,13 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
 
           {/* Right Subtitle - Enhanced Mobile Layout */}
           <motion.div
-            className="text-[#fbf9f7] font-light text-left max-w-full lg:max-w-[45%] xl:max-w-[40%]"
+            className="font-light text-left max-w-full lg:max-w-[45%] xl:max-w-[40%] transition-colors duration-500"
             style={{
               fontFamily: 'Fahkwang, sans-serif',
-              fontSize: 'clamp(13px, 3.2vw, 16px)', // Better scaling
-              lineHeight: '1.5', // Better readability
+              fontSize: 'clamp(13px, 3.2vw, 16px)',
+              lineHeight: '1.5',
               paddingRight: '0px',
+              color: colors.text.primary
             }}
             initial={getInitialState({ opacity: 0, y: 50 })}
             animate={getAnimateState({ opacity: showContent ? 1 : 0, y: showContent ? 0 : 50 })}
@@ -101,7 +113,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
       </section>
 
       {/* Full Width Hero Image Section - Better Mobile Heights */}
-      <section ref={heroRef} className="w-full bg-[#000000] relative z-10">
+      <section 
+        ref={heroRef} 
+        className="w-full relative z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}
+      >
         {/* Full width responsive image with parallax effect */}
         <motion.div
           className="w-full overflow-hidden relative"
@@ -129,12 +145,18 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               2xl:h-[700px]   /* Extra large screens */
               block
             "
+            style={{
+              filter: isDark ? 'brightness(0.9) contrast(1.1)' : 'brightness(1.1) contrast(0.95)'
+            }}
           />
         </motion.div>
       </section>
 
       {/* Selected Works Section - Enhanced Mobile Grid */}
-      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10">
+      <section 
+        className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}
+      >
        
         {/* Projects Grid - Better Mobile/Tablet Handling */}
         <div className="w-full max-w-[1200px] space-y-12 sm:space-y-16 md:space-y-20 lg:space-y-24">
@@ -159,8 +181,9 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               >
                 <div className="aspect-[1.72/1] w-full relative overflow-hidden rounded-sm">
                   <div 
-                    className="absolute inset-0 bg-gray-200"
+                    className="absolute inset-0"
                     style={{
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
                       opacity: 0.1
                     }}
                   />
@@ -171,18 +194,45 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                     loop
                     muted
                     playsInline
+                    style={{
+                      filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                    }}
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+                  <div 
+                    className="absolute inset-0 transition-all duration-300" 
+                    style={{
+                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)',
+                      '&:hover': {
+                        backgroundColor: isDark ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'
+                      }
+                    }}
+                  />
                 </div>
                 
                 {/* Project Info - Enhanced Hover Animation */}
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">1</span>
-                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >1</span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >/</span>
                   <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
                     {/* Default Title - Completely disappears on hover */}
                     <motion.div 
-                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
                       initial={{ opacity: 1, y: 0 }}
                       whileHover={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
@@ -191,7 +241,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                     </motion.div>
                     {/* Hover Title - Takes over completely */}
                     <motion.div 
-                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
                       initial={{ opacity: 0, y: 20 }}
                       whileHover={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
@@ -222,35 +276,62 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               >
                 <div className="aspect-[1.27/1] w-full relative overflow-hidden rounded-sm">
                   <div 
-                    className="absolute inset-0 bg-gray-200"
+                    className="absolute inset-0"
                     style={{
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
                       opacity: 0.1
                     }}
                   />
                   <img
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
                     src="/assets/images/tree.png"
                     alt="Beyond the Frame"
+                    style={{
+                      filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                    }}
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+                  <div 
+                    className="absolute inset-0 transition-all duration-300"
+                    style={{
+                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'
+                    }}
+                  />
                 </div>
                 
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">2</span>
-                  <span className="text-[#fbfbff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >2</span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >/</span>
                   <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
-                    {/* Default Title - Completely disappears on hover */}
                     <motion.div 
-                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
                       initial={{ opacity: 1, y: 0 }}
                       whileHover={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     >
                       Mphepo
                     </motion.div>
-                    {/* Hover Title - Takes over completely */}
                     <motion.div 
-                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
                       initial={{ opacity: 0, y: 20 }}
                       whileHover={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
@@ -277,35 +358,62 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               >
                 <div className="aspect-[1.27/1] w-full relative overflow-hidden rounded-sm">
                   <div 
-                    className="absolute inset-0 bg-gray-200"
+                    className="absolute inset-0"
                     style={{
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
                       opacity: 0.1
                     }}
                   />
                   <img
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
                     src="/assets/images/solokitchen.png"
                     alt="The Essence"
+                    style={{
+                      filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                    }}
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
+                  <div 
+                    className="absolute inset-0 transition-all duration-300"
+                    style={{
+                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'
+                    }}
+                  />
                 </div>
                 
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">3</span>
-                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >3</span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >/</span>
                   <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
-                    {/* Default Title - Completely disappears on hover */}
                     <motion.div 
-                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
                       initial={{ opacity: 1, y: 0 }}
                       whileHover={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     >
                       Poetry In Motion
                     </motion.div>
-                    {/* Hover Title - Takes over completely */}
                     <motion.div 
-                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
                       initial={{ opacity: 0, y: 20 }}
                       whileHover={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
@@ -330,7 +438,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             }}
             viewport={{ once: true, margin: '-100px' }}
             onClick={() => onNavigate('work')}
-            className="text-[#FFFFFF] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono hover:opacity-70 transition-opacity cursor-pointer"
+            className="font-normal tracking-[-0.01em] uppercase font-mono hover:opacity-70 transition-all duration-300 cursor-pointer"
+            style={{
+              color: colors.text.primary,
+              fontSize: 'clamp(10px, 2.2vw, 13px)'
+            }}
           >
             VIEW ALL
           </motion.button>
@@ -338,7 +450,10 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
       </section>
 
       {/* About Section - Refined Mobile Experience */}
-      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10">
+      <section 
+        className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}
+      >
         
         {/* Section Header with Refined Typography */}
         <div className="flex flex-col items-start w-full max-w-[1200px] mb-8 sm:mb-12 md:mb-16 lg:mb-24">
@@ -355,7 +470,14 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             viewport={{ once: true, margin: '-100px' }}
             style={{ transformOrigin: 'left' }}
           >
-            <div className="w-full h-px bg-gradient-to-r from-[#333333] via-[#1a1a1a] to-transparent" />
+            <div 
+              className="w-full h-px"
+              style={{
+                background: isDark 
+                  ? 'linear-gradient(to right, #333333, #1a1a1a, transparent)' 
+                  : 'linear-gradient(to right, #d4d1c9, #eae7de, transparent)'
+              }}
+            />
           </motion.div>
 
           {/* Title Treatment */}
@@ -368,11 +490,12 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 ease: [0.16, 1, 0.3, 1] 
               }}
               viewport={{ once: true, margin: '-100px' }}
-              className="text-[#fbf9f7] font-normal tracking-[-0.04em] leading-[0.85]"
+              className="font-normal tracking-[-0.04em] leading-[0.85] transition-colors duration-500"
               style={{
                 fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(32px, 8.5vw, 120px)', // Slightly smaller on mobile
-                fontWeight: 300
+                fontSize: 'clamp(32px, 8.5vw, 120px)',
+                fontWeight: 300,
+                color: colors.text.primary
               }}
             >
               ABOUT
@@ -388,11 +511,12 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 delay: isLoadingComplete ? 0.2 : 0 
               }}
               viewport={{ once: true, margin: '-100px' }}
-              className="text-[#666666] font-light tracking-[0.02em] uppercase"
+              className="font-light tracking-[0.02em] uppercase transition-colors duration-500"
               style={{
                 fontFamily: 'Azeret Mono, monospace',
-                fontSize: 'clamp(8px, 2vw, 12px)', // Better mobile scaling
-                letterSpacing: '0.1em'
+                fontSize: 'clamp(8px, 2vw, 12px)',
+                letterSpacing: '0.1em',
+                color: colors.text.accent
               }}
             >
               Sir Practice Jr.
@@ -424,13 +548,28 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.02]"
                     src="/assets/images/portfolio.jpeg"
                     alt="Sir Practice - Artist Portrait"
+                    style={{
+                      filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                    }}
                   />
                   
                   {/* Subtle overlay for depth */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20 z-10" />
+                  <div 
+                    className="absolute inset-0 z-10" 
+                    style={{
+                      background: isDark 
+                        ? 'linear-gradient(to bottom right, transparent, transparent, rgba(0,0,0,0.2))' 
+                        : 'linear-gradient(to bottom right, transparent, transparent, rgba(255,255,255,0.2))'
+                    }}
+                  />
                   
                   {/* Subtle border effect */}
-                  <div className="absolute inset-0 border border-white/5 rounded-sm" />
+                  <div 
+                    className="absolute inset-0 border rounded-sm"
+                    style={{
+                      borderColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -448,15 +587,16 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   delay: isLoadingComplete ? 0.4 : 0 
                 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="text-[#fbf9f7] font-light leading-[1.5] tracking-[-0.01em] text-center sm:text-left"
+                className="font-light leading-[1.5] tracking-[-0.01em] text-center sm:text-left transition-colors duration-500"
                 style={{
                   fontFamily: 'Fahkwang, sans-serif',
-                  fontSize: 'clamp(16px, 4.2vw, 20px)' // Better mobile readability
+                  fontSize: 'clamp(16px, 4.2vw, 20px)',
+                  color: colors.text.primary
                 }}
               >
                 Storyteller. Artist. Cartographer of identity.
                 <br />
-                <span className="text-[#cccccc]">
+                <span style={{ color: colors.text.secondary }}>
                   Sir Practice traces the routes between heritage and becoming, pain and purpose.
                 </span>
               </motion.div>
@@ -471,16 +611,17 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   delay: isLoadingComplete ? 0.6 : 0 
                 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="text-[#aaaaaa] font-light leading-[1.6] tracking-[-0.005em] text-center sm:text-left"
+                className="font-light leading-[1.6] tracking-[-0.005em] text-center sm:text-left transition-colors duration-500"
                 style={{
                   fontFamily: 'Fahkwang, sans-serif',
-                  fontSize: 'clamp(14px, 3.5vw, 17px)' // Slightly larger for mobile readability
+                  fontSize: 'clamp(14px, 3.5vw, 17px)',
+                  color: colors.text.muted
                 }}
               >
                 He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
               </motion.div>
 
-              {/* Mobile CTA Button - Centered */}
+{/* Mobile CTA Button - Centered */}
               <motion.div
                 initial={getInitialState({ opacity: 0, y: 20 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -497,14 +638,30 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   className="group relative overflow-hidden"
                 >
                   {/* Button background with hover effect */}
-                  <div className="absolute inset-0 bg-[#111111] border border-[#333333] rounded-sm transition-all duration-300 group-hover:border-[#555555]" />
+                  <div 
+                    className="absolute inset-0 rounded-sm transition-all duration-300" 
+                    style={{
+                      backgroundColor: colors.secondary,
+                      borderColor: colors.border,
+                      border: `1px solid ${colors.border}`
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 rounded-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    style={{
+                      backgroundColor: colors.hover,
+                      borderColor: isDark ? '#555555' : '#c4c1b9'
+                    }}
+                  />
                   
                   {/* Button content */}
                   <div className="relative px-5 sm:px-6 py-3 sm:py-3 flex items-center gap-2 sm:gap-3">
-                    <span className="text-[#fbf9f7] font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
+                    <span 
+                      className="font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
                       style={{
                         fontFamily: 'Azeret Mono, monospace',
-                        fontSize: 'clamp(10px, 2.4vw, 12px)' // Slightly larger for mobile
+                        fontSize: 'clamp(10px, 2.4vw, 12px)',
+                        color: colors.text.primary
                       }}
                     >
                       Read More
@@ -518,7 +675,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                           height="100%" 
                           viewBox="0 0 16 16" 
                           fill="none" 
-                          className="text-[#fbf9f7]"
+                          style={{ color: colors.text.primary }}
                         >
                           <path 
                             d="M6 4L10 8L6 12" 
@@ -558,13 +715,28 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                       className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.02]"
                       src="/assets/images/portfolio.jpeg"
                       alt="Sir Practice - Artist Portrait"
+                      style={{
+                        filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                      }}
                     />
                     
                     {/* Subtle overlay for depth */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20 z-10" />
+                    <div 
+                      className="absolute inset-0 z-10" 
+                      style={{
+                        background: isDark 
+                          ? 'linear-gradient(to bottom right, transparent, transparent, rgba(0,0,0,0.2))' 
+                          : 'linear-gradient(to bottom right, transparent, transparent, rgba(255,255,255,0.2))'
+                      }}
+                    />
                     
                     {/* Subtle border effect */}
-                    <div className="absolute inset-0 border border-white/5 rounded-sm" />
+                    <div 
+                      className="absolute inset-0 border rounded-sm"
+                      style={{
+                        borderColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
+                      }}
+                    />
                   </div>
                 </div>
               </motion.div>
@@ -583,15 +755,16 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   delay: isLoadingComplete ? 0.4 : 0 
                 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="text-[#fbf9f7] font-light leading-[1.6] tracking-[-0.01em]"
+                className="font-light leading-[1.6] tracking-[-0.01em] transition-colors duration-500"
                 style={{
                   fontFamily: 'Fahkwang, sans-serif',
-                  fontSize: 'clamp(15px, 3.8vw, 22px)'
+                  fontSize: 'clamp(15px, 3.8vw, 22px)',
+                  color: colors.text.primary
                 }}
               >
                 Storyteller. Artist. Cartographer of identity.
                 <br />
-                <span className="text-[#cccccc]">
+                <span style={{ color: colors.text.secondary }}>
                   Sir Practice traces the routes between heritage and becoming, pain and purpose.
                 </span>
               </motion.div>
@@ -606,10 +779,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   delay: isLoadingComplete ? 0.6 : 0 
                 }}
                 viewport={{ once: true, margin: '-100px' }}
-                className="text-[#aaaaaa] font-light leading-[1.7] tracking-[-0.005em]"
+                className="font-light leading-[1.7] tracking-[-0.005em] transition-colors duration-500"
                 style={{
                   fontFamily: 'Fahkwang, sans-serif',
-                  fontSize: 'clamp(13px, 3.2vw, 18px)'
+                  fontSize: 'clamp(13px, 3.2vw, 18px)',
+                  color: colors.text.muted
                 }}
               >
                 He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
@@ -632,14 +806,30 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   className="group relative overflow-hidden"
                 >
                   {/* Button background with hover effect */}
-                  <div className="absolute inset-0 bg-[#111111] border border-[#333333] rounded-sm transition-all duration-300 group-hover:border-[#555555]" />
+                  <div 
+                    className="absolute inset-0 rounded-sm transition-all duration-300" 
+                    style={{
+                      backgroundColor: colors.secondary,
+                      borderColor: colors.border,
+                      border: `1px solid ${colors.border}`
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 rounded-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    style={{
+                      backgroundColor: colors.hover,
+                      borderColor: isDark ? '#555555' : '#c4c1b9'
+                    }}
+                  />
                   
                   {/* Button content */}
                   <div className="relative px-6 py-3 flex items-center gap-3">
-                    <span className="text-[#fbf9f7] font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
+                    <span 
+                      className="font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
                       style={{
                         fontFamily: 'Azeret Mono, monospace',
-                        fontSize: 'clamp(9px, 2.2vw, 12px)'
+                        fontSize: 'clamp(9px, 2.2vw, 12px)',
+                        color: colors.text.primary
                       }}
                     >
                       Read More
@@ -653,7 +843,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                           height="100%" 
                           viewBox="0 0 16 16" 
                           fill="none" 
-                          className="text-[#fbf9f7]"
+                          style={{ color: colors.text.primary }}
                         >
                           <path 
                             d="M6 4L10 8L6 12" 

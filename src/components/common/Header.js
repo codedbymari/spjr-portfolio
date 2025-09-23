@@ -1,8 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Moon, Sun } from 'lucide-react';
+import { useTheme } from '../../contexts/ThemeContext';
 
-// Header Component with responsive design
+// Theme Toggle Component optimized for your header design
+const ThemeToggle = ({ className = '' }) => {
+  const { isDark, toggleTheme } = useTheme();
+
+  return (
+    <motion.button
+      onClick={toggleTheme}
+      className={`
+        relative p-1.5 w-8 h-8 sm:w-9 sm:h-9 rounded-full transition-all duration-300
+        backdrop-blur-sm border group overflow-hidden
+        ${isDark
+          ? 'bg-white/10 text-white hover:bg-white/20 border-white/20 hover:border-white/30' 
+          : 'bg-black/10 text-black hover:bg-black/20 border-black/20 hover:border-black/30'
+        }
+        ${className}
+      `}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+    >
+      <div className="relative w-full h-full flex items-center justify-center">
+        {/* Sun Icon */}
+        <Sun 
+          className={`
+            absolute w-4 h-4 sm:w-5 sm:h-5 transition-all duration-500 ease-in-out
+            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            ${isDark 
+              ? 'opacity-0 rotate-90 scale-0' 
+              : 'opacity-100 rotate-0 scale-100'
+            }
+          `}
+        />
+        
+        {/* Moon Icon */}
+        <Moon 
+          className={`
+            absolute w-4 h-4 sm:w-5 sm:h-5 transition-all duration-500 ease-in-out
+            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+            ${isDark 
+              ? 'opacity-100 rotate-0 scale-100' 
+              : 'opacity-0 -rotate-90 scale-0'
+            }
+          `}
+        />
+      </div>
+    </motion.button>
+  );
+};
+
+// Header Component with integrated theme toggle
 const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
+  const { isDark, colors } = useTheme();
   
   const handleMenuItemClick = (page) => {
     setIsMenuOpen(false);
@@ -11,6 +63,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
 
   // Hook to detect if device supports hover (desktop) vs touch (mobile)
   const [isHoverDevice, setIsHoverDevice] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     // Check if device supports hover and is not a touch device
@@ -20,7 +73,13 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
       setIsHoverDevice(hasHover && hasPointer);
     };
 
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
     checkHoverCapability();
+    checkMobile();
     
     // Listen for changes
     const hoverQuery = window.matchMedia('(hover: hover)');
@@ -28,28 +87,33 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
     
     hoverQuery.addListener(checkHoverCapability);
     pointerQuery.addListener(checkHoverCapability);
+    window.addEventListener('resize', checkMobile);
 
     return () => {
       hoverQuery.removeListener(checkHoverCapability);
       pointerQuery.removeListener(checkHoverCapability);
+      window.removeEventListener('resize', checkMobile);
     };
   }, []);
 
-
+  // Use colors from theme context for consistent styling
+  const textColor = isDark ? 'text-white' : 'text-black';
 
   return (
     <>
       <motion.nav 
-        className="fixed top-0 right-0 left-0 z-50 bg-black shadow-none"
+        className="fixed top-0 right-0 left-0 z-50 shadow-none transition-colors duration-300"
+        style={{ backgroundColor: colors.primary }}
         initial={{ opacity: 0.001, y: -40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 2, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-center justify-between px-3 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-2 sm:py-3 md:py-4 w-full max-w-screen-2xl mx-auto">
-          {/* Left - Logo - Enhanced Mobile Typography */}
+          {/* Left - Logo */}
           <div className="flex-1 flex items-center min-w-0">
             <motion.button 
-              className="text-white text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity truncate"
+              className={`${textColor} text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity truncate`}
+              style={{ color: colors.text.primary }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate('landing')}
@@ -58,21 +122,32 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
             </motion.button>
           </div>
           
-          {/* Center - Description  */}
-          <div className="flex-1 flex items-center justify-center min-w-0 px-2">
+          {/* Center - Description with Theme Toggle */}
+          <div className="flex-1 flex items-center justify-center min-w-0 px-2 gap-3">
             <motion.div 
-              className="text-white font-mono uppercase tracking-wide text-center"
+              className="font-mono uppercase tracking-wide text-center"
+              style={{ color: colors.text.primary }}
             >
               <span className="hidden sm:block md:hidden text-sm">(WRITER & ARTIST)</span>
-              {/* Desktop: Show full version */}
               <span className="hidden md:block text-[13px] lg:text-[13px] xl:text-[13px]">(WRITER & ARTIST)</span>
+            </motion.div>
+            
+            {/* Theme Toggle - Positioned in center area but to the right of description on desktop */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="hidden sm:block"
+            >
+              <ThemeToggle />
             </motion.div>
           </div>
           
-          {/* Right - MENU Button */}
-          <div className="flex-1 flex items-center justify-end min-w-0">
+          {/* Right - MENU Button with mobile theme toggle */}
+          <div className="flex-1 flex items-center justify-end min-w-0 gap-2">
             <motion.button 
-              className="text-white text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer relative z-[60] px-2 py-1"
+              className={`${textColor} text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer relative z-[60] px-2 py-1`}
+              style={{ color: colors.text.primary }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -87,31 +162,31 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
         </div>
       </motion.nav>
 
-      {/* Navigation Menu Overlay - Responsive Design */}
+      {/* Navigation Menu Overlay - Theme-aware */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Backdrop with better touch targets */}
+            {/* Backdrop - Semi-transparent overlay that dims the page content */}
             <motion.div
-              className="fixed inset-0 bg-black bg-opacity-60 z-[55] cursor-pointer"
+              className="fixed inset-0 z-[55] cursor-pointer"
+              style={{ backgroundColor: isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={() => setIsMenuOpen(false)}
-              // Prevent scroll on background
-              style={{ touchAction: 'none' }}
             />
             
-            {/* Menu Panel - Fully Responsive */}
+            {/* Menu Panel - Slides in from the right */}
             <motion.div
-              className="fixed top-0 right-0 h-full bg-black z-[56] shadow-2xl overflow-y-auto
+              className="fixed top-0 right-0 h-full z-[56] shadow-2xl overflow-y-auto transition-colors duration-300
                          w-full
                          xs:w-4/5 xs:max-w-sm
                          sm:w-80 sm:max-w-md
                          md:w-96 md:max-w-lg
                          lg:w-[420px] lg:max-w-xl
                          xl:w-[450px] xl:max-w-2xl"
+              style={{ backgroundColor: colors.primary }}
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -123,12 +198,23 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
             >
               <div className="min-h-full flex flex-col px-4 sm:px-6 md:px-8 lg:px-10 pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-10 md:pb-12">
                 
-                {/* Close Button - Enhanced for Mobile */}
+                {/* Close Button and Theme Toggle */}
                 <div className="flex justify-between items-center mb-8 sm:mb-10 md:mb-12">
-                  <div className="text-white text-xs sm:text-sm font-mono uppercase tracking-wide opacity-70">
+                  {/* Mobile Theme Toggle - Only show on mobile */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                    className="sm:hidden"
+                  >
+                    <ThemeToggle />
+                  </motion.div>
+                  <div className="hidden sm:block text-xs sm:text-sm font-mono uppercase tracking-wide opacity-70"
+                       style={{ color: colors.text.primary }}>
                   </div>
                   <motion.button
-                    className="text-white text-sm sm:text-base font-mono uppercase tracking-wide hover:opacity-70 transition-opacity p-2 -m-2"
+                    className="font-mono uppercase tracking-wide hover:opacity-70 transition-opacity p-2 -m-2"
+                    style={{ color: colors.text.primary }}
                     onClick={() => setIsMenuOpen(false)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -139,7 +225,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                   </motion.button>
                 </div>
 
-                {/* Menu Items - Enhanced Responsive Typography */}
+                {/* Menu Items */}
                 <div className="flex-1 flex flex-col justify-center space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10">
                   {[
                     { text: "work", page: "work", delay: 0.1 },
@@ -148,11 +234,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                   ].map((item, index) => (
                     <motion.button
                       key={index}
-                      className={`group text-left text-white font-normal uppercase tracking-tight leading-tight hover:opacity-70 transition-all duration-300 cursor-pointer relative py-2 sm:py-3 ${
+                      className={`group text-left font-normal uppercase tracking-tight leading-tight hover:opacity-70 transition-all duration-300 cursor-pointer relative py-2 sm:py-3 ${
                         currentPage === item.page ? 'opacity-70' : ''
                       }`}
                       style={{ 
-                        fontSize: 'clamp(24px, 6vw, 40px)'
+                        fontSize: 'clamp(24px, 6vw, 40px)',
+                        color: colors.text.primary
                       }}
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -162,7 +249,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                         duration: 0.6, 
                         ease: [0.16, 1, 0.3, 1] 
                       }}
-                      whileHover={isHoverDevice ? { 
+                      whileHover={isHoverDevice && !isMobile ? { 
                         scale: 1.02,
                         x: -8,
                         transition: { duration: 0.2 }
@@ -172,28 +259,30 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                       }}
                       onClick={() => handleMenuItemClick(item.page)}
                     >
-                      {/* Underline effect */}
                       <span className="relative">
                         {item.text}
                         <motion.span
-                          className={`absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300 ${
-                            currentPage === item.page ? 'w-full' : 'w-0 group-hover:w-full'
-                          }`}
+                          className="absolute bottom-0 left-0 h-0.5 transition-all duration-300"
+                          style={{ 
+                            backgroundColor: colors.text.primary,
+                            width: currentPage === item.page ? '100%' : '0%'
+                          }}
+                          whileHover={{ width: '100%' }}
                         />
                       </span>
                     </motion.button>
                   ))}
                 </div>
 
-                {/* Bottom Section - Enhanced Social Links */}
+                {/* Bottom Section */}
                 <motion.div 
                   className="mt-auto pt-8 sm:pt-10 md:pt-12"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
                 >
-                  {/* Social Links Header */}
-                  <div className="text-white text-xs sm:text-sm font-mono uppercase tracking-wide opacity-50 mb-4 sm:mb-6">
+                  <div className="text-xs sm:text-sm font-mono uppercase tracking-wide opacity-50 mb-4 sm:mb-6"
+                       style={{ color: colors.text.primary }}>
                   </div>
                   
                   <div className="grid grid-cols-1 gap-3 sm:gap-4">
@@ -206,20 +295,22 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                         href={link.href}
                         target={link.href.startsWith('http') ? "_blank" : "_self"}
                         rel={link.href.startsWith('http') ? "noopener noreferrer" : ""}
-                        className="group text-white text-sm sm:text-base md:text-lg font-mono uppercase tracking-wide hover:opacity-70 transition-all duration-300 py-2 px-1 -mx-1 rounded relative overflow-hidden"
-                        whileHover={isHoverDevice ? { x: -8 } : {}}
+                        className="group font-mono uppercase tracking-wide hover:opacity-70 transition-all duration-300 py-2 px-1 -mx-1 rounded relative overflow-hidden"
+                        style={{ color: colors.text.primary }}
+                        whileHover={isHoverDevice && !isMobile ? { x: -8 } : {}}
                         transition={{ duration: 0.2 }}
                       >
-                        <span className="relative z-10">{link.text}</span>
+                        <span className="relative z-10 text-sm sm:text-base md:text-lg">{link.text}</span>
                         <motion.span
-                          className="absolute bottom-0 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300"
+                          className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300"
+                          style={{ backgroundColor: colors.text.primary }}
                         />
                       </motion.a>
                     ))}
                   </div>
 
-                  {/* Copyright or additional info */}
-                  <div className="text-white text-xs font-mono uppercase tracking-wide opacity-30 mt-6 sm:mt-8">
+                  <div className="text-xs font-mono uppercase tracking-wide opacity-30 mt-6 sm:mt-8"
+                       style={{ color: colors.text.primary }}>
                     © 2025 SPJr
                   </div>
                 </motion.div>
@@ -229,9 +320,8 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
         )}
       </AnimatePresence>
 
-      {/* Enhanced Custom CSS for Better Responsiveness */}
+      {/* Enhanced Custom CSS */}
       <style jsx>{`
-        /* Enhanced breakpoints */
         @media (min-width: 480px) {
           .xs\\:block { display: block; }
           .xs\\:hidden { display: none; }
@@ -246,7 +336,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
           .xs\\:inline { display: none; }
         }
 
-        /* Prevent text selection on menu items for better UX */
         .menu-item {
           -webkit-user-select: none;
           -moz-user-select: none;
@@ -254,7 +343,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
           user-select: none;
         }
 
-        /* Improve touch targets on mobile */
         @media (max-width: 768px) {
           button {
             min-height: 44px;
@@ -262,7 +350,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
           }
         }
 
-        /* Handle very small screens gracefully */
         @media (max-width: 320px) {
           .menu-panel {
             padding-left: 12px;
@@ -270,25 +357,21 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
           }
         }
 
-        /* Prevent body scroll when menu is open */
         body.menu-open {
           overflow: hidden;
         }
 
-        /* High DPI display optimizations */
         @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
           .text-shadow {
             text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
           }
         }
 
-        /* Focus states for accessibility */
         button:focus-visible {
-          outline: 2px solid rgba(255, 255, 255, 0.5);
+          outline: 2px solid rgba(128, 128, 128, 0.5);
           outline-offset: 2px;
         }
 
-        /* Smooth scrolling for menu */
         .menu-panel {
           scrollbar-width: none;
           -ms-overflow-style: none;
