@@ -75,20 +75,7 @@ const OceanPage = ({
 
       {/* Control Bar */}
       <div className="fixed top-8 right-8 z-50 flex flex-col gap-3">
-        {/* Audio Toggle */}
-        <motion.button
-          onClick={onToggleAudio}
-          className="w-12 h-12 bg-black/20 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-black/30 transition-all duration-300"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1, duration: 0.5 }}
-        >
-          <div className={`w-3 h-3 ${isAudioPlaying ? 'animate-pulse' : ''}`}>
-            {isAudioPlaying ? '♪' : '♫'}
-          </div>
-        </motion.button>
+        
       </div>
 
       {/* Main Content */}
@@ -188,7 +175,7 @@ const OceanPage = ({
                 className="pt-12 text-center"
               >
                 <p className="text-white/40 text-[12px] font-mono uppercase tracking-[0.2em]">
-                  © Sir Practice Jr. - Writer, Storyteller, Artist
+                  © Sir Practice Jr. 
                 </p>
               </motion.div>
             </div>
