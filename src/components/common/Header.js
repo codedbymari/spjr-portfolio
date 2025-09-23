@@ -35,9 +35,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
             <motion.div 
               className="text-white font-mono uppercase tracking-wide text-center"
             >
-              {/* Mobile: Hidden below 480px */}
-              <span className="hidden xs:block sm:hidden text-xs">W&A</span>
-              {/* Tablet: Show abbreviated version */}
               <span className="hidden sm:block md:hidden text-sm">WRITER & ARTIST</span>
               {/* Desktop: Show full version */}
               <span className="hidden md:block text-sm lg:text-base">WRITER & ARTIST</span>
