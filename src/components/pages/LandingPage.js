@@ -58,20 +58,20 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         setIsMenuOpen={setIsMenuOpen}
       />
 
-      {/* Hero Section -  Mobile/Tablet Responsiveness */}
-      <section className="flex flex-col justify-end min-h-[80vh] w-full px-[10px] sm:px-[20px] md:px-[30px] lg:px-[10px] relative bg-[#000000] overflow-hidden z-10">
+      {/* Hero Section - Enhanced Mobile/Tablet Responsiveness */}
+      <section className="flex flex-col justify-end min-h-[75vh] sm:min-h-[80vh] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative bg-[#000000] overflow-hidden z-10">
         
-        {/* Title + Subtitle Row - Stack on Mobile */}
-        <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6 lg:gap-0 mb-[40px]">
+        {/* Title + Subtitle Row - Improved Mobile Layout */}
+        <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 md:mb-12 lg:mb-[40px]">
           
-          {/* Left Title - Responsive Typography */}
+          {/* Left Title - Better Mobile Typography */}
           <motion.div
             className="text-[#fbf9f7] font-normal uppercase"
             style={{
               fontFamily: 'Fahkwang, sans-serif',
-              fontSize: 'clamp(32px, 8vw, 84px)', // Much more responsive scaling
-              lineHeight: '0.9',
-              whiteSpace: 'nowrap',
+              fontSize: 'clamp(28px, 7.5vw, 84px)', // Slightly smaller minimum for better mobile fit
+              lineHeight: '0.85', // Tighter line height for mobile
+              letterSpacing: '-0.02em', // Better letter spacing
             }}
             initial={getInitialState({ opacity: 0, y: 100 })}
             animate={getAnimateState({ opacity: 1, y: 0 })}
@@ -80,13 +80,13 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             Sir Practice
           </motion.div>
 
-          {/* Right Subtitle - Better Mobile Layout */}
+          {/* Right Subtitle - Enhanced Mobile Layout */}
           <motion.div
-            className="text-[#fbf9f7] font-light text-left max-w-full lg:max-w-[40%]"
+            className="text-[#fbf9f7] font-light text-left max-w-full lg:max-w-[45%] xl:max-w-[40%]"
             style={{
               fontFamily: 'Fahkwang, sans-serif',
-              fontSize: 'clamp(14px, 3.5vw, 16px)', // Responsive font size
-              lineHeight: '1.4',
+              fontSize: 'clamp(13px, 3.2vw, 16px)', // Better scaling
+              lineHeight: '1.5', // Better readability
               paddingRight: '0px',
             }}
             initial={getInitialState({ opacity: 0, y: 50 })}
@@ -100,7 +100,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </div>
       </section>
 
-      {/* Full Width Hero Image Section -  Responsive Heights */}
+      {/* Full Width Hero Image Section - Better Mobile Heights */}
       <section ref={heroRef} className="w-full bg-[#000000] relative z-10">
         {/* Full width responsive image with parallax effect */}
         <motion.div
@@ -120,12 +120,12 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             className="
               w-full 
               object-cover 
-              h-[250px]       /* Mobile phones - smaller for better proportions */
-              xs:h-280        /* Large mobile phones */
-              sm:h-[350px]    /* Small tablets */
-              md:h-[450px]    /* Large tablets */
-              lg:h-[550px]    /* Small desktop */
-              xl:h-[641px]    /* Large desktops */
+              h-[220px]       /* Smaller mobile phones */
+              xs:h-[260px]    /* Larger mobile phones */
+              sm:h-[320px]    /* Small tablets */
+              md:h-[400px]    /* Medium tablets */
+              lg:h-[500px]    /* Small desktop */
+              xl:h-[600px]    /* Large desktops */
               2xl:h-[700px]   /* Extra large screens */
               block
             "
@@ -133,16 +133,17 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </motion.div>
       </section>
 
-      {/* Selected Works Section -  Mobile Grid */}
-      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-12 sm:py-16 md:py-20 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10">
+      {/* Selected Works Section - Enhanced Mobile Grid */}
+      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10">
        
-        {/* Projects Grid - Better Mobile Stacking */}
-        <div className="w-full max-w-[1200px] space-y-16 sm:space-y-20 md:space-y-24">
+        {/* Projects Grid - Better Mobile/Tablet Handling */}
+        <div className="w-full max-w-[1200px] space-y-12 sm:space-y-16 md:space-y-20 lg:space-y-24">
           
-          {/* First Project Row - Stack on Mobile/Tablet */}
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-10 lg:gap-5">
+          {/* First Project Row - Enhanced Responsive Layout */}
+          <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-6">
+            
             {/* Large Project - The Ocean */}
-            <div className="flex-[2_0_0] space-y-6 md:space-y-8 lg:space-y-10">
+            <div className="flex-[2_0_0] space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10">
               <motion.div
                 className="group relative cursor-pointer"
                 initial={getInitialState({ opacity: 0.001, y: 140 })}
@@ -174,17 +175,17 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
                 </div>
                 
-                {/* Project Info - Better Mobile Typography */}
+                {/* Project Info - Fixed Hover Animation */}
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-                  <span className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">1</span>
-                  <span className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
-                  <div className="flex-1 relative">
-                    {/* Default Title */}
-                    <div className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-relaxed transform transition-transform duration-500 group-hover:-translate-y-6">
+                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">1</span>
+                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px]">
+                    {/* Default Title - Completely moves out of view */}
+                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none transform transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:-translate-y-full opacity-100 group-hover:opacity-0">
                       The Ocean
                     </div>
-                    {/* Hover Title */}
-                    <div className="absolute top-0 text-[#fefeff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono opacity-80 transform translate-y-6 transition-transform duration-500 group-hover:translate-y-0">
+                    {/* Hover Title - Slides up from below */}
+                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none opacity-0 group-hover:opacity-100 transform translate-y-full transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:translate-y-0">
                       VIEW PROJECT
                     </div>
                   </div>
@@ -193,7 +194,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             </div>
 
             {/* Two Smaller Projects - Better Mobile Spacing */}
-            <div className="flex-1 space-y-8 md:space-y-10">
+            <div className="flex-1 space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
+              
               {/* Project 2 - Mphepo */}
               <motion.div
                 className="group relative cursor-pointer"
@@ -224,15 +226,15 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 </div>
                 
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-                  <span className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">2</span>
-                  <span className="text-[#fbfbff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
-                  <div className="flex-1 relative">
-                    {/* Default Title */}
-                    <div className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-relaxed transform transition-transform duration-500 group-hover:-translate-y-6">
+                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">2</span>
+                  <span className="text-[#fbfbff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px]">
+                    {/* Default Title - Completely moves out of view */}
+                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none transform transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:-translate-y-full opacity-100 group-hover:opacity-0">
                       Mphepo
                     </div>
-                    {/* Hover Title */}
-                    <div className="absolute top-0 text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono opacity-80 transform translate-y-6 transition-transform duration-500 group-hover:translate-y-0">
+                    {/* Hover Title - Slides up from below */}
+                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none opacity-0 group-hover:opacity-100 transform translate-y-full transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:translate-y-0">
                       VIEW PROJECT
                     </div>
                   </div>
@@ -269,15 +271,15 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 </div>
                 
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-                  <span className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">3</span>
-                  <span className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
-                  <div className="flex-1 relative">
-                    {/* Default Title */}
-                    <div className="text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-relaxed transform transition-transform duration-500 group-hover:-translate-y-6">
+                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">3</span>
+                  <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px]">
+                    {/* Default Title - Completely moves out of view */}
+                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none transform transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:-translate-y-full opacity-100 group-hover:opacity-0">
                       Poetry In Motion
                     </div>
-                    {/* Hover Title */}
-                    <div className="absolute top-0 text-[#ffffff] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono opacity-80 transform translate-y-6 transition-transform duration-500 group-hover:translate-y-0">
+                    {/* Hover Title - Slides up from below */}
+                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none opacity-0 group-hover:opacity-100 transform translate-y-full transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:translate-y-0">
                       VIEW PROJECT
                     </div>
                   </div>
@@ -287,8 +289,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </div>
         </div>
 
-        {/* View All Button - Better Mobile Spacing */}
-        <div className="flex items-center justify-center w-full pt-12 sm:pt-14 md:pt-16">
+        {/* View All Button - Enhanced Mobile Spacing */}
+        <div className="flex items-center justify-center w-full pt-10 sm:pt-12 md:pt-14 lg:pt-16">
           <motion.button
             initial={getInitialState({ opacity: 0.001 })}
             whileInView={getAnimateState({ opacity: 1 })}
@@ -299,22 +301,22 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             }}
             viewport={{ once: true, margin: '-100px' }}
             onClick={() => onNavigate('work')}
-            className="text-[#FFFFFF] text-[11px] sm:text-[12px] md:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono hover:opacity-70 transition-opacity cursor-pointer"
+            className="text-[#FFFFFF] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono hover:opacity-70 transition-opacity cursor-pointer"
           >
             VIEW ALL
           </motion.button>
         </div>
       </section>
 
-     {/* About Section -  Design */}
-      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-12 sm:py-16 md:py-20 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10">
+      {/* About Section - Enhanced Mobile Design */}
+      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10">
         
         {/* Section Header with Refined Typography */}
-        <div className="flex flex-col items-start w-full max-w-[1200px] mb-16 sm:mb-20 md:mb-24">
+        <div className="flex flex-col items-start w-full max-w-[1200px] mb-12 sm:mb-16 md:mb-20 lg:mb-24">
           
           {/* Subtle divider line */}
           <motion.div 
-            className="w-full h-px mb-8 sm:mb-10 md:mb-12"
+            className="w-full h-px mb-6 sm:mb-8 md:mb-10 lg:mb-12"
             initial={getInitialState({ scaleX: 0 })}
             whileInView={getAnimateState({ scaleX: 1 })}
             transition={{ 
@@ -328,7 +330,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </motion.div>
 
           {/* Title Treatment */}
-          <div className="flex flex-col gap-2 mb-4 sm:mb-6">
+          <div className="flex flex-col gap-2 mb-3 sm:mb-4 md:mb-6">
             <motion.div
               initial={getInitialState({ opacity: 0, y: 40 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -337,10 +339,10 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 ease: [0.16, 1, 0.3, 1] 
               }}
               viewport={{ once: true, margin: '-100px' }}
-              className="text-[#fbf9f7] font-normal tracking-[-0.04em] leading-[0.9]"
+              className="text-[#fbf9f7] font-normal tracking-[-0.04em] leading-[0.85]"
               style={{
                 fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(48px, 12vw, 120px)',
+                fontSize: 'clamp(40px, 10vw, 120px)',
                 fontWeight: 300
               }}
             >
@@ -360,7 +362,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               className="text-[#666666] font-light tracking-[0.02em] uppercase"
               style={{
                 fontFamily: 'Azeret Mono, monospace',
-                fontSize: 'clamp(10px, 2.5vw, 12px)',
+                fontSize: 'clamp(9px, 2.2vw, 12px)',
                 letterSpacing: '0.1em'
               }}
             >
@@ -369,11 +371,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </div>
         </div>
 
-        {/* Main Content Grid -  Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-16 w-full max-w-[1200px] items-start">
+        {/* Main Content Grid - Enhanced Mobile Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12 xl:gap-16 w-full max-w-[1200px] items-start">
           
-          {/* Image Column -  with subtle effects */}
-          <div className="lg:col-span-5">
+          {/* Image Column - Better Mobile Handling */}
+          <div className="lg:col-span-5 order-1 lg:order-1">
             <motion.div
               initial={getInitialState({ opacity: 0, scale: 0.95 })}
               whileInView={getAnimateState({ opacity: 1, scale: 1 })}
@@ -404,8 +406,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             </motion.div>
           </div>
           
-          {/* Content Column -  Typography & Spacing */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-8 md:space-y-10">
+          {/* Content Column - Enhanced Mobile Typography & Spacing */}
+          <div className="lg:col-span-7 order-2 lg:order-2 flex flex-col justify-center space-y-6 sm:space-y-7 md:space-y-8 lg:space-y-10">
             
             {/* Primary Description */}
             <motion.div
@@ -420,7 +422,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               className="text-[#fbf9f7] font-light leading-[1.6] tracking-[-0.01em]"
               style={{
                 fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(16px, 4vw, 22px)'
+                fontSize: 'clamp(15px, 3.8vw, 22px)'
               }}
             >
               Storyteller. Artist. Cartographer of identity.
@@ -440,31 +442,16 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 delay: isLoadingComplete ? 0.6 : 0 
               }}
               viewport={{ once: true, margin: '-100px' }}
-              className="text-[#aaaaaa] font-light leading-[1.7] tracking-[-0.005em] max-w-[90%]"
+              className="text-[#aaaaaa] font-light leading-[1.7] tracking-[-0.005em]"
               style={{
                 fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(14px, 3.5vw, 18px)'
+                fontSize: 'clamp(13px, 3.2vw, 18px)'
               }}
             >
               He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
             </motion.div>
 
-            {/* Quote Section -  Design */}
-            <motion.div
-              initial={getInitialState({ opacity: 0, x: -30 })}
-              whileInView={getAnimateState({ opacity: 1, x: 0 })}
-              transition={{ 
-                duration: 1, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.8 : 0 
-              }}
-              viewport={{ once: true, margin: '-100px' }}
-              className="relative pl-6 md:pl-8 border-l border-[#333333]"
-            >
-             
-            </motion.div>
-
-            {/*  CTA Button */}
+            {/* Enhanced CTA Button */}
             <motion.div
               initial={getInitialState({ opacity: 0, y: 20 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -484,22 +471,22 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 <div className="absolute inset-0 bg-[#111111] border border-[#333333] rounded-sm transition-all duration-300 group-hover:border-[#555555]" />
                 
                 {/* Button content */}
-                <div className="relative px-6 py-3 flex items-center gap-3">
+                <div className="relative px-5 sm:px-6 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3">
                   <span className="text-[#fbf9f7] font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
                     style={{
                       fontFamily: 'Azeret Mono, monospace',
-                      fontSize: 'clamp(10px, 2.5vw, 12px)'
+                      fontSize: 'clamp(9px, 2.2vw, 12px)'
                     }}
                   >
                     Read Full Story
                   </span>
                   
                   {/* Arrow icon */}
-                  <div className="w-4 h-4 relative overflow-hidden">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 relative overflow-hidden">
                     <div className="absolute inset-0 transform transition-transform duration-300 group-hover:translate-x-1">
                       <svg 
-                        width="16" 
-                        height="16" 
+                        width="100%" 
+                        height="100%" 
                         viewBox="0 0 16 16" 
                         fill="none" 
                         className="text-[#fbf9f7]"
@@ -542,8 +529,30 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
 
         /* Custom breakpoint for extra small devices */
         @media (min-width: 475px) {
-          .xs:h-280 {
-            height: 280px !important;
+          .xs:h-\[260px\] {
+            height: 260px !important;
+          }
+        }
+
+        /* Enhanced mobile optimizations */
+        @media (max-width: 640px) {
+          /* Prevent horizontal scroll on mobile */
+          body {
+            overflow-x: hidden;
+          }
+          
+          /* Better touch targets on mobile */
+          button {
+            min-height: 44px;
+            min-width: 44px;
+          }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 641px) and (max-width: 1024px) {
+          /* Optimize spacing for tablets */
+          .space-y-12 > * + * {
+            margin-top: 2.5rem !important;
           }
         }
       `}</style>

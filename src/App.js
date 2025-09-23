@@ -55,6 +55,24 @@ const App = () => {
   // Only show loading screen on landing page and only once
   const shouldShowLoadingScreen = currentPage === 'landing' && !hasLoadedOnce && animationStage !== 'complete';
   
+  // Set black overscroll background on body and html
+  useEffect(() => {
+    // Set black background for overscroll areas
+    document.body.style.backgroundColor = '#000000';
+    document.documentElement.style.backgroundColor = '#000000';
+    
+    // Set overscroll behavior for smooth experience
+    document.body.style.overscrollBehavior = 'contain';
+    document.documentElement.style.overscrollBehavior = 'contain';
+    
+    // Cleanup function
+    return () => {
+      // Reset to default if needed (optional)
+      // document.body.style.backgroundColor = '';
+      // document.documentElement.style.backgroundColor = '';
+    };
+  }, []);
+  
   // Reset page to beginning
   const resetPageState = () => {
     // Scroll to top immediately
@@ -212,7 +230,7 @@ const App = () => {
   const showLoadingScreen = shouldShowLoadingScreen;
   
   return (
-    <div className="relative">
+    <div className="relative min-h-screen bg-black">
       {/* Loading Screen Component */}
       {showLoadingScreen && (
         <LoadingScreen animationStage={animationStage} />
@@ -220,6 +238,7 @@ const App = () => {
       
       {/* Main Content */}
       <div className={`
+        min-h-screen
         transition-all duration-1000 ease-out
         ${showLoadingScreen ? 'opacity-0' : 'opacity-100'}
       `}>
