@@ -1,25 +1,232 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js 
+import React, { useState, useEffect } from 'react';
+import { useAudio } from './hooks/useAudio';
+import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
+// Components
+import LoadingScreen from './components/LoadingScreen';
+// Page components
+import LandingPage from './components/pages/LandingPage';
+import WorkPage from './components/pages/WorkPage';
+import AboutPage from './components/pages/AboutPage';
+import Pen2PurposePage from './components/pages/Pen2PurposePage';
+// Story components
+import OceanPage from './components/pages/stories/OceanPage';
+import MphepoPage from './components/pages/stories/MphepoPage';
+import PowerGracePage from './components/pages/stories/PowerGracePage';
+import RicosStoryPage from './components/pages/stories/RicosStoryPage';
+import PoetryInMotionPage from './components/pages/stories/PoetryInMotionPage';
+import WithIntentionsPage from './components/pages/music/WithIntentionsPage';
 
-function App() {
+// Styles
+import './styles/animations.css';
+
+const App = () => {
+  // Get initial page from URL
+  const getInitialPage = () => {
+    const path = window.location.pathname;
+    const page = path.substring(1) || 'landing'; // Remove leading slash, default to landing
+    // Validate that the page exists
+    const validPages = [
+      'landing', 
+      'work', 
+      'about', 
+      'pen2purpose',
+      'ocean', 
+      'mphepo', 
+      'power-grace', 
+      'vessels', 
+      'ricos-story', 
+      'poetry-in-motion'
+    ];
+    return validPages.includes(page) ? page : 'landing';
+  };
+
+  const [currentPage, setCurrentPage] = useState(getInitialPage());
+  const [isReadingMode, setIsReadingMode] = useState(false);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+  const [animationStage, setAnimationStage] = useState('loading');
+  const [pageKey, setPageKey] = useState(0); // Force page re-render
+  
+  const { isAudioPlaying, audioRef, toggleAudio, stopAudio } = useAudio();
+  
+  // Calculate if loading is complete
+  const isLoadingComplete = hasLoadedOnce && animationStage === 'complete';
+  
+  // Only show loading screen on landing page and only once
+  const shouldShowLoadingScreen = currentPage === 'landing' && !hasLoadedOnce && animationStage !== 'complete';
+  
+  // Reset page to beginning
+  const resetPageState = () => {
+    // Scroll to top immediately
+    window.scrollTo(0, 0);
+    
+    // Reset cursor
+    document.body.style.cursor = 'default';
+    
+    // Force page re-render by updating key
+    setPageKey(prev => prev + 1);
+    
+    // Reset any global animations or states
+    const animatedElements = document.querySelectorAll('[class*="animate"]');
+    animatedElements.forEach(el => {
+      el.style.animationPlayState = 'running';
+      el.style.animationDelay = '0s';
+    });
+  };
+  
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const newPage = getInitialPage();
+      setCurrentPage(newPage);
+      stopAudio();
+      resetPageState();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [stopAudio]);
+
+  // Initial loading sequence - only happens once and only on landing page
+  useEffect(() => {
+    if (!hasLoadedOnce && currentPage === 'landing') {
+      // Stage 1: Switch to revealing earlier
+      const revealTimer = setTimeout(() => {
+        setAnimationStage('revealing');
+      }, 1000); // 1s instead of 3000ms
+
+      // Stage 2: Fade out later but keep total ~7s
+      const completeTimer = setTimeout(() => {
+        setAnimationStage('complete');
+        setHasLoadedOnce(true);
+      }, 5000); // 7s instead of 8000ms
+
+      return () => {
+        clearTimeout(revealTimer);
+        clearTimeout(completeTimer);
+      };
+    } else if (currentPage !== 'landing' && !hasLoadedOnce) {
+      // If first visit is not landing page, skip loading screen
+      setHasLoadedOnce(true);
+      setAnimationStage('complete');
+    }
+  }, [hasLoadedOnce, currentPage]);
+
+  // Navigation handler with URL update
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+    stopAudio();
+    
+    // Reset page state when navigating
+    resetPageState();
+    
+    const url = page === 'landing' ? '/' : `/${page}`;
+    window.history.pushState({ page }, '', url);
+  };
+  
+  // Use keyboard navigation hook
+  useKeyboardNavigation(currentPage, navigateTo);
+  
+  const renderCurrentPage = () => {
+    const pageProps = {
+      currentPage,
+      onNavigate: navigateTo,
+      isAudioPlaying,
+      onToggleAudio: toggleAudio,
+      isReadingMode,
+      onToggleReadingMode: () => setIsReadingMode(!isReadingMode),
+      audioRef,
+      isInitialLoad: !hasLoadedOnce,
+      key: pageKey // Force re-render when page changes
+    };
+    
+    switch (currentPage) {
+      case 'landing': 
+        return (
+          <LandingPage 
+            key={`landing-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo} 
+            isInitialLoad={!hasLoadedOnce}
+            isLoadingComplete={isLoadingComplete}
+          />
+        );
+      case 'work': 
+        return (
+          <WorkPage 
+            key={`work-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo} 
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
+      case 'about': 
+        return (
+          <AboutPage 
+            key={`about-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo} 
+          />
+        );
+      case 'pen2purpose': 
+        return (
+          <Pen2PurposePage 
+            key={`pen2purpose-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            isLoadingComplete={isLoadingComplete}
+          />
+        );
+      case 'ocean': 
+        return <OceanPage key={`ocean-${pageKey}`} {...pageProps} />;
+      case 'mphepo': 
+        return <MphepoPage key={`mphepo-${pageKey}`} {...pageProps} />;
+      case 'power-grace': 
+        return <PowerGracePage key={`power-grace-${pageKey}`} {...pageProps} />;
+      case 'ricos-story': 
+        return <RicosStoryPage key={`ricos-story-${pageKey}`} {...pageProps} />;
+      case 'poetry-in-motion': 
+        return <PoetryInMotionPage key={`poetry-in-motion-${pageKey}`} {...pageProps} />;
+      case 'music-project':
+        return (
+          <WithIntentionsPage 
+            key={`music-project-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={setCurrentPage} 
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
+      default: 
+        return (
+          <LandingPage 
+            key={`default-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo} 
+            isInitialLoad={!hasLoadedOnce}
+            isLoadingComplete={isLoadingComplete}
+          />
+        );
+    }
+  };
+  
+  const showLoadingScreen = shouldShowLoadingScreen;
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="relative">
+      {/* Loading Screen Component */}
+      {showLoadingScreen && (
+        <LoadingScreen animationStage={animationStage} />
+      )}
+      
+      {/* Main Content */}
+      <div className={`
+        transition-all duration-1000 ease-out
+        ${showLoadingScreen ? 'opacity-0' : 'opacity-100'}
+      `}>
+        {renderCurrentPage()}
+      </div>
     </div>
   );
-}
+};
 
 export default App;

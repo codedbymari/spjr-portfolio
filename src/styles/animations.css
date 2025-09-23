@@ -1,0 +1,58 @@
+/* src/styles/animations.css */
+
+@keyframes gentleFloat {
+  0%, 100% { 
+    transform: scale(1.02) translateY(0px); 
+  }
+  50% { 
+    transform: scale(1.05) translateY(-5px); 
+  }
+}
+
+@keyframes fadeInUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Utility classes for animations */
+.animate-gentleFloat {
+  animation: gentleFloat 20s ease-in-out infinite;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
