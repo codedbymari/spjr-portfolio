@@ -144,7 +144,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                   {[
                     { text: "work", page: "work", delay: 0.1 },
                     { text: "about", page: "about", delay: 0.15 },
-                    { text: "join pen2purpose", page: "pen2purpose", delay: 0.2 },
+                    { text: "pen2purpose", page: "pen2purpose", delay: 0.2 },
                   ].map((item, index) => (
                     <motion.button
                       key={index}
@@ -152,7 +152,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                         currentPage === item.page ? 'opacity-70' : ''
                       }`}
                       style={{ 
-                        fontFamily: 'Fahkwang, sans-serif',
                         fontSize: 'clamp(24px, 6vw, 40px)'
                       }}
                       initial={{ opacity: 0, x: 50 }}
