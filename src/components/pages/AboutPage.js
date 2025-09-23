@@ -52,9 +52,9 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           {/* First Row - Large Image + Text */}
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16">
             
-            {/* Large Portrait Image - NO FILTER */}
+            {/* Large Portrait Image */}
             <motion.div
-              className="flex-[3_0_0] lg:flex-[2_0_0]"
+              className="flex-[3_0_0] lg:flex-[2_0_0] -mt-100"
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 100 }}
               transition={{ 
@@ -83,7 +83,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                   delay: 1.4
                 }}
                 className="text-[#ffffff] text-[16px] sm:text-[18px] md:text-[20px] font-light leading-[1.5]"
-                style={{ fontFamily: 'Fahkwang, sans-serif' }}
+                
               >
                 Storyteller. Philosopher. Cartographer of the human experience. Sir Practice weaves together African heritage, global identity, and urban realities into narratives that pulse with authenticity.
               </motion.div>
@@ -130,9 +130,12 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 delay: 2.0
               }}
             >
-              <div className="aspect-square w-full relative overflow-hidden rounded-sm">
+              <div className="aspect-square w-full relative overflow-auto rounded-sm">
                <img
+                                 className="w-full h-full object-cover filter grayscale brightness-75 contrast-110 hover:filter-none transition-all duration-500"
+
   src="/assets/images/4.JPEG"
+  
   alt="Artistic Work - Tree"
   onError={(e) => {
     e.target.style.display = 'none';
@@ -211,7 +214,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 <p className="text-[#cccccc] text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4">
                   Every creation is an act of cartography—mapping the territories between who we were, who we are, and who we might become. The practice itself becomes the destination.
                 </p>
-                <p className="text-[#fbf9f7] text-[14px] sm:text-[15px] md:text-[16px] font-light leading-[1.6]" style={{ fontFamily: 'Fahkwang, sans-serif' }}>
+                <p className="text-[#fbf9f7] text-[14px] sm:text-[15px] md:text-[16px] font-light leading-[1.6]" >
                   Art as compass. Story as shelter. Identity as journey.
                 </p>
               </div>

@@ -146,7 +146,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             <div className="flex-[2_0_0] space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10">
               <motion.div
                 className="group relative cursor-pointer"
-                initial={getInitialState({ opacity: 0.001, y: 140 })}
+                initial={getInitialState({ opacity: 0, y: 140 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
                 transition={{ 
                   duration: 2, 
@@ -175,19 +175,29 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300" />
                 </div>
                 
-                {/* Project Info - Fixed Hover Animation */}
+                {/* Project Info - Enhanced Hover Animation */}
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
                   <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">1</span>
                   <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
-                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px]">
-                    {/* Default Title - Completely moves out of view */}
-                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none transform transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:-translate-y-full opacity-100 group-hover:opacity-0">
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
+                    {/* Default Title - Completely disappears on hover */}
+                    <motion.div 
+                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      initial={{ opacity: 1, y: 0 }}
+                      whileHover={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
                       The Ocean
-                    </div>
-                    {/* Hover Title - Slides up from below */}
-                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none opacity-0 group-hover:opacity-100 transform translate-y-full transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:translate-y-0">
+                    </motion.div>
+                    {/* Hover Title - Takes over completely */}
+                    <motion.div 
+                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                    >
                       VIEW PROJECT
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -199,7 +209,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               {/* Project 2 - Mphepo */}
               <motion.div
                 className="group relative cursor-pointer"
-                initial={getInitialState({ opacity: 0.001, y: 140 })}
+                initial={getInitialState({ opacity: 0, y: 140 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
                 transition={{ 
                   duration: 2, 
@@ -228,15 +238,25 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
                   <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">2</span>
                   <span className="text-[#fbfbff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
-                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px]">
-                    {/* Default Title - Completely moves out of view */}
-                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none transform transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:-translate-y-full opacity-100 group-hover:opacity-0">
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
+                    {/* Default Title - Completely disappears on hover */}
+                    <motion.div 
+                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      initial={{ opacity: 1, y: 0 }}
+                      whileHover={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
                       Mphepo
-                    </div>
-                    {/* Hover Title - Slides up from below */}
-                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none opacity-0 group-hover:opacity-100 transform translate-y-full transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:translate-y-0">
+                    </motion.div>
+                    {/* Hover Title - Takes over completely */}
+                    <motion.div 
+                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                    >
                       VIEW PROJECT
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -244,7 +264,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               {/* Project 3 - Poetry in Motion */}
               <motion.div
                 className="group relative cursor-pointer"
-                initial={getInitialState({ opacity: 0.001, y: 140 })}
+                initial={getInitialState({ opacity: 0, y: 140 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
                 transition={{ 
                   duration: 2, 
@@ -273,15 +293,25 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
                   <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">3</span>
                   <span className="text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">/</span>
-                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px]">
-                    {/* Default Title - Completely moves out of view */}
-                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none transform transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:-translate-y-full opacity-100 group-hover:opacity-0">
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
+                    {/* Default Title - Completely disappears on hover */}
+                    <motion.div 
+                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      initial={{ opacity: 1, y: 0 }}
+                      whileHover={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
                       Poetry In Motion
-                    </div>
-                    {/* Hover Title - Slides up from below */}
-                    <div className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none opacity-0 group-hover:opacity-100 transform translate-y-full transition-all duration-700 ease-[0.25,0.46,0.45,0.94] group-hover:translate-y-0">
+                    </motion.div>
+                    {/* Hover Title - Takes over completely */}
+                    <motion.div 
+                      className="absolute top-0 left-0 text-[#ffffff] text-[10px] sm:text-[11px] md:text-[12px] lg:text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-none"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                    >
                       VIEW PROJECT
-                    </div>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
@@ -289,10 +319,10 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </div>
         </div>
 
-        {/* View All Button - Enhanced Mobile Spacing */}
+        {/* View All Button - Fixed visibility */}
         <div className="flex items-center justify-center w-full pt-10 sm:pt-12 md:pt-14 lg:pt-16">
           <motion.button
-            initial={getInitialState({ opacity: 0.001 })}
+            initial={getInitialState({ opacity: 0 })}
             whileInView={getAnimateState({ opacity: 1 })}
             transition={{ 
               duration: 0.6, 
@@ -308,15 +338,15 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </div>
       </section>
 
-      {/* About Section - Enhanced Mobile Design */}
-      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10">
+      {/* About Section - Refined Mobile Experience */}
+      <section className="flex flex-col items-center justify-center min-h-screen bg-[#000000] py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10">
         
         {/* Section Header with Refined Typography */}
-        <div className="flex flex-col items-start w-full max-w-[1200px] mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+        <div className="flex flex-col items-start w-full max-w-[1200px] mb-8 sm:mb-12 md:mb-16 lg:mb-24">
           
           {/* Subtle divider line */}
           <motion.div 
-            className="w-full h-px mb-6 sm:mb-8 md:mb-10 lg:mb-12"
+            className="w-full h-px mb-4 sm:mb-6 md:mb-8 lg:mb-12"
             initial={getInitialState({ scaleX: 0 })}
             whileInView={getAnimateState({ scaleX: 1 })}
             transition={{ 
@@ -330,7 +360,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </motion.div>
 
           {/* Title Treatment */}
-          <div className="flex flex-col gap-2 mb-3 sm:mb-4 md:mb-6">
+          <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4 lg:mb-6">
             <motion.div
               initial={getInitialState({ opacity: 0, y: 40 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -342,7 +372,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               className="text-[#fbf9f7] font-normal tracking-[-0.04em] leading-[0.85]"
               style={{
                 fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(40px, 10vw, 120px)',
+                fontSize: 'clamp(32px, 8.5vw, 120px)', // Slightly smaller on mobile
                 fontWeight: 300
               }}
             >
@@ -362,7 +392,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               className="text-[#666666] font-light tracking-[0.02em] uppercase"
               style={{
                 fontFamily: 'Azeret Mono, monospace',
-                fontSize: 'clamp(9px, 2.2vw, 12px)',
+                fontSize: 'clamp(8px, 2vw, 12px)', // Better mobile scaling
                 letterSpacing: '0.1em'
               }}
             >
@@ -371,11 +401,13 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </div>
         </div>
 
-        {/* Main Content Grid - Enhanced Mobile Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 lg:gap-12 xl:gap-16 w-full max-w-[1200px] items-start">
+        {/* Main Content Grid - Mobile-First Approach */}
+        <div className="w-full max-w-[1200px]">
           
-          {/* Image Column - Better Mobile Handling */}
-          <div className="lg:col-span-5 order-1 lg:order-1">
+          {/* Mobile Layout (< lg) - Stacked vertically */}
+          <div className="lg:hidden flex flex-col gap-6 sm:gap-8">
+            
+            {/* Mobile Image - Optimized size and positioning */}
             <motion.div
               initial={getInitialState({ opacity: 0, scale: 0.95 })}
               whileInView={getAnimateState({ opacity: 1, scale: 1 })}
@@ -385,129 +417,263 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 delay: isLoadingComplete ? 0.3 : 0 
               }}
               viewport={{ once: true, margin: '-100px' }}
-              className="relative group"
+              className="relative group w-full flex justify-center"
             >
-              {/* Image container with subtle border */}
-              <div className="relative overflow-hidden rounded-sm">
-                <div className="aspect-[4/5] w-full relative">
-                  {/* Subtle overlay for depth */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20 z-10" />
-                  
+              <div className="relative overflow-hidden rounded-sm w-full max-w-[280px] sm:max-w-[320px]">
+                <div className="aspect-[3/4] w-full relative">
                   <img
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.02]"
                     src="/assets/images/portfolio.jpeg"
                     alt="Sir Practice - Artist Portrait"
                   />
                   
+                  {/* Subtle overlay for depth */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20 z-10" />
+                  
                   {/* Subtle border effect */}
                   <div className="absolute inset-0 border border-white/5 rounded-sm" />
                 </div>
               </div>
             </motion.div>
-          </div>
-          
-          {/* Content Column - Enhanced Mobile Typography & Spacing */}
-          <div className="lg:col-span-7 order-2 lg:order-2 flex flex-col justify-center space-y-6 sm:space-y-7 md:space-y-8 lg:space-y-10">
             
-            {/* Primary Description */}
-            <motion.div
-              initial={getInitialState({ opacity: 0, y: 40 })}
-              whileInView={getAnimateState({ opacity: 1, y: 0 })}
-              transition={{ 
-                duration: 1.2, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.4 : 0 
-              }}
-              viewport={{ once: true, margin: '-100px' }}
-              className="text-[#fbf9f7] font-light leading-[1.6] tracking-[-0.01em]"
-              style={{
-                fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(15px, 3.8vw, 22px)'
-              }}
-            >
-              Storyteller. Artist. Cartographer of identity.
-              <br />
-              <span className="text-[#cccccc]">
-                Sir Practice traces the routes between heritage and becoming, pain and purpose.
-              </span>
-            </motion.div>
-            
-            {/* Secondary Description */}
-            <motion.div
-              initial={getInitialState({ opacity: 0, y: 40 })}
-              whileInView={getAnimateState({ opacity: 1, y: 0 })}
-              transition={{ 
-                duration: 1.2, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.6 : 0 
-              }}
-              viewport={{ once: true, margin: '-100px' }}
-              className="text-[#aaaaaa] font-light leading-[1.7] tracking-[-0.005em]"
-              style={{
-                fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(13px, 3.2vw, 18px)'
-              }}
-            >
-              He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
-            </motion.div>
-
-            {/* Enhanced CTA Button */}
-            <motion.div
-              initial={getInitialState({ opacity: 0, y: 20 })}
-              whileInView={getAnimateState({ opacity: 1, y: 0 })}
-              transition={{ 
-                duration: 0.8, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 1 : 0 
-              }}
-              viewport={{ once: true, margin: '-100px' }}
-              className="pt-4 md:pt-6"
-            >
-              <button
-                onClick={() => onNavigate('about')}
-                className="group relative overflow-hidden"
+            {/* Mobile Content */}
+            <div className="flex flex-col space-y-4 sm:space-y-5">
+              
+              {/* Primary Description - Mobile optimized */}
+              <motion.div
+                initial={getInitialState({ opacity: 0, y: 40 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.4 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="text-[#fbf9f7] font-light leading-[1.5] tracking-[-0.01em] text-center sm:text-left"
+                style={{
+                  fontFamily: 'Fahkwang, sans-serif',
+                  fontSize: 'clamp(16px, 4.2vw, 20px)' // Better mobile readability
+                }}
               >
-                {/* Button background with hover effect */}
-                <div className="absolute inset-0 bg-[#111111] border border-[#333333] rounded-sm transition-all duration-300 group-hover:border-[#555555]" />
-                
-                {/* Button content */}
-                <div className="relative px-5 sm:px-6 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3">
-                  <span className="text-[#fbf9f7] font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
-                    style={{
-                      fontFamily: 'Azeret Mono, monospace',
-                      fontSize: 'clamp(9px, 2.2vw, 12px)'
-                    }}
-                  >
-                    Read Full Story
-                  </span>
+                Storyteller. Artist. Cartographer of identity.
+                <br />
+                <span className="text-[#cccccc]">
+                  Sir Practice traces the routes between heritage and becoming, pain and purpose.
+                </span>
+              </motion.div>
+              
+              {/* Secondary Description - Mobile optimized */}
+              <motion.div
+                initial={getInitialState({ opacity: 0, y: 40 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.6 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="text-[#aaaaaa] font-light leading-[1.6] tracking-[-0.005em] text-center sm:text-left"
+                style={{
+                  fontFamily: 'Fahkwang, sans-serif',
+                  fontSize: 'clamp(14px, 3.5vw, 17px)' // Slightly larger for mobile readability
+                }}
+              >
+                He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
+              </motion.div>
+
+              {/* Mobile CTA Button - Centered */}
+              <motion.div
+                initial={getInitialState({ opacity: 0, y: 20 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 0.8, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 1 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="pt-4 sm:pt-5 flex justify-center sm:justify-start"
+              >
+                <button
+                  onClick={() => onNavigate('about')}
+                  className="group relative overflow-hidden"
+                >
+                  {/* Button background with hover effect */}
+                  <div className="absolute inset-0 bg-[#111111] border border-[#333333] rounded-sm transition-all duration-300 group-hover:border-[#555555]" />
                   
-                  {/* Arrow icon */}
-                  <div className="w-3 h-3 sm:w-4 sm:h-4 relative overflow-hidden">
-                    <div className="absolute inset-0 transform transition-transform duration-300 group-hover:translate-x-1">
-                      <svg 
-                        width="100%" 
-                        height="100%" 
-                        viewBox="0 0 16 16" 
-                        fill="none" 
-                        className="text-[#fbf9f7]"
-                      >
-                        <path 
-                          d="M6 4L10 8L6 12" 
-                          stroke="currentColor" 
-                          strokeWidth="1" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                  {/* Button content */}
+                  <div className="relative px-5 sm:px-6 py-3 sm:py-3 flex items-center gap-2 sm:gap-3">
+                    <span className="text-[#fbf9f7] font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
+                      style={{
+                        fontFamily: 'Azeret Mono, monospace',
+                        fontSize: 'clamp(10px, 2.4vw, 12px)' // Slightly larger for mobile
+                      }}
+                    >
+                      Read Full Story
+                    </span>
+                    
+                    {/* Arrow icon */}
+                    <div className="w-3 h-3 sm:w-4 sm:h-4 relative overflow-hidden">
+                      <div className="absolute inset-0 transform transition-transform duration-300 group-hover:translate-x-1">
+                        <svg 
+                          width="100%" 
+                          height="100%" 
+                          viewBox="0 0 16 16" 
+                          fill="none" 
+                          className="text-[#fbf9f7]"
+                        >
+                          <path 
+                            d="M6 4L10 8L6 12" 
+                            stroke="currentColor" 
+                            strokeWidth="1" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
                     </div>
                   </div>
+                </button>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Desktop Layout (lg+) - Side by side with existing positioning */}
+          <div className="hidden lg:grid grid-cols-12 gap-12 xl:gap-16 items-start">
+            
+            {/* Desktop Image Column - Keep existing positioning */}
+            <div className="col-span-5" style={{ position: 'relative', top: '-90px' }}>
+              <motion.div
+                initial={getInitialState({ opacity: 0, scale: 0.95 })}
+                whileInView={getAnimateState({ opacity: 1, scale: 1 })}
+                transition={{ 
+                  duration: 1.4, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.3 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="relative group"
+              >
+                <div className="relative overflow-hidden rounded-sm">
+                  <div className="aspect-[4/6] w-full relative">
+                    <img
+                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-[1.02]"
+                      src="/assets/images/portfolio.jpeg"
+                      alt="Sir Practice - Artist Portrait"
+                    />
+                    
+                    {/* Subtle overlay for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/20 z-10" />
+                    
+                    {/* Subtle border effect */}
+                    <div className="absolute inset-0 border border-white/5 rounded-sm" />
+                  </div>
                 </div>
-              </button>
-            </motion.div>
+              </motion.div>
+            </div>
+            
+            {/* Desktop Content Column - Keep existing */}
+            <div className="col-span-7 flex flex-col justify-start space-y-10">
+              
+              {/* Primary Description */}
+              <motion.div
+                initial={getInitialState({ opacity: 0, y: 40 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.4 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="text-[#fbf9f7] font-light leading-[1.6] tracking-[-0.01em]"
+                style={{
+                  fontFamily: 'Fahkwang, sans-serif',
+                  fontSize: 'clamp(15px, 3.8vw, 22px)'
+                }}
+              >
+                Storyteller. Artist. Cartographer of identity.
+                <br />
+                <span className="text-[#cccccc]">
+                  Sir Practice traces the routes between heritage and becoming, pain and purpose.
+                </span>
+              </motion.div>
+              
+              {/* Secondary Description */}
+              <motion.div
+                initial={getInitialState({ opacity: 0, y: 40 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.6 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="text-[#aaaaaa] font-light leading-[1.7] tracking-[-0.005em]"
+                style={{
+                  fontFamily: 'Fahkwang, sans-serif',
+                  fontSize: 'clamp(13px, 3.2vw, 18px)'
+                }}
+              >
+                He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
+              </motion.div>
+
+              {/* Desktop CTA Button */}
+              <motion.div
+                initial={getInitialState({ opacity: 0, y: 20 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 0.8, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 1 : 0 
+                }}
+                viewport={{ once: true, margin: '-100px' }}
+                className="pt-6"
+              >
+                <button
+                  onClick={() => onNavigate('about')}
+                  className="group relative overflow-hidden"
+                >
+                  {/* Button background with hover effect */}
+                  <div className="absolute inset-0 bg-[#111111] border border-[#333333] rounded-sm transition-all duration-300 group-hover:border-[#555555]" />
+                  
+                  {/* Button content */}
+                  <div className="relative px-6 py-3 flex items-center gap-3">
+                    <span className="text-[#fbf9f7] font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
+                      style={{
+                        fontFamily: 'Azeret Mono, monospace',
+                        fontSize: 'clamp(9px, 2.2vw, 12px)'
+                      }}
+                    >
+                      Read Full Story
+                    </span>
+                    
+                    {/* Arrow icon */}
+                    <div className="w-4 h-4 relative overflow-hidden">
+                      <div className="absolute inset-0 transform transition-transform duration-300 group-hover:translate-x-1">
+                        <svg 
+                          width="100%" 
+                          height="100%" 
+                          viewBox="0 0 16 16" 
+                          fill="none" 
+                          className="text-[#fbf9f7]"
+                        >
+                          <path 
+                            d="M6 4L10 8L6 12" 
+                            stroke="currentColor" 
+                            strokeWidth="1" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
-
+      
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
@@ -553,6 +719,14 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           /* Optimize spacing for tablets */
           .space-y-12 > * + * {
             margin-top: 2.5rem !important;
+          }
+        }
+
+        /* Desktop-specific styles for better image alignment */
+        @media (min-width: 1024px) {
+          /* Better aspect ratio for desktop to align with content height */
+          .lg\:aspect-\[4\/6\] {
+            aspect-ratio: 4/6 !important;
           }
         }
       `}</style>

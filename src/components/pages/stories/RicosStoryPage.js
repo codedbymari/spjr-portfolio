@@ -60,13 +60,7 @@ const RicosStoryPage = ({
         />
       </div>
 
-      {/* Audio element */}
-      {audioRef && (
-        <audio ref={audioRef} loop>
-          <source src="./assets/audio/rico-ambient.mp3" type="audio/mpeg" />
-        </audio>
-      )}
-
+     
       {/* Back Button - Only shows on hover in top-left corner */}
       <motion.div
         className="fixed top-0 left-0 w-24 h-24 z-50 flex items-start justify-start p-6 group"
@@ -87,33 +81,8 @@ const RicosStoryPage = ({
 
       {/* Control Bar */}
       <div className="fixed top-8 right-8 z-50 flex flex-col gap-3">
-        {/* Audio Toggle */}
-        <motion.button
-          onClick={onToggleAudio}
-          className="w-12 h-12 bg-black/20 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-black/30 transition-all duration-300"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1, duration: 0.5 }}
-        >
-          <div className={`w-3 h-3 ${isAudioPlaying ? 'animate-pulse' : ''}`}>
-            {isAudioPlaying ? '♪' : '♫'}
-          </div>
-        </motion.button>
+       
 
-        {/* Reading Mode Toggle */}
-        <motion.button
-          onClick={onToggleReadingMode}
-          className="w-12 h-12 bg-black/20 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-black/30 transition-all duration-300"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.2, duration: 0.5 }}
-        >
-          <div className="text-xs font-mono">{isReadingMode ? 'R' : 'N'}</div>
-        </motion.button>
       </div>
 
       {/* Main Content */}
@@ -219,6 +188,7 @@ const RicosStoryPage = ({
                   © Sir Practice Jr. 
                 </p>
               </motion.div>
+              
             </div>
           </div>
         </div>

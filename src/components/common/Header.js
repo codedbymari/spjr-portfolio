@@ -1,13 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// Header Component with enhanced responsive design
+// Header Component with responsive design
 const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
   
   const handleMenuItemClick = (page) => {
     setIsMenuOpen(false);
     onNavigate(page);
   };
+
+  // Hook to detect if device supports hover (desktop) vs touch (mobile)
+  const [isHoverDevice, setIsHoverDevice] = useState(false);
+
+  useEffect(() => {
+    // Check if device supports hover and is not a touch device
+    const checkHoverCapability = () => {
+      const hasHover = window.matchMedia('(hover: hover)').matches;
+      const hasPointer = window.matchMedia('(pointer: fine)').matches;
+      setIsHoverDevice(hasHover && hasPointer);
+    };
+
+    checkHoverCapability();
+    
+    // Listen for changes
+    const hoverQuery = window.matchMedia('(hover: hover)');
+    const pointerQuery = window.matchMedia('(pointer: fine)');
+    
+    hoverQuery.addListener(checkHoverCapability);
+    pointerQuery.addListener(checkHoverCapability);
+
+    return () => {
+      hoverQuery.removeListener(checkHoverCapability);
+      pointerQuery.removeListener(checkHoverCapability);
+    };
+  }, []);
+
+
 
   return (
     <>
@@ -21,7 +49,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
           {/* Left - Logo - Enhanced Mobile Typography */}
           <div className="flex-1 flex items-center min-w-0">
             <motion.button 
-              className="text-white text-xs sm:text-sm md:text-base lg:text-lg font-mono uppercase tracking-wide hover:opacity-70 transition-opacity truncate"
+              className="text-white text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity truncate"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate('landing')}
@@ -30,21 +58,21 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
             </motion.button>
           </div>
           
-          {/* Center - Description - Progressive Enhancement */}
+          {/* Center - Description  */}
           <div className="flex-1 flex items-center justify-center min-w-0 px-2">
             <motion.div 
               className="text-white font-mono uppercase tracking-wide text-center"
             >
-              <span className="hidden sm:block md:hidden text-sm">WRITER & ARTIST</span>
+              <span className="hidden sm:block md:hidden text-sm">(WRITER & ARTIST)</span>
               {/* Desktop: Show full version */}
-              <span className="hidden md:block text-sm lg:text-base">WRITER & ARTIST</span>
+              <span className="hidden md:block text-[13px] lg:text-[13px] xl:text-[13px]">(WRITER & ARTIST)</span>
             </motion.div>
           </div>
           
           {/* Right - MENU Button */}
           <div className="flex-1 flex items-center justify-end min-w-0">
             <motion.button 
-              className="text-white text-xs sm:text-sm md:text-base lg:text-lg font-mono uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer relative z-[60] px-2 py-1"
+              className="text-white text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer relative z-[60] px-2 py-1"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -59,7 +87,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
         </div>
       </motion.nav>
 
-      {/* Navigation Menu Overlay - Enhanced Responsive Design */}
+      {/* Navigation Menu Overlay - Responsive Design */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
@@ -125,7 +153,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                       }`}
                       style={{ 
                         fontFamily: 'Fahkwang, sans-serif',
-                        fontSize: 'clamp(24px, 6vw, 40px)' // More responsive font scaling
+                        fontSize: 'clamp(24px, 6vw, 40px)'
                       }}
                       initial={{ opacity: 0, x: 50 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -135,9 +163,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                         duration: 0.6, 
                         ease: [0.16, 1, 0.3, 1] 
                       }}
-                      whileHover={{ 
+                      whileHover={isHoverDevice ? { 
                         scale: 1.02,
                         x: -8,
+                        transition: { duration: 0.2 }
+                      } : {
+                        scale: 1.02,
                         transition: { duration: 0.2 }
                       }}
                       onClick={() => handleMenuItemClick(item.page)}
@@ -168,14 +199,16 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                   
                   <div className="grid grid-cols-1 gap-3 sm:gap-4">
                     {[
-                      { text: "Instagram", href: "#instagram" },
+                      { text: "Instagram", href: "https://www.instagram.com/sirpractice/" },
                       { text: "Email", href: "#email" }
                     ].map((link, index) => (
                       <motion.a
                         key={index}
                         href={link.href}
+                        target={link.href.startsWith('http') ? "_blank" : "_self"}
+                        rel={link.href.startsWith('http') ? "noopener noreferrer" : ""}
                         className="group text-white text-sm sm:text-base md:text-lg font-mono uppercase tracking-wide hover:opacity-70 transition-all duration-300 py-2 px-1 -mx-1 rounded relative overflow-hidden"
-                        whileHover={{ x: -8 }}
+                        whileHover={isHoverDevice ? { x: -8 } : {}}
                         transition={{ duration: 0.2 }}
                       >
                         <span className="relative z-10">{link.text}</span>
