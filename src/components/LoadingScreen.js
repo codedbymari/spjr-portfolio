@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingScreen = ({ animationStage }) => {
+const LoadingScreen = ({ animationStage, progress = 0 }) => {
   return (
     <>
       {/* Circular Reveal Overlay */}
@@ -20,7 +20,7 @@ const LoadingScreen = ({ animationStage }) => {
         transform transition-all duration-[1500ms] ease-out
         ${animationStage === 'complete' ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}
       `}>
-        <div className="text-center px-4">
+        <div className="text-center px-4 w-full max-w-md">
           {/* Main Title */}
           <div className="overflow-hidden mb-6">
             <h1 className="font-normal uppercase tracking-wide leading-tight text-white text-[24px]">
@@ -54,15 +54,27 @@ const LoadingScreen = ({ animationStage }) => {
             >            </p>
           </div>
 
-          {/* Loading Animation Placeholder */}
+          {/* Loading Progress Bar */}
           <div className={`
-            flex justify-center items-center gap-1 mb-8
+            w-full mb-8
             transform transition-all duration-[800ms] ease-out
             ${animationStage === 'loading' ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}
           `}
           style={{transitionDelay: '1600ms'}}
           >
-            {/* Add spinner or animation here if needed */}
+            {/* Progress Bar Container */}
+            <div className="w-full bg-white/20 h-1 rounded-full overflow-hidden">
+              {/* Animated Progress Fill */}
+              <div 
+                className="h-full bg-white rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            
+            {/* Progress Percentage Text */}
+            <div className="flex justify-between items-center mt-2">
+              <span className="text-xs text-white/80 font-medium">{Math.round(progress)}%</span>
+            </div>
           </div>
 
           {/* Loading Text */}

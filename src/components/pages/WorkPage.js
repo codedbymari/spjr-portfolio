@@ -1,14 +1,27 @@
 // src/components/pages/WorkPage.js
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
 
 const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isDark, colors } = useTheme();
   
-  // Animation helper functions (matching your project grid pattern)
-  const getInitialState = (props) => props;
-  const getAnimateState = (props) => props;
+  // Animation helper functions
+  const getInitialState = (props) => {
+    if (!isLoadingComplete) {
+      return { opacity: 0, y: 100 };
+    }
+    return props;
+  };
+
+  const getAnimateState = (props) => {
+    if (!isLoadingComplete) {
+      return { opacity: 0, y: 100 };
+    }
+    return props;
+  };
 
   // Writing/Stories projects data (6 stories)
   const writingItems = [
@@ -30,7 +43,6 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
       imageSrc: './assets/images/tomyself.jpg',
       number: '3'
     },
- 
     {
       id: 'ricos-story',
       title: 'Rico\'s Story',
@@ -57,12 +69,12 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
 
   // Project grid component
   const ProjectGrid = ({ items, sectionDelay = 0 }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
       {items.map((item, index) => (
         <motion.div
           key={item.id}
           className="group relative cursor-pointer"
-          initial={getInitialState({ opacity: 0.001, y: 140 })}
+          initial={getInitialState({ opacity: 0, y: 140 })}
           whileInView={getAnimateState({ opacity: 1, y: 0 })}
           transition={{ 
             duration: 2, 
@@ -74,16 +86,33 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           onClick={() => onNavigate(item.id)}
         >
           {/* Project Image - Consistent aspect ratio */}
-          <div className="aspect-[1.2/1] w-full relative overflow-hidden">
+          <div className="aspect-[1.2/1] w-full relative overflow-hidden rounded-sm">
+            <div 
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                opacity: 0.1
+              }}
+            />
             <img
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
               src={item.imageSrc}
               alt={item.title}
+              style={{
+                filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+              }}
             />
+            
             {/* Coming Soon Overlay */}
             {item.title === 'Coming Soon' && (
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                <span className="text-white/80 text-sm font-mono uppercase tracking-wide">
+              <div 
+                className="absolute inset-0 backdrop-blur-sm flex items-center justify-center z-10"
+                style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)' }}
+              >
+                <span 
+                  className="text-sm font-mono uppercase tracking-wide"
+                  style={{ color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)' }}
+                >
                   Coming Soon
                 </span>
               </div>
@@ -91,22 +120,52 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           </div>
           
           {/* Project Info */}
-          <div className="flex items-start justify-start w-full pt-4 overflow-hidden">
-            <span className="text-[#ffffff] text-[13px] font-normal tracking-[-0.01em] uppercase font-mono">
+          <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
+            <span 
+              className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+              style={{
+                color: colors.text.primary,
+                fontSize: 'clamp(10px, 2.2vw, 13px)'
+              }}
+            >
               {item.number}
             </span>
-            <span className="text-[#ffffff] text-[13px] font-normal tracking-[-0.01em] uppercase font-mono mx-2">
+            <span 
+              className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+              style={{
+                color: colors.text.primary,
+                fontSize: 'clamp(10px, 2.2vw, 13px)'
+              }}
+            >
               /
             </span>
-            <div className="flex-1 relative">
+            <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] overflow-hidden">
               {/* Default Title */}
-              <div className="text-[#ffffff] text-[13px] font-normal tracking-[-0.01em] uppercase font-mono leading-relaxed transform transition-transform duration-500 group-hover:-translate-y-6">
+              <motion.div 
+                className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                style={{
+                  color: colors.text.primary,
+                  fontSize: 'clamp(10px, 2.2vw, 13px)'
+                }}
+                initial={{ opacity: 1, y: 0 }}
+                whileHover={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
                 {item.title}
-              </div>
+              </motion.div>
               {/* Hover Title */}
-              <div className="absolute top-0 text-[#ffffff] text-[13px] font-normal tracking-[-0.01em] uppercase font-mono opacity-80 transform translate-y-6 transition-transform duration-500 group-hover:translate-y-0">
+              <motion.div 
+                className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                style={{
+                  color: colors.text.primary,
+                  fontSize: 'clamp(10px, 2.2vw, 13px)'
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileHover={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+              >
                 {item.title === 'Coming Soon' ? 'STAY TUNED' : 'VIEW PROJECT'}
-              </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>
@@ -115,7 +174,10 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   );
 
   return (
-    <div className="w-screen min-h-screen bg-black relative">
+    <div 
+      className="w-screen min-h-screen overflow-x-hidden relative transition-colors duration-500"
+      style={{ backgroundColor: colors.primary }}
+    >
       <Header 
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
@@ -124,11 +186,11 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
       />
       
       {/* Main Content Container */}
-      <div className="flex flex-col items-center justify-start px-8 py-20">
+      <div className="flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-16 sm:py-20 md:py-24">
         {/* Page Title */}
         <motion.div
-          className="mb-24"
-          initial={getInitialState({ opacity: 0.001, y: 60 })}
+          className="mb-16 sm:mb-20 md:mb-24"
+          initial={getInitialState({ opacity: 0, y: 60 })}
           whileInView={getAnimateState({ opacity: 1, y: 0 })}
           transition={{ 
             duration: 1.5, 
@@ -137,20 +199,26 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           }}
           viewport={{ once: true }}
         >
-          <h1 className="text-[#ffffff] text-[48px] md:text-[72px] font-light tracking-[-0.02em] uppercase font-mono text-center">
+          <h1 
+            className="font-light tracking-[-0.02em] uppercase font-mono text-center transition-colors duration-500"
+            style={{
+              color: colors.text.primary,
+              fontSize: 'clamp(32px, 8.5vw, 72px)'
+            }}
+          >
             WORK
           </h1>
         </motion.div>
 
         {/* Content Container */}
-        <div className="w-full max-w-[1200px] space-y-32">
+        <div className="w-full max-w-[1200px] space-y-20 sm:space-y-24 md:space-y-28 lg:space-y-32">
           
           {/* Writing Section */}
-          <div className="space-y-16">
+          <div className="space-y-12 sm:space-y-14 md:space-y-16">
             {/* Writing Section Title */}
             <motion.div
               className="relative"
-              initial={getInitialState({ opacity: 0.001, y: 40 })}
+              initial={getInitialState({ opacity: 0, y: 40 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
               transition={{ 
                 duration: 1.5, 
@@ -160,12 +228,28 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
               viewport={{ once: true }}
             >
               <div className="flex items-center justify-start mb-2">
-                <div className="w-12 h-[1px] bg-[#ffffff] opacity-30 mr-6"></div>
-                <h2 className="text-[#ffffff] text-[24px] md:text-[32px] font-light tracking-[-0.01em] uppercase font-mono">
+                <div 
+                  className="w-8 sm:w-10 md:w-12 h-[1px] mr-4 sm:mr-5 md:mr-6 transition-colors duration-500"
+                  style={{ backgroundColor: colors.text.primary, opacity: 0.3 }}
+                ></div>
+                <h2 
+                  className="font-light tracking-[-0.01em] uppercase font-mono transition-colors duration-500"
+                  style={{
+                    color: colors.text.primary,
+                    fontSize: 'clamp(18px, 4.5vw, 32px)'
+                  }}
+                >
                   WRITING 
                 </h2>
               </div>
-              <p className="text-[#ffffff] text-[14px] opacity-60 font-mono uppercase tracking-[-0.01em] ml-18">
+              <p 
+                className="font-mono uppercase tracking-[-0.01em] ml-12 sm:ml-14 md:ml-18 transition-colors duration-500"
+                style={{
+                  color: colors.text.primary,
+                  opacity: 0.6,
+                  fontSize: 'clamp(10px, 2.5vw, 14px)'
+                }}
+              >
                 SHORT STORIES & REFLECTIONS
               </p>
             </motion.div>
@@ -175,11 +259,11 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           </div>
 
           {/* Music Section */}
-          <div className="space-y-16">
+          <div className="space-y-12 sm:space-y-14 md:space-y-16">
             {/* Music Section Title */}
             <motion.div
               className="relative"
-              initial={getInitialState({ opacity: 0.001, y: 40 })}
+              initial={getInitialState({ opacity: 0, y: 40 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
               transition={{ 
                 duration: 1.5, 
@@ -189,12 +273,28 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
               viewport={{ once: true }}
             >
               <div className="flex items-center justify-start mb-2">
-                <div className="w-12 h-[1px] bg-[#ffffff] opacity-30 mr-6"></div>
-                <h2 className="text-[#ffffff] text-[24px] md:text-[32px] font-light tracking-[-0.01em] uppercase font-mono">
+                <div 
+                  className="w-8 sm:w-10 md:w-12 h-[1px] mr-4 sm:mr-5 md:mr-6 transition-colors duration-500"
+                  style={{ backgroundColor: colors.text.primary, opacity: 0.3 }}
+                ></div>
+                <h2 
+                  className="font-light tracking-[-0.01em] uppercase font-mono transition-colors duration-500"
+                  style={{
+                    color: colors.text.primary,
+                    fontSize: 'clamp(18px, 4.5vw, 32px)'
+                  }}
+                >
                   MUSIC
                 </h2>
               </div>
-              <p className="text-[#ffffff] text-[14px] opacity-60 font-mono uppercase tracking-[-0.01em] ml-18">
+              <p 
+                className="font-mono uppercase tracking-[-0.01em] ml-12 sm:ml-14 md:ml-18 transition-colors duration-500"
+                style={{
+                  color: colors.text.primary,
+                  opacity: 0.6,
+                  fontSize: 'clamp(10px, 2.5vw, 14px)'
+                }}
+              >
                 FEATURES & COLLABORATIONS
               </p>
             </motion.div>
@@ -204,6 +304,47 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           </div>
         </div>
       </div>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+        
+        * {
+          box-sizing: border-box;
+        }
+        
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: 'Inter', sans-serif;
+        }
+        
+        .font-mono {
+          font-family: 'Azeret Mono', monospace;
+        }
+
+        /* Enhanced mobile optimizations */
+        @media (max-width: 640px) {
+          /* Prevent horizontal scroll on mobile */
+          body {
+            overflow-x: hidden;
+          }
+          
+          /* Better touch targets on mobile */
+          button {
+            min-height: 44px;
+            min-width: 44px;
+          }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 641px) and (max-width: 1024px) {
+          /* Optimize spacing for tablets */
+          .space-y-20 > * + * {
+            margin-top: 4rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

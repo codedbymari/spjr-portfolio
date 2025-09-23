@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../common/Header';
-
-
+import { useTheme } from '../../contexts/ThemeContext';
 
 const AboutPage = ({ currentPage, onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const { isDark, colors } = useTheme();
 
   useEffect(() => {
     const contentTimer = setTimeout(() => {
@@ -19,7 +19,10 @@ const AboutPage = ({ currentPage, onNavigate }) => {
   }, []);
 
   return (
-    <div className="w-screen min-h-screen bg-[#000000] overflow-x-hidden relative">
+    <div 
+      className="w-screen min-h-screen overflow-x-hidden relative transition-colors duration-500"
+      style={{ backgroundColor: colors.primary }}
+    >
       <Header 
         currentPage={currentPage}
         onNavigate={onNavigate}
@@ -28,7 +31,10 @@ const AboutPage = ({ currentPage, onNavigate }) => {
       />
       
       {/* Main About Section */}
-      <section className="flex flex-col items-center justify-start min-h-screen bg-[#000000] pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10">
+      <section 
+        className="flex flex-col items-center justify-start min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}
+      >
         
         {/* Page Title */}
         <div className="flex flex-col items-center w-full max-w-[1200px] mb-12 sm:mb-16 md:mb-20">
@@ -42,7 +48,10 @@ const AboutPage = ({ currentPage, onNavigate }) => {
               delay: 0.8 
             }}
           >
-            <div className="w-full h-px bg-[#333333]" />
+            <div 
+              className="w-full h-px transition-colors duration-500" 
+              style={{ backgroundColor: colors.border }}
+            />
           </motion.div>
         </div>
 
@@ -65,9 +74,12 @@ const AboutPage = ({ currentPage, onNavigate }) => {
             >
               <div className="aspect-[3/4] w-full relative overflow-hidden rounded-sm">
                 <img
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-all duration-500"
                   src="/assets/images/portfolio.jpeg"
                   alt="Sir Practice - Portrait"
+                  style={{
+                    filter: isDark ? 'none' : 'brightness(0.95) contrast(1.1)'
+                  }}
                 />
               </div>
             </motion.div>
@@ -82,8 +94,8 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                   ease: [0.16, 1, 0.3, 1],
                   delay: 1.4
                 }}
-                className="text-[#ffffff] text-[16px] sm:text-[18px] md:text-[20px] font-light leading-[1.5]"
-                
+                className="text-[16px] sm:text-[18px] md:text-[20px] font-light leading-[1.5] transition-colors duration-500"
+                style={{ color: colors.text.primary }}
               >
                 Storyteller. Philosopher. Cartographer of the human experience. Sir Practice weaves together African heritage, global identity, and urban realities into narratives that pulse with authenticity.
               </motion.div>
@@ -96,7 +108,8 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                   ease: [0.16, 1, 0.3, 1],
                   delay: 1.6
                 }}
-                className="text-[#cccccc] text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6]"
+                className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
+                style={{ color: colors.text.secondary }}
               >
                 Rooted in the belief that growth is a cycle of inhaling hope and exhaling purpose, his work serves as both compass and companion—illuminating stories that breathe in the margins.
               </motion.div>
@@ -109,8 +122,11 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                   ease: [0.16, 1, 0.3, 1],
                   delay: 1.8
                 }}
-                className="text-[#fbf9f7] text-[14px] sm:text-[15px] md:text-[16px] font-light italic leading-[1.6]"
-                style={{ fontFamily: 'Fahkwang, sans-serif' }}
+                className="text-[14px] sm:text-[15px] md:text-[16px] font-light italic leading-[1.6] transition-colors duration-500"
+                style={{ 
+                  fontFamily: 'Fahkwang, sans-serif',
+                  color: colors.text.primary
+                }}
               >
                 "Go forward and create the evidence of your existence."
               </motion.div>
@@ -120,7 +136,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           {/* Three Images with Filter */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             
-            {/* First Image */}
+            {/* First Image - Empty for now */}
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 100 }}
@@ -130,7 +146,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 delay: 2.0
               }}
             >
-               
+              {/* Empty - you can add content here */}
             </motion.div>
 
             {/* Second Image */}
@@ -143,11 +159,16 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 delay: 2.2
               }}
             >
-              <div className="aspect-square w-full relative overflow-hidden rounded-sm">
+              <div className="aspect-square w-full relative overflow-hidden rounded-sm group">
                 <img
-                  className="w-full h-full object-cover filter grayscale brightness-75 contrast-110 hover:filter-none transition-all duration-500"
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:filter-none"
                   src="/assets/images/1.jpeg"
                   alt="Artistic Work - Landscape"
+                  style={{
+                    filter: isDark 
+                      ? 'grayscale(1) brightness(0.75) contrast(1.1)' 
+                      : 'grayscale(0.8) brightness(0.9) contrast(1.05)'
+                  }}
                 />
               </div>
             </motion.div>
@@ -162,11 +183,16 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 delay: 2.4
               }}
             >
-              <div className="aspect-square w-full relative overflow-hidden rounded-sm">
+              <div className="aspect-square w-full relative overflow-hidden rounded-sm group">
                 <img
-                  className="w-full h-full object-cover filter grayscale brightness-75 contrast-110 hover:filter-none transition-all duration-500"
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:filter-none"
                   src="/assets/images/2.jpeg"
                   alt="Artistic Work - Kitchen"
+                  style={{
+                    filter: isDark 
+                      ? 'grayscale(1) brightness(0.75) contrast(1.1)' 
+                      : 'grayscale(0.8) brightness(0.9) contrast(1.05)'
+                  }}
                 />
               </div>
             </motion.div>
@@ -185,33 +211,48 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           >
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
               <div className="flex-1">
-                <h3 className="text-[#ffffff] text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono">
+                <h3 
+                  className="text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono transition-colors duration-500"
+                  style={{ color: colors.text.primary }}
+                >
                   Background
                 </h3>
-                <p className="text-[#cccccc] text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4">
+                <p 
+                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4 transition-colors duration-500"
+                  style={{ color: colors.text.secondary }}
+                >
                   Emerging as a distinctive voice in contemporary literature, Sir Practice Jr. bridges traditional storytelling with modern artistic expression, creating work that spans from the favelas of Rio to the estates of London.
                 </p>
-                <p className="text-[#cccccc] text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6]">
+                <p 
+                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
+                  style={{ color: colors.text.secondary }}
+                >
                   Through vivid, cinematic narratives and philosophical exploration, his multidisciplinary approach weaves together visual art and written narrative as waypoints in cultural preservation and self-discovery.
                 </p>
               </div>
               
               <div className="flex-1">
-                <h3 className="text-[#ffffff] text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono">
+                <h3 
+                  className="text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono transition-colors duration-500"
+                  style={{ color: colors.text.primary }}
+                >
                   Philosophy
                 </h3>
-                <p className="text-[#cccccc] text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4">
+                <p 
+                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4 transition-colors duration-500"
+                  style={{ color: colors.text.secondary }}
+                >
                   Every creation is an act of cartography—mapping the territories between who we were, who we are, and who we might become. The practice itself becomes the destination.
                 </p>
-                <p className="text-[#fbf9f7] text-[14px] sm:text-[15px] md:text-[16px] font-light leading-[1.6]" >
+                <p 
+                  className="text-[14px] sm:text-[15px] md:text-[16px] font-light leading-[1.6] transition-colors duration-500"
+                  style={{ color: colors.text.primary }}
+                >
                   Art as compass. Story as shelter. Identity as journey.
                 </p>
               </div>
             </div>
           </motion.div>
-
-         
-            
         </div>
       </section>
 
@@ -229,11 +270,36 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           margin: 0;
           padding: 0;
           font-family: 'Inter', sans-serif;
-          background-color: #000000;
+          transition: background-color 0.5s ease;
         }
         
         .font-mono {
           font-family: 'Azeret Mono', monospace;
+        }
+
+        /* Light theme specific adjustments */
+        .light .aspect-square img {
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .light .aspect-[3\/4] img {
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Dark theme specific adjustments */
+        .dark .aspect-square img {
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark .aspect-[3\/4] img {
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Smooth transitions for all theme changes */
+        * {
+          transition-property: background-color, color, border-color, box-shadow;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition-duration: 500ms;
         }
       `}</style>
     </div>
