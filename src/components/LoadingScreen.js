@@ -51,9 +51,7 @@ const LoadingScreen = ({ animationStage }) => {
               ${animationStage === 'loading' ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}
             `}
             style={{transitionDelay: '1200ms'}}
-            >
-              Portfolio & Creative Stories
-            </p>
+            >            </p>
           </div>
 
           {/* Loading Animation Placeholder */}
@@ -76,7 +74,6 @@ const LoadingScreen = ({ animationStage }) => {
           style={{transitionDelay: '2000ms'}}
           >
             {animationStage === 'loading' && 'Initializing...'}
-            {animationStage === 'revealing' && 'Almost ready...'}
           </p>
         </div>
       </div>
