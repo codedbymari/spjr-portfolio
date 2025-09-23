@@ -130,18 +130,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 delay: 2.0
               }}
             >
-              <div className="aspect-square w-full relative overflow-auto rounded-sm">
-               <img
-                                 className="w-full h-full object-cover filter grayscale brightness-75 contrast-110 hover:filter-none transition-all duration-500"
-
-  src="/assets/images/4.JPEG"
-  
-  alt="Artistic Work - Tree"
-  onError={(e) => {
-    e.target.style.display = 'none';
-    console.log('Image failed to load');
-  }}
-/>              </div>
+               
             </motion.div>
 
             {/* Second Image */}
