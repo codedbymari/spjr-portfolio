@@ -138,7 +138,7 @@ const PoetryInMotionPage = ({
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="w-16 h-[1px] bg-white/30"></div>
                 <span className="text-white/60 text-[14px] font-mono uppercase tracking-[0.2em]">
-                  A JOURNEY THROUGH WALTHAMSTOW ESTATE
+                  A JOURNEY THROUGH THE ESTATE
                 </span>
                 <div className="w-16 h-[1px] bg-white/30"></div>
               </div>

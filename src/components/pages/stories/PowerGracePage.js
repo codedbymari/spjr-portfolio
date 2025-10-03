@@ -101,9 +101,7 @@ const PowerGracePage = ({
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
               className="mb-16"
             >
-              <p className="text-white/70 text-[16px] md:text-[18px] font-light italic leading-loose tracking-wide">
-                A Letter to Theo
-              </p>
+              
             </motion.div>
 
             {/* Title */}

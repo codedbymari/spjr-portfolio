@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
+import HeroCollage from './HeroCollage';
+import HeroImage from './HeroImage'; // Import the new HeroImage component
 
 const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingComplete = true }) => {
   const [showContent, setShowContent] = useState(false);
@@ -9,30 +11,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
   const heroRef = useRef(null);
   
   // Get theme context
-const { isDark, colors } = useTheme();
-
-  // Parallax scroll tracking for hero section only
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start end", "end start"] // Only animate when hero is in viewport
-  });
-  
-  // Transform scroll progress to parallax movement and scale
-  const y = useTransform(scrollYProgress, [0, 1], [0, -80]); // Subtle 0.8x parallax
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.05]); // Gentle scale increase
-
-  useEffect(() => {
-    // Only start animations after loading is complete
-    if (isLoadingComplete) {
-      const contentTimer = setTimeout(() => {
-        setShowContent(true);
-      }, 300);
-
-      return () => {
-        clearTimeout(contentTimer);
-      };
-    }
-  }, [isLoadingComplete]);
+  const { isDark, colors } = useTheme();
 
   // Animation variants that respect loading state
   const getInitialState = (defaultInitial) => {
@@ -48,6 +27,19 @@ const { isDark, colors } = useTheme();
     }
     return defaultAnimate;
   };
+
+  useEffect(() => {
+    // Only start animations after loading is complete
+    if (isLoadingComplete) {
+      const contentTimer = setTimeout(() => {
+        setShowContent(true);
+      }, 300);
+
+      return () => {
+        clearTimeout(contentTimer);
+      };
+    }
+  }, [isLoadingComplete]);
 
   return (
     <div 
@@ -65,103 +57,109 @@ const { isDark, colors } = useTheme();
         setIsMenuOpen={setIsMenuOpen}
       />
 
-      {/* Hero Section - Enhanced Mobile/Tablet Responsiveness */}
-      <section 
-        className="flex flex-col justify-end min-h-[75vh] sm:min-h-[80vh] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative overflow-hidden z-10 transition-colors duration-500"
-        style={{ backgroundColor: colors.primary }}
-      >
+      {/* Hero Collage Section */}
+      <HeroCollage isLoadingComplete={isLoadingComplete} />
+
+      {/* Title + Subtitle Section */}
+      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}>
         
-        {/* Title + Subtitle Row - Improved Mobile Layout */}
+        {/* Title + Subtitle Row */}
         <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 md:mb-12 lg:mb-[40px]">
-          
-          {/* Left Title - Better Mobile Typography */}
-          <motion.div
-            className="font-normal uppercase transition-colors duration-500"
-            style={{
-              fontFamily: 'Fahkwang, sans-serif',
-              fontSize: 'clamp(28px, 7.5vw, 84px)',
-              lineHeight: '0.85',
-              letterSpacing: '-0.02em',
-              color: colors.text.primary
-            }}
-            initial={getInitialState({ opacity: 0, y: 100 })}
-            animate={getAnimateState({ opacity: 1, y: 0 })}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: isLoadingComplete ? 0.3 : 0 }}
-          >
-            Sir Practice
-          </motion.div>
-
-          {/* Right Subtitle - Enhanced Mobile Layout */}
-          <motion.div
-            className="font-light text-left max-w-full lg:max-w-[45%] xl:max-w-[40%] transition-colors duration-500"
-            style={{
-              fontFamily: 'Fahkwang, sans-serif',
-              fontSize: 'clamp(13px, 3.2vw, 16px)',
-              lineHeight: '1.5',
-              paddingRight: '0px',
-              color: colors.text.primary
-            }}
-            initial={getInitialState({ opacity: 0, y: 50 })}
-            animate={getAnimateState({ opacity: showContent ? 1 : 0, y: showContent ? 0 : 50 })}
-            transition={{ delay: isLoadingComplete ? 1.3 : 0, duration: 2, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Storyteller. Artist. Cartographer of identity. <br />
-            Sir Practice traces the routes between heritage and becoming, pain and purpose.
-          </motion.div>
-
+          {/* Content can be added here if needed */}
         </div>
       </section>
 
-      {/* Full Width Hero Image Section - Better Mobile Heights */}
-      <section 
-        ref={heroRef} 
-        className="w-full relative z-10 transition-colors duration-500"
-        style={{ backgroundColor: colors.primary }}
-      >
-        {/* Full width responsive image with parallax effect */}
-        <motion.div
-          className="w-full overflow-hidden relative"
-          style={{ y, scale }} // Apply parallax transforms
-          initial={getInitialState({ opacity: isInitialLoad ? 0 : 1 })}
-          animate={getAnimateState({ opacity: 1 })}
-          transition={{ 
-            duration: 0.8, 
-            ease: [0.16, 1, 0.3, 1], 
-            delay: isLoadingComplete ? (isInitialLoad ? 1.5 : 0) : 0 
-          }}
-        >
-          <img
-            src="/assets/images/HERO.png"
-            alt="Descriptive Alt Text"
-            className="
-              w-full 
-              object-cover 
-              h-[220px]       /* Smaller mobile phones */
-              xs:h-[260px]    /* Larger mobile phones */
-              sm:h-[320px]    /* Small tablets */
-              md:h-[400px]    /* Medium tablets */
-              lg:h-[500px]    /* Small desktop */
-              xl:h-[600px]    /* Large desktops */
-              2xl:h-[700px]   /* Extra large screens */
-              block
-            "
-            style={{
-              filter: isDark ? 'brightness(0.9) contrast(1.1)' : 'brightness(1.1) contrast(0.95)'
-            }}
-          />
-        </motion.div>
-      </section>
+      {/* New Hero Image Component with Advanced Animations */}
+      <HeroImage 
+        isInitialLoad={isInitialLoad}
+        isLoadingComplete={isLoadingComplete}
+        getInitialState={getInitialState}
+        getAnimateState={getAnimateState}
+        isDark={isDark}
+        colors={colors}
+      />
 
-      {/* Selected Works Section - Enhanced Mobile Grid */}
+     {/* Selected Works Section - Enhanced Mobile Grid */}
       <section 
         className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
         style={{ backgroundColor: colors.primary }}
       >
+        
+        {/* Section Header with Refined Typography */}
+        <div className="flex flex-col items-start w-full max-w-[1200px] mb-8 sm:mb-12 md:mb-16 lg:mb-24">
+          
+          {/* Subtle divider line */}
+          <motion.div 
+            className="w-full h-px mb-4 sm:mb-6 md:mb-8 lg:mb-12"
+            initial={getInitialState({ scaleX: 0 })}
+            whileInView={getAnimateState({ scaleX: 1 })}
+            transition={{ 
+              duration: 1.2, 
+              ease: [0.16, 1, 0.3, 1] 
+            }}
+            viewport={{ once: true, margin: '-100px' }}
+            style={{ transformOrigin: 'left' }}
+          >
+            <div 
+              className="w-full h-px"
+              style={{
+                background: isDark 
+                  ? 'linear-gradient(to right, #333333, #1a1a1a, transparent)' 
+                  : 'linear-gradient(to right, #d4d1c9, #eae7de, transparent)'
+              }}
+            />
+          </motion.div>
+
+          {/* Title Treatment */}
+          <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4 lg:mb-6">
+            <motion.div
+              initial={getInitialState({ opacity: 0, y: 40 })}
+              whileInView={getAnimateState({ opacity: 1, y: 0 })}
+              transition={{ 
+                duration: 1.2, 
+                ease: [0.16, 1, 0.3, 1] 
+              }}
+              viewport={{ once: true, margin: '-100px' }}
+              className="font-normal leading-[1] transition-colors duration-500"
+              style={{
+                fontFamily: 'Switzer, sans-serif',
+                fontSize: 'clamp(32px, 8.5vw, 60px)',
+                fontWeight: 400,
+                letterSpacing: '-0.03em',
+                color: colors.text.primary
+              }}
+            >
+              SELECTED WORKS
+            </motion.div>
+            
+            {/* Refined subtitle */}
+            <motion.div
+              initial={getInitialState({ opacity: 0, y: 30 })}
+              whileInView={getAnimateState({ opacity: 1, y: 0 })}
+              transition={{ 
+                duration: 1, 
+                ease: [0.16, 1, 0.3, 1], 
+                delay: isLoadingComplete ? 0.2 : 0 
+              }}
+              viewport={{ once: true, margin: '-100px' }}
+              className="font-light tracking-[0.02em] uppercase transition-colors duration-500"
+              style={{
+                fontFamily: 'Azeret Mono, monospace',
+                fontSize: 'clamp(8px, 2vw, 12px)',
+                letterSpacing: '0.1em',
+                color: colors.text.accent
+              }}
+            >
+              A curated collection
+            </motion.div>
+          </div>
+        </div>
        
         {/* Projects Grid - Better Mobile/Tablet Handling */}
         <div className="w-full max-w-[1200px] space-y-12 sm:space-y-16 md:space-y-20 lg:space-y-24">
           
-          {/* First Project Row - Enhanced Responsive Layout */}
+                  {/* First Project Row - Enhanced Responsive Layout */}
           <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-6">
             
             {/* Large Project - The Ocean */}
@@ -449,10 +447,20 @@ const { isDark, colors } = useTheme();
         </div>
       </section>
 
-      {/* About Section - Refined Mobile Experience */}
+      {/* About Section - Refined Mobile Experience with Rounded Bottom Corners */}
       <section 
-        className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
-        style={{ backgroundColor: colors.primary }}
+        className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative transition-all duration-700"
+        style={{ 
+          backgroundColor: colors.primary,
+          position: 'relative',
+          zIndex: 2,
+          borderBottomLeftRadius: 'clamp(40px, 8vw, 120px)',
+          borderBottomRightRadius: 'clamp(40px, 8vw, 120px)',
+          paddingBottom: 'clamp(80px, 12vw, 160px)',
+          boxShadow: isDark 
+            ? '0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)' 
+            : '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1)'
+        }}
       >
         
         {/* Section Header with Refined Typography */}
@@ -491,10 +499,11 @@ const { isDark, colors } = useTheme();
               }}
               viewport={{ once: true, margin: '-100px' }}
               className="font-normal tracking-[-0.04em] leading-[0.85] transition-colors duration-500"
-              style={{
-                fontFamily: 'Fahkwang, sans-serif',
-                fontSize: 'clamp(32px, 8.5vw, 120px)',
-                fontWeight: 300,
+                style={{
+                fontFamily: 'Switzer, sans-serif',
+                fontSize: 'clamp(32px, 8.5vw, 80px)',
+                fontWeight: 400,
+                letterSpacing: '-0.03em',
                 color: colors.text.primary
               }}
             >
@@ -621,7 +630,7 @@ const { isDark, colors } = useTheme();
                 He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
               </motion.div>
 
-{/* Mobile CTA Button - Centered */}
+              {/* Mobile CTA Button - Centered */}
               <motion.div
                 initial={getInitialState({ opacity: 0, y: 20 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -862,6 +871,49 @@ const { isDark, colors } = useTheme();
           </div>
         </div>
       </section>
+
+      {/* Footer Image Section with Overlapping Reveal Effect */}
+      <section 
+        className="w-full relative"
+        style={{ 
+          marginTop: '-120px',
+          zIndex: 0
+        }}
+      >
+        <motion.div
+          initial={getInitialState({ opacity: 0, y: 50 })}
+          whileInView={getAnimateState({ opacity: 1, y: 0 })}
+          transition={{ 
+            duration: 1.6, 
+            ease: [0.16, 1, 0.3, 1],
+            delay: isLoadingComplete ? 0.3 : 0 
+          }}
+          viewport={{ once: true, margin: '-150px' }}
+          className="relative w-full"
+        >
+          {/* Footer Image */}
+          <div className="w-full aspect-[21/9] relative">
+            <img
+              className="w-full h-full object-cover"
+              src="/assets/images/footer.png"
+              alt="Footer"
+              style={{
+                filter: isDark ? 'brightness(0.9) contrast(1.05)' : 'brightness(1.05) contrast(0.95)'
+              }}
+            />
+            
+            {/* Subtle vignette effect */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: isDark 
+                  ? 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%)' 
+                  : 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%)'
+              }}
+            />
+          </div>
+        </motion.div>
+      </section>
       
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
@@ -916,6 +968,14 @@ const { isDark, colors } = useTheme();
           /* Better aspect ratio for desktop to align with content height */
           .lg\:aspect-\[4\/6\] {
             aspect-ratio: 4/6 !important;
+          }
+        }
+
+        /* Smooth rounded corners for overlapping effect */
+        @media (max-width: 640px) {
+          section[style*="borderBottomLeftRadius"] {
+            border-bottom-left-radius: 40px !important;
+            border-bottom-right-radius: 40px !important;
           }
         }
       `}</style>

@@ -218,16 +218,10 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                   Background
                 </h3>
                 <p 
-                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4 transition-colors duration-500"
-                  style={{ color: colors.text.secondary }}
-                >
-                  Emerging as a distinctive voice in contemporary literature, Sir Practice Jr. bridges traditional storytelling with modern artistic expression, creating work that spans from the favelas of Rio to the estates of London.
-                </p>
-                <p 
                   className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
                   style={{ color: colors.text.secondary }}
                 >
-                  Through vivid, cinematic narratives and philosophical exploration, his multidisciplinary approach weaves together visual art and written narrative as waypoints in cultural preservation and self-discovery.
+                  Sir Practice Jr. is a writer, public speaker, and cultural architect whose work fuses storytelling with lived experience across continents. Drawing from roots that stretch from London's estates to global diasporic communities, he crafts narratives that explore faith, identity, ambition, and belonging - always with an eye toward transformation and empowerment. His voice moves fluidly between poetry, prose, and spoken word, carrying the cadence of the street and the weight of philosophy. Through his distinctive command of voice - both written and spoken - he builds bridges between tradition and innovation, preservation and reinvention. His multidisciplinary approach, spanning literature, performance, and community-driven projects like Pen2Purpose, creates work that is at once intimate and expansive, preserving cultural memory while reimagining what it means to speak with power and grace in the modern world.
                 </p>
               </div>
               
@@ -242,13 +236,19 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                   className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4 transition-colors duration-500"
                   style={{ color: colors.text.secondary }}
                 >
-                  Every creation is an act of cartography—mapping the territories between who we were, who we are, and who we might become. The practice itself becomes the destination.
+                  Life rests on three pillars: <span className="font-semibold">God</span>, <span className="font-semibold">Family</span>, <span className="font-semibold">Greatness</span>. It moves to the rhythm of <span className="font-semibold">Prayer</span>, <span className="font-semibold">Practice</span>, <span className="font-semibold">Play</span>, and is shaped by <span className="font-semibold">Focus</span>, <span className="font-semibold">Craft</span>, <span className="font-semibold">Faith</span>. These are compass points that keep one aligned - a reminder that greatness without God and family is hollow, that discipline without joy is brittle, and that faith is the breath that sustains every pursuit.
+                </p>
+                <p 
+                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] mb-4 transition-colors duration-500"
+                  style={{ color: colors.text.secondary }}
+                >
+                  From this foundation, every creation becomes an act of cartography—mapping the territories between who we were, who we are, and who we might become. The practice itself becomes the destination.
                 </p>
                 <p 
                   className="text-[14px] sm:text-[15px] md:text-[16px] font-light leading-[1.6] transition-colors duration-500"
                   style={{ color: colors.text.primary }}
                 >
-                  Art as compass. Story as shelter. Identity as journey.
+                  <span className="font-semibold">Art as compass, story as shelter, and identity as journey.</span>
                 </p>
               </div>
             </div>

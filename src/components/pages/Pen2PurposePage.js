@@ -2,23 +2,21 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
+import { Instagram } from 'lucide-react';
 
 const Pen2PurposePage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingComplete = true }) => {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // Get theme context
-const { isDark, colors } = useTheme();
+  const { isDark, colors } = useTheme();
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     if (email.trim() && email.includes('@')) {
       setIsSubmitted(true);
-      // Here you would typically send the email to your backend
-      console.log('Email submitted:', email);
+      console.log('Email submitted to Pen2Purpose:', email);
       
-      // Reset after 3 seconds
       setTimeout(() => {
         setIsSubmitted(false);
         setEmail('');
@@ -45,7 +43,6 @@ const { isDark, colors } = useTheme();
       className="w-screen min-h-screen overflow-x-hidden relative transition-colors duration-500"
       style={{ backgroundColor: colors.primary }}
     >
-      {/* Header */}
       <Header 
         currentPage={currentPage}
         onNavigate={onNavigate}
@@ -53,34 +50,30 @@ const { isDark, colors } = useTheme();
         setIsMenuOpen={setIsMenuOpen}
       />
 
-      {/* Main Content */}
       <main className="pt-[80px] sm:pt-[90px] md:pt-[100px]">
         
-        {/* Hero Section */}
         <section 
           className="flex flex-col items-center justify-center min-h-[60vh] py-12 sm:py-16 md:py-20 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10 transition-colors duration-500"
           style={{ backgroundColor: colors.primary }}
         >
           <div className="flex flex-col items-center w-full max-w-[1200px] pb-8 sm:pb-10 md:pb-12">
             
-            {/* Title */}
+            {/* Logo - replaces title */}
             <motion.div
-              initial={getInitialState({ opacity: 0, y: 100 })}
-              animate={getAnimateState({ opacity: 1, y: 0 })}
+              initial={getInitialState({ opacity: 0, scale: 0.8 })}
+              animate={getAnimateState({ opacity: 1, scale: 1 })}
               transition={{ 
-                duration: 1.5, 
+                duration: 1.2, 
                 ease: [0.16, 1, 0.3, 1],
-                delay: isLoadingComplete ? 0.3 : 0 
+                delay: isLoadingComplete ? 0.1 : 0 
               }}
-              className="font-normal tracking-[-0.03em] leading-[100%] text-center mb-8 sm:mb-10 md:mb-12 transition-colors duration-500"
-              style={{
-                fontFamily: 'Switzer, sans-serif',
-                fontSize: 'clamp(48px, 12vw, 120px)',
-                fontWeight: 400,
-                color: colors.text.primary
-              }}
+              className="mb-8 sm:mb-10 md:mb-12"
             >
-              PEN2PURPOSE
+              <img 
+                src="/assets/images/pen2purpose.jpeg"
+                alt="Pen2Purpose Logo" 
+                className="w-[200px] sm:w-[280px] md:w-[350px] h-auto"
+              />
             </motion.div>
 
             {/* Subtitle */}
@@ -92,24 +85,41 @@ const { isDark, colors } = useTheme();
                 ease: [0.16, 1, 0.3, 1],
                 delay: isLoadingComplete ? 0.6 : 0 
               }}
-              className="text-center max-w-[600px] text-[16px] sm:text-[18px] md:text-[20px] font-light leading-[1.5] transition-colors duration-500"
+              className="text-center max-w-[700px] text-[16px] sm:text-[18px] md:text-[20px] font-light leading-[1.6] transition-colors duration-500"
               style={{ 
                 color: colors.text.primary
               }}
             >
-              NYC based. Write with us every last Saturday of the month at a local café near you! 
+              NYC based community of writers. Write with us every last Saturday of the month at a local cafe in New York City, or join our Virtual Writing Room for our bi-monthly virtual writing sessions!
             </motion.div>
+
+            {/* Instagram Link */}
+            <motion.a
+              href="https://www.instagram.com/pen2purpose/"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={getInitialState({ opacity: 0, y: 30 })}
+              animate={getAnimateState({ opacity: 1, y: 0 })}
+              transition={{ 
+                duration: 1.2, 
+                ease: [0.16, 1, 0.3, 1],
+                delay: isLoadingComplete ? 0.8 : 0 
+              }}
+              className="mt-6 sm:mt-8 flex items-center gap-2 hover:opacity-70 transition-opacity duration-300"
+              style={{ color: colors.text.primary }}
+            >
+              <Instagram size={24} />
+              <span className="text-[14px] sm:text-[15px] md:text-[16px]">@pen2purpose</span>
+            </motion.a>
 
           </div>
         </section>
 
-        {/* Main Content Section */}
         <section 
           className="flex flex-col items-center justify-center py-12 sm:py-16 md:py-20 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10 transition-colors duration-500"
           style={{ backgroundColor: colors.primary }}
         >
           
-          {/* Divider Line */}
           <div className="flex flex-col items-center w-full max-w-[1200px] pb-12 sm:pb-14 md:pb-16">
             <motion.div 
               className="w-full h-px mb-8 sm:mb-10 md:mb-12"
@@ -118,7 +128,7 @@ const { isDark, colors } = useTheme();
               transition={{ 
                 duration: 1.5, 
                 ease: [0.16, 1, 0.3, 1],
-                delay: isLoadingComplete ? 0.8 : 0 
+                delay: isLoadingComplete ? 1.0 : 0 
               }}
             >
               <div 
@@ -128,10 +138,8 @@ const { isDark, colors } = useTheme();
             </motion.div>
           </div>
 
-          {/* Content Grid */}
           <div className="flex flex-col lg:flex-row gap-12 sm:gap-16 md:gap-20 w-full max-w-[1200px]">
             
-            {/* Left Content - About the Community */}
             <div className="flex-1 space-y-6 sm:space-y-8 md:space-y-10">
               
               <motion.div
@@ -140,7 +148,7 @@ const { isDark, colors } = useTheme();
                 transition={{ 
                   duration: 1.5, 
                   ease: [0.16, 1, 0.3, 1],
-                  delay: isLoadingComplete ? 1.0 : 0 
+                  delay: isLoadingComplete ? 1.2 : 0 
                 }}
               >
                 <h2 
@@ -166,18 +174,6 @@ const { isDark, colors } = useTheme();
                 transition={{ 
                   duration: 1.5, 
                   ease: [0.16, 1, 0.3, 1],
-                  delay: isLoadingComplete ? 1.2 : 0 
-                }}
-              >
-                {/* Additional content can go here */}
-              </motion.div>
-
-              <motion.div
-                initial={getInitialState({ opacity: 0, y: 50 })}
-                animate={getAnimateState({ opacity: 1, y: 0 })}
-                transition={{ 
-                  duration: 1.5, 
-                  ease: [0.16, 1, 0.3, 1],
                   delay: isLoadingComplete ? 1.4 : 0 
                 }}
               >
@@ -188,20 +184,39 @@ const { isDark, colors } = useTheme();
                     color: colors.text.primary
                   }}
                 >
-                  Meeting Details
+                  Contact Us
                 </h3>
                 <div 
-                  className="space-y-2 sm:space-y-3 text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
+                  className="space-y-3 text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
                   style={{ color: colors.text.primary }}
                 >
-                  <p><strong>When:</strong> Last Saturday of each month</p>
-                  <p><strong>Where:</strong> A local café near you</p>
-                  <p><strong>Who:</strong> Writers of all levels, from beginners to published writers</p>
+                  <p>
+                    <strong>Email:</strong>{' '}
+                    <a 
+                      href="mailto:pen2purpose@gmail.com"
+                      className="hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: colors.text.primary }}
+                    >
+                      pen2purpose@gmail.com
+                    </a>
+                  </p>
+                  <p>
+                    <strong>Instagram:</strong>{' '}
+                    <a 
+                      href="https://www.instagram.com/pen2purpose/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:opacity-70 transition-opacity duration-300"
+                      style={{ color: colors.text.primary }}
+                    >
+                      @pen2purpose
+                    </a>
+                  </p>
                 </div>
               </motion.div>
+
             </div>
             
-            {/* Right Content - Email Signup */}
             <div className="flex-1 lg:max-w-[400px]">
               <motion.div
                 className="p-8 sm:p-10 md:p-12 rounded-lg transition-colors duration-500"
@@ -211,7 +226,7 @@ const { isDark, colors } = useTheme();
                 transition={{ 
                   duration: 1.5, 
                   ease: [0.16, 1, 0.3, 1],
-                  delay: isLoadingComplete ? 1.6 : 0 
+                  delay: isLoadingComplete ? 1.4 : 0 
                 }}
               >
                 <h3 
@@ -280,7 +295,6 @@ const { isDark, colors } = useTheme();
           </div>
         </section>
 
-        {/* Bottom Quote Section */}
         <section 
           className="flex flex-col items-center justify-center py-16 sm:py-20 md:py-24 px-4 sm:px-5 md:px-8 lg:px-5 relative z-10 transition-colors duration-500"
           style={{ backgroundColor: colors.primary }}
@@ -292,10 +306,9 @@ const { isDark, colors } = useTheme();
             transition={{ 
               duration: 1.5, 
               ease: [0.16, 1, 0.3, 1],
-              delay: isLoadingComplete ? 1.8 : 0 
+              delay: isLoadingComplete ? 1.6 : 0 
             }}
           >
-            {/* Quote content can go here */}
           </motion.blockquote>
         </section>
 
@@ -322,14 +335,11 @@ const { isDark, colors } = useTheme();
           font-family: 'Azeret Mono', monospace;
         }
 
-        /* Enhanced mobile optimizations */
         @media (max-width: 640px) {
-          /* Prevent horizontal scroll on mobile */
           body {
             overflow-x: hidden;
           }
           
-          /* Better touch targets on mobile */
           button {
             min-height: 44px;
             min-width: 44px;

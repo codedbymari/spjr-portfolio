@@ -1,56 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
-
-// Theme Toggle Component optimized for your header design
-const ThemeToggle = ({ className = '' }) => {
-  const { isDark, toggleTheme } = useTheme();
-
-  return (
-    <motion.button
-      onClick={toggleTheme}
-      className={`
-        relative p-1.5 w-8 h-8 sm:w-9 sm:h-9 rounded-full transition-all duration-300
-        backdrop-blur-sm border group overflow-hidden
-        ${isDark
-          ? 'bg-white/10 text-white hover:bg-white/20 border-white/20 hover:border-white/30' 
-          : 'bg-black/10 text-black hover:bg-black/20 border-black/20 hover:border-black/30'
-        }
-        ${className}
-      `}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-    >
-      <div className="relative w-full h-full flex items-center justify-center">
-        {/* Sun Icon */}
-        <Sun 
-          className={`
-            absolute w-4 h-4 sm:w-5 sm:h-5 transition-all duration-500 ease-in-out
-            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-            ${isDark 
-              ? 'opacity-0 rotate-90 scale-0' 
-              : 'opacity-100 rotate-0 scale-100'
-            }
-          `}
-        />
-        
-        {/* Moon Icon */}
-        <Moon 
-          className={`
-            absolute w-4 h-4 sm:w-5 sm:h-5 transition-all duration-500 ease-in-out
-            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-            ${isDark 
-              ? 'opacity-100 rotate-0 scale-100' 
-              : 'opacity-0 -rotate-90 scale-0'
-            }
-          `}
-        />
-      </div>
-    </motion.button>
-  );
-};
+import ThemeToggle from './ThemeToggle';
 
 // Header Component with integrated theme toggle
 const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
@@ -128,8 +79,8 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
               className="font-mono uppercase tracking-wide text-center"
               style={{ color: colors.text.primary }}
             >
-              <span className="hidden sm:block md:hidden text-sm">(WRITER & ARTIST)</span>
-              <span className="hidden md:block text-[13px] lg:text-[13px] xl:text-[13px]">(WRITER & ARTIST)</span>
+              <span className="hidden sm:block md:hidden text-sm">(WRITER, ARTIST & PUBLIC SPEAKER)</span>
+              <span className="hidden md:block text-[13px] lg:text-[13px] xl:text-[13px]">(WRITER, ARTIST & PUBLIC SPEAKER)</span>
             </motion.div>
             
             {/* Theme Toggle - Positioned in center area but to the right of description on desktop */}
@@ -139,11 +90,11 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
               transition={{ delay: 1, duration: 0.5 }}
               className="hidden sm:block"
             >
-              <ThemeToggle />
+              <ThemeToggle size="default" />
             </motion.div>
           </div>
           
-          {/* Right - MENU Button with mobile theme toggle */}
+          {/* Right - MENU Button */}
           <div className="flex-1 flex items-center justify-end min-w-0 gap-2">
             <motion.button 
               className={`${textColor} text-xs sm:text-sm md:text-[13px] lg:text-[13px] xl:text-[13px] font-mono uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer relative z-[60] px-2 py-1`}
@@ -207,7 +158,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                     transition={{ delay: 0.3, duration: 0.5 }}
                     className="sm:hidden"
                   >
-                    <ThemeToggle />
+                    <ThemeToggle size="default" />
                   </motion.div>
                   <div className="hidden sm:block text-xs sm:text-sm font-mono uppercase tracking-wide opacity-70"
                        style={{ color: colors.text.primary }}>

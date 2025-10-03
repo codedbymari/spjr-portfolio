@@ -26,152 +26,316 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   // Writing/Stories projects data (6 stories)
   const writingItems = [
     {
+      id: 'ricos-story',
+      title: 'Rico\'s Story',
+      videoSrc: './assets/videos/rico.mp4',
+      number: '1',
+      isVideo: true,
+      isFeatured: true
+    },
+    {
       id: 'ocean',
       title: 'The Ocean',
       imageSrc: './assets/images/ocean.jpeg',
-      number: '1'
+      number: '2'
     },
     {
       id: 'mphepo',
       title: 'Mphepo',
       imageSrc: './assets/images/tree.png',
-      number: '2'
+      number: '3'
     },
     {
       id: 'power-grace',
       title: 'Power × Grace',
-      imageSrc: './assets/images/tomyself.jpg',
-      number: '3'
-    },
-    {
-      id: 'ricos-story',
-      title: 'Rico\'s Story',
-      imageSrc: './assets/images/rico.png',
-      number: '5'
+      imageSrc: './assets/images/powerxgrace.png',
+      number: '4'
     },
     {
       id: 'poetry-in-motion',
       title: 'Poetry in Motion',
       imageSrc: './assets/images/solokitchen.png',
-      number: '6'
+      number: '5'
     }
   ];
 
   // Music projects data (1 project)
   const musicItems = [
     {
-      id: 'music-project',
+    id: 'with-intentions',  // lowercase with hyphen
       title: 'With intentions ft. Practice',
       imageSrc: './assets/images/music.jpeg',
       number: '1'
     }
   ];
 
-  // Project grid component
-  const ProjectGrid = ({ items, sectionDelay = 0 }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-      {items.map((item, index) => (
-        <motion.div
-          key={item.id}
-          className="group relative cursor-pointer"
-          initial={getInitialState({ opacity: 0, y: 140 })}
-          whileInView={getAnimateState({ opacity: 1, y: 0 })}
-          transition={{ 
-            duration: 2, 
-            ease: [0.16, 1, 0.3, 1], 
-            delay: isLoadingComplete ? sectionDelay + (index * 0.1) : 0 
-          }}
-          viewport={{ once: true, margin: '-100px' }}
-          whileHover={{ scale: 1.02 }}
-          onClick={() => onNavigate(item.id)}
-        >
-          {/* Project Image - Consistent aspect ratio */}
-          <div className="aspect-[1.2/1] w-full relative overflow-hidden rounded-sm">
-            <div 
-              className="absolute inset-0 z-0"
-              style={{
-                backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-                opacity: 0.1
+  // Custom project grid matching the exact layout from image
+  const ProjectGrid = ({ items, sectionDelay = 0 }) => {
+    const featuredItem = items.find(item => item.isFeatured);
+    const regularItems = items.filter(item => !item.isFeatured);
+
+    return (
+      <div className="space-y-6 sm:space-y-8 md:space-y-10">
+        {/* First Row: Featured video on left, 2 items stacked on right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
+          {/* Featured Video - Left side */}
+          {featuredItem && (
+            <motion.div
+              className="group relative cursor-pointer"
+              initial={getInitialState({ opacity: 0, y: 140 })}
+              whileInView={getAnimateState({ opacity: 1, y: 0 })}
+              transition={{ 
+                duration: 2, 
+                ease: [0.16, 1, 0.3, 1], 
+                delay: isLoadingComplete ? sectionDelay : 0 
               }}
-            />
-            <img
-              className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
-              src={item.imageSrc}
-              alt={item.title}
-              style={{
-                filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
-              }}
-            />
-            
-            {/* Coming Soon Overlay */}
-            {item.title === 'Coming Soon' && (
-              <div 
-                className="absolute inset-0 backdrop-blur-sm flex items-center justify-center z-10"
-                style={{ backgroundColor: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)' }}
-              >
-                <span 
-                  className="text-sm font-mono uppercase tracking-wide"
-                  style={{ color: isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)' }}
-                >
-                  Coming Soon
-                </span>
+              viewport={{ once: true, margin: '-100px' }}
+              whileHover={{ scale: 1.02 }}
+              onClick={() => onNavigate(featuredItem.id)}
+            >
+              <div className="aspect-[4/3] w-full relative overflow-hidden rounded-sm">
+                <div 
+                  className="absolute inset-0 z-0"
+                  style={{
+                    backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                    opacity: 0.1
+                  }}
+                />
+                <video
+                  className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
+                  src={featuredItem.videoSrc}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{
+                    filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                  }}
+                />
               </div>
-            )}
-          </div>
-          
-          {/* Project Info */}
-          <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
-            <span 
-              className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
-              style={{
-                color: colors.text.primary,
-                fontSize: 'clamp(10px, 2.2vw, 13px)'
-              }}
-            >
-              {item.number}
-            </span>
-            <span 
-              className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
-              style={{
-                color: colors.text.primary,
-                fontSize: 'clamp(10px, 2.2vw, 13px)'
-              }}
-            >
-              /
-            </span>
-            <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] overflow-hidden">
-              {/* Default Title */}
-              <motion.div 
-                className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
-                style={{
-                  color: colors.text.primary,
-                  fontSize: 'clamp(10px, 2.2vw, 13px)'
+              
+              <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
+                <span 
+                  className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+                  style={{
+                    color: colors.text.primary,
+                    fontSize: 'clamp(10px, 2.2vw, 13px)'
+                  }}
+                >
+                  {featuredItem.number}
+                </span>
+                <span 
+                  className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+                  style={{
+                    color: colors.text.primary,
+                    fontSize: 'clamp(10px, 2.2vw, 13px)'
+                  }}
+                >
+                  /
+                </span>
+                <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] overflow-hidden">
+                  <motion.div 
+                    className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                    initial={{ opacity: 1, y: 0 }}
+                    whileHover={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
+                    {featuredItem.title}
+                  </motion.div>
+                  <motion.div 
+                    className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileHover={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                  >
+                    VIEW PROJECT
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Right side - 2 items in a grid */}
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:gap-10">
+            {regularItems.slice(0, 2).map((item, index) => (
+              <motion.div
+                key={item.id}
+                className="group relative cursor-pointer"
+                initial={getInitialState({ opacity: 0, y: 140 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? sectionDelay + ((index + 1) * 0.1) : 0 
                 }}
-                initial={{ opacity: 1, y: 0 }}
-                whileHover={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                viewport={{ once: true, margin: '-100px' }}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => onNavigate(item.id)}
               >
-                {item.title}
+                <div className="aspect-[4/3] w-full relative overflow-hidden rounded-sm">
+                  <div 
+                    className="absolute inset-0 z-0"
+                    style={{
+                      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                      opacity: 0.1
+                    }}
+                  />
+                  <img
+                    className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
+                    src={item.imageSrc}
+                    alt={item.title}
+                    style={{
+                      filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                    }}
+                  />
+                </div>
+                
+                <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >
+                    {item.number}
+                  </span>
+                  <span 
+                    className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                  >
+                    /
+                  </span>
+                  <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] overflow-hidden">
+                    <motion.div 
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
+                      initial={{ opacity: 1, y: 0 }}
+                      whileHover={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                      {item.title}
+                    </motion.div>
+                    <motion.div 
+                      className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                      style={{
+                        color: colors.text.primary,
+                        fontSize: 'clamp(10px, 2.2vw, 13px)'
+                      }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                    >
+                      VIEW PROJECT
+                    </motion.div>
+                  </div>
+                </div>
               </motion.div>
-              {/* Hover Title */}
-              <motion.div 
-                className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
-                style={{
-                  color: colors.text.primary,
-                  fontSize: 'clamp(10px, 2.2vw, 13px)'
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                whileHover={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-              >
-                {item.title === 'Coming Soon' ? 'STAY TUNED' : 'VIEW PROJECT'}
-              </motion.div>
-            </div>
+            ))}
           </div>
-        </motion.div>
-      ))}
-    </div>
-  );
+        </div>
+
+        {/* Second Row: 3 items in a row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+          {regularItems.slice(2, 5).map((item, index) => (
+            <motion.div
+              key={item.id}
+              className="group relative cursor-pointer"
+              initial={getInitialState({ opacity: 0, y: 140 })}
+              whileInView={getAnimateState({ opacity: 1, y: 0 })}
+              transition={{ 
+                duration: 2, 
+                ease: [0.16, 1, 0.3, 1], 
+                delay: isLoadingComplete ? sectionDelay + ((index + 3) * 0.1) : 0 
+              }}
+              viewport={{ once: true, margin: '-100px' }}
+              whileHover={{ scale: 1.02 }}
+              onClick={() => onNavigate(item.id)}
+            >
+              <div className="aspect-[4/3] w-full relative overflow-hidden rounded-sm">
+                <div 
+                  className="absolute inset-0 z-0"
+                  style={{
+                    backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                    opacity: 0.1
+                  }}
+                />
+                <img
+                  className="w-full h-full object-cover transition-all duration-300 group-hover:scale-[1.02]"
+                  src={item.imageSrc}
+                  alt={item.title}
+                  style={{
+                    filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                  }}
+                />
+              </div>
+              
+              <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
+                <span 
+                  className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
+                  style={{
+                    color: colors.text.primary,
+                    fontSize: 'clamp(10px, 2.2vw, 13px)'
+                  }}
+                >
+                  {item.number}
+                </span>
+                <span 
+                  className="font-normal tracking-[-0.01em] uppercase font-mono mx-2 transition-colors duration-300"
+                  style={{
+                    color: colors.text.primary,
+                    fontSize: 'clamp(10px, 2.2vw, 13px)'
+                  }}
+                >
+                  /
+                </span>
+                <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] overflow-hidden">
+                  <motion.div 
+                    className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                    initial={{ opacity: 1, y: 0 }}
+                    whileHover={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
+                    {item.title}
+                  </motion.div>
+                  <motion.div 
+                    className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
+                    style={{
+                      color: colors.text.primary,
+                      fontSize: 'clamp(10px, 2.2vw, 13px)'
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileHover={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
+                  >
+                    VIEW PROJECT
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div 
@@ -250,8 +414,8 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
                   fontSize: 'clamp(10px, 2.5vw, 14px)'
                 }}
               >
-                SHORT STORIES & REFLECTIONS
-              </p>
+              POETRY, SHORT STORIES & REFLECTIONS             
+               </p>
             </motion.div>
             
             {/* Writing Projects Grid */}
@@ -295,7 +459,8 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
                   fontSize: 'clamp(10px, 2.5vw, 14px)'
                 }}
               >
-                FEATURES & COLLABORATIONS
+FEATURES, COLLABORATIONS &
+UNRELEASED TRACKS
               </p>
             </motion.div>
             

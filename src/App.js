@@ -5,7 +5,7 @@ import { useAudio } from './hooks/useAudio';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
 
 // Components
-import LoadingScreen from './components/LoadingScreen';
+// import LoadingScreen from './components/LoadingScreen';
 // Page components
 import LandingPage from './components/pages/LandingPage';
 import WorkPage from './components/pages/WorkPage';
@@ -37,17 +37,18 @@ const AppContent = () => {
       'power-grace', 
       'vessels', 
       'ricos-story', 
-      'poetry-in-motion'
+      'poetry-in-motion',
+      'with-intentions'
     ];
     return validPages.includes(page) ? page : 'landing';
   };
 
   const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [isReadingMode, setIsReadingMode] = useState(false);
-  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
-  const [animationStage, setAnimationStage] = useState('loading');
+  // const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+  // const [animationStage, setAnimationStage] = useState('loading');
   const [pageKey, setPageKey] = useState(0);
-  const [loadingProgress, setLoadingProgress] = useState(0);
+  // const [loadingProgress, setLoadingProgress] = useState(0);
   
   const { isAudioPlaying, audioRef, toggleAudio, stopAudio } = useAudio();
   
@@ -76,11 +77,12 @@ const AppContent = () => {
     requestAnimationFrame(animateScroll);
   };
   
-  // Calculate if loading is complete
-  const isLoadingComplete = hasLoadedOnce && animationStage === 'complete';
+  // Calculate if loading is complete - always true now
+  const isLoadingComplete = true; // hasLoadedOnce && animationStage === 'complete';
   
   // Only show loading screen on landing page and only once
-  const shouldShowLoadingScreen = currentPage === 'landing' && !hasLoadedOnce && animationStage !== 'complete';
+  // const shouldShowLoadingScreen = currentPage === 'landing' && !hasLoadedOnce && animationStage !== 'complete';
+  const shouldShowLoadingScreen = false; // Disabled loading screen
   
   // Reset page to beginning - with option to skip full reload and smooth scroll
   const resetPageState = (skipReload = false, useSmootScroll = false) => {
@@ -140,55 +142,6 @@ const AppContent = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [stopAudio]);
 
-  // Progress simulation function
-  const simulateProgress = () => {
-    setLoadingProgress(0);
-    
-    // Phase 1: Quick initial load (0-30%)
-    setTimeout(() => setLoadingProgress(30), 500);
-    
-    // Phase 2: Slower content loading (30-70%)
-    setTimeout(() => setLoadingProgress(50), 1500);
-    setTimeout(() => setLoadingProgress(70), 2500);
-    
-    // Phase 3: Finalization (70-100%)
-    setTimeout(() => setLoadingProgress(85), 3500);
-    setTimeout(() => setLoadingProgress(95), 4500);
-    setTimeout(() => setLoadingProgress(100), 5000);
-  };
-  
-  // Initial loading sequence - only happens once and only on landing page
-  useEffect(() => {
-    if (!hasLoadedOnce && currentPage === 'landing') {
-      const progressInterval = simulateProgress();
-      
-      // Stage 1: Switch to revealing earlier
-      const revealTimer = setTimeout(() => {
-        setAnimationStage('revealing');
-        setLoadingProgress(85);
-      }, 1000);
-
-      // Stage 2: Fade out later but keep total ~7s
-      const completeTimer = setTimeout(() => {
-        setAnimationStage('complete');
-        setLoadingProgress(100);
-        setHasLoadedOnce(true);
-        clearInterval(progressInterval);
-      }, 5000);
-
-      return () => {
-        clearTimeout(revealTimer);
-        clearTimeout(completeTimer);
-        clearInterval(progressInterval);
-      };
-    } else if (currentPage !== 'landing' && !hasLoadedOnce) {
-      // If first visit is not landing page, skip loading screen
-      setHasLoadedOnce(true);
-      setAnimationStage('complete');
-      setLoadingProgress(100);
-    }
-  }, [hasLoadedOnce, currentPage]);
-
   // Navigation handler with URL update and smooth scroll
   const navigateTo = (page, options = {}) => {
     const { scrollToTop = true, useSmootScroll = true } = options;
@@ -218,7 +171,7 @@ const AppContent = () => {
       isReadingMode,
       onToggleReadingMode: () => setIsReadingMode(!isReadingMode),
       audioRef,
-      isInitialLoad: !hasLoadedOnce,
+      isInitialLoad: false, // !hasLoadedOnce - always false now
       key: pageKey
     };
     
@@ -231,7 +184,7 @@ const AppContent = () => {
             onNavigate={navigateTo} 
             scrollToElement={scrollToElement}
             smoothScrollTo={smoothScrollTo}
-            isInitialLoad={!hasLoadedOnce}
+            isInitialLoad={false} // !hasLoadedOnce - always false now
             isLoadingComplete={isLoadingComplete}
           />
         );
@@ -277,12 +230,12 @@ const AppContent = () => {
         return <RicosStoryPage key={`ricos-story-${pageKey}`} {...pageProps} />;
       case 'poetry-in-motion': 
         return <PoetryInMotionPage key={`poetry-in-motion-${pageKey}`} {...pageProps} />;
-      case 'music-project':
+      case 'with-intentions':
         return (
           <WithIntentionsPage 
-            key={`music-project-${pageKey}`}
+            key={`with-intentions-${pageKey}`}
             currentPage={currentPage} 
-            onNavigate={setCurrentPage}
+            onNavigate={navigateTo}
             scrollToElement={scrollToElement}
             smoothScrollTo={smoothScrollTo}
             isLoadingComplete={isLoadingComplete} 
@@ -296,7 +249,7 @@ const AppContent = () => {
             onNavigate={navigateTo}
             scrollToElement={scrollToElement}
             smoothScrollTo={smoothScrollTo}
-            isInitialLoad={!hasLoadedOnce}
+            isInitialLoad={false} // !hasLoadedOnce - always false now
             isLoadingComplete={isLoadingComplete}
           />
         );
@@ -307,13 +260,15 @@ const AppContent = () => {
   
   return (
     <div className="relative min-h-screen theme-transition">
-      {/* Loading Screen Component with progress prop */}
+      {/* Loading Screen Component with progress prop - COMMENTED OUT */}
+      {/*
       {showLoadingScreen && (
         <LoadingScreen 
           animationStage={animationStage} 
           progress={loadingProgress}
         />
       )}
+      */}
       
       {/* Main Content */}
       <div className={`
