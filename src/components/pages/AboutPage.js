@@ -136,7 +136,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           {/* Three Images with Filter */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             
-            {/* First Image - Empty for now */}
+           {/* First Image - Empty for now */}
             <motion.div
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 100 }}
@@ -146,9 +146,19 @@ const AboutPage = ({ currentPage, onNavigate }) => {
                 delay: 2.0
               }}
             >
-              {/* Empty - you can add content here */}
-            </motion.div>
-
+   <div className="aspect-square w-full relative overflow-hidden rounded-sm group">
+                <img
+                  className="w-full h-full object-cover transition-all duration-500 group-hover:filter-none"
+                  src="/assets/images/3.jpeg"
+                  alt="Artistic Work - Landscape"
+                  style={{
+                    filter: isDark 
+                      ? 'grayscale(1) brightness(0.75) contrast(1.1)' 
+                      : 'grayscale(0.8) brightness(0.9) contrast(1.05)',
+                    objectPosition: 'center 20%'
+                  }}
+                />
+              </div>            </motion.div>
             {/* Second Image */}
             <motion.div
               initial={{ opacity: 0, y: 100 }}
