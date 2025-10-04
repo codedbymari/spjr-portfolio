@@ -872,11 +872,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </div>
       </section>
 
-      {/* Footer Image Section with Overlapping Reveal Effect */}
+     {/* Footer Image Section with Overlapping Reveal Effect */}
       <section 
         className="w-full relative"
         style={{ 
-          marginTop: '-120px',
+          marginTop: 'clamp(-40px, -8vw, -120px)',
           zIndex: 0
         }}
       >

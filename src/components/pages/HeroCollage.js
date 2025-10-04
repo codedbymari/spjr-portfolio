@@ -21,10 +21,11 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'theres', 
       src: '/assets/images/theres.png', 
-      top: '10%', 
-      left: '15%', 
+      // Mobile: top, left, width | Tablet: top, left, width | Desktop: original
+      mobile: { top: '5%', left: '15%', maxWidth: '130px' },
+      tablet: { top: '10%', left: '12%', maxWidth: '160px' },
+      desktop: { top: '10%', left: '15%', maxWidth: '180px' },
       rotate: -2, 
-      maxWidth: '180px', 
       delay: 0.1,
       scrollSpeed: -0.3,
       horizontalShift: -20
@@ -32,10 +33,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'a', 
       src: '/assets/images/a.png', 
-      top: '18%', 
-      left: '30%', 
+      mobile: { top: '11%', left: '60%', maxWidth: '40px' },
+      tablet: { top: '17%', left: '50%', maxWidth: '55px' },
+      desktop: { top: '18%', left: '30%', maxWidth: '60px' },
       rotate: 1, 
-      maxWidth: '60px', 
       delay: 0.4,
       scrollSpeed: 0.5,
       horizontalShift: 15
@@ -43,10 +44,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'painting', 
       src: '/assets/images/painting.png', 
-      top: '25%', 
-      left: '20%', 
+      mobile: { top: '16%', left: '8%', maxWidth: '240px' },
+      tablet: { top: '24%', left: '15%', maxWidth: '290px' },
+      desktop: { top: '25%', left: '20%', maxWidth: '320px' },
       rotate: -0.5, 
-      maxWidth: '320px', 
       delay: 0.7,
       scrollSpeed: -0.2,
       horizontalShift: -30
@@ -54,10 +55,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'called', 
       src: '/assets/images/called.png', 
-      top: '40%', 
-      left: '10%', 
+      mobile: { top: '28%', left: '10%', maxWidth: '105px' },
+      tablet: { top: '38%', left: '10%', maxWidth: '135px' },
+      desktop: { top: '40%', left: '10%', maxWidth: '150px' },
       rotate: -1.5, 
-      maxWidth: '150px', 
       delay: 1.0,
       scrollSpeed: 0.4,
       horizontalShift: 25
@@ -65,10 +66,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'hunger', 
       src: '/assets/images/hunger.png', 
-      top: '43%', 
-      left: '35%', 
+      mobile: { top: '33%', left: '35%', maxWidth: '210px' },
+      tablet: { top: '41%', left: '42%', maxWidth: '250px' },
+      desktop: { top: '43%', left: '35%', maxWidth: '280px' },
       rotate: 1, 
-      maxWidth: '280px', 
       delay: 1.3,
       scrollSpeed: -0.6,
       horizontalShift: -15
@@ -76,10 +77,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'and', 
       src: '/assets/images/and.png', 
-      top: '52%', 
-      left: '18%', 
+      mobile: { top: '44%', left: '15%', maxWidth: '85px' },
+      tablet: { top: '50%', left: '15%', maxWidth: '110px' },
+      desktop: { top: '52%', left: '18%', maxWidth: '120px' },
       rotate: 0.8, 
-      maxWidth: '120px', 
       delay: 1.6,
       scrollSpeed: 0.3,
       horizontalShift: 10
@@ -87,10 +88,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'it', 
       src: '/assets/images/it.png', 
-      top: '63%', 
-      left: '40%', 
+      mobile: { top: '50%', left: '58%', maxWidth: '50px' },
+      tablet: { top: '60%', left: '48%', maxWidth: '65px' },
+      desktop: { top: '63%', left: '40%', maxWidth: '70px' },
       rotate: -1, 
-      maxWidth: '70px', 
       delay: 1.9,
       scrollSpeed: -0.4,
       horizontalShift: -25
@@ -98,10 +99,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'looks', 
       src: '/assets/images/looks.png', 
-      top: '65%', 
-      left: '58%', 
+      mobile: { top: '56%', left: '8%', maxWidth: '135px' },
+      tablet: { top: '63%', left: '60%', maxWidth: '160px' },
+      desktop: { top: '65%', left: '58%', maxWidth: '180px' },
       rotate: -0.8, 
-      maxWidth: '180px', 
       delay: 2.2,
       scrollSpeed: 0.7,
       horizontalShift: 20
@@ -109,10 +110,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'like', 
       src: '/assets/images/like.png', 
-      top: '70%', 
-      left: '20%', 
+      mobile: { top: '70%', left: '35%', maxWidth: '110px' },
+      tablet: { top: '70%', left: '18%', maxWidth: '140px' },
+      desktop: { top: '70%', left: '20%', maxWidth: '150px' },
       rotate: -0.5, 
-      maxWidth: '150px', 
       delay: 2.5,
       scrollSpeed: -0.5,
       horizontalShift: -10
@@ -120,10 +121,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
     { 
       id: 'mybestwork', 
       src: '/assets/images/youmybestwork.png', 
-      top: '82%', 
-      left: '40%', 
+      mobile: { top: '85%', left: '25%', maxWidth: '200px' },
+      tablet: { top: '80%', left: '38%', maxWidth: '200px' },
+      desktop: { top: '82%', left: '40%', maxWidth: '220px' },
       rotate: -0.5, 
-      maxWidth: '220px', 
       delay: 2.8,
       scrollSpeed: 0.2,
       horizontalShift: 15
@@ -159,10 +160,10 @@ const HeroCollage = ({ isLoadingComplete }) => {
   return (
     <section
       ref={containerRef}
-      className="flex flex-col items-center justify-center min-h-[85vh] sm:min-h-[90vh] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative overflow-hidden z-10 transition-colors duration-500 mb-20"
+      className="flex flex-col items-center justify-center min-h-[75vh] sm:min-h-[85vh] lg:min-h-[90vh] w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative overflow-hidden z-10 transition-colors duration-500 mb-12 sm:mb-16 lg:mb-20"
       style={{ backgroundColor: colors.primary }}
     >
-      <div className="relative w-full max-w-[700px] h-[650px] sm:h-[750px] md:h-[700px]">
+      <div className="relative w-full max-w-[500px] h-[550px] sm:max-w-[600px] sm:h-[650px] md:max-w-[650px] md:h-[700px] lg:max-w-[700px] lg:h-[750px]">
         <AnimatePresence>
           {showWords && wordPieces.map(piece => (
             <WordPiece
@@ -179,8 +180,26 @@ const HeroCollage = ({ isLoadingComplete }) => {
   );
 };
 
-// Separate component for each word to use hooks properly
 const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
+  const [dimensions, setDimensions] = useState(piece.mobile);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setDimensions(piece.mobile);
+      } else if (width < 1024) {
+        setDimensions(piece.tablet);
+      } else {
+        setDimensions(piece.desktop);
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [piece]);
+
   const y = useTransform(
     scrollYProgress,
     [0, 1],
@@ -211,9 +230,9 @@ const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
       exit="hidden"
       style={{
         position: 'absolute',
-        top: piece.top,
-        left: piece.left,
-        maxWidth: piece.maxWidth,
+        top: dimensions.top,
+        left: dimensions.left,
+        maxWidth: dimensions.maxWidth,
         width: 'auto',
         height: 'auto',
         rotate: `${piece.rotate}deg`,
