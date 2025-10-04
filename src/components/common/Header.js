@@ -3,9 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import ThemeToggle from './ThemeToggle';
 
-// Header Component with integrated theme toggle
-const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
+// Header Component with auto-hide on scroll
+const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoaded }) => {
   const { isDark, colors } = useTheme();
+  const [isVisible, setIsVisible] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   const handleMenuItemClick = (page) => {
     setIsMenuOpen(false);
@@ -47,6 +49,35 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
     };
   }, []);
 
+  // Auto-hide header on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header when scrolling up, hide when scrolling down
+      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Show header after hero is loaded
+  useEffect(() => {
+    if (isHeroLoaded) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isHeroLoaded]);
+
   // Use colors from theme context for consistent styling
   const textColor = isDark ? 'text-white' : 'text-black';
 
@@ -55,9 +86,12 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
       <motion.nav 
         className="fixed top-0 right-0 left-0 z-50 shadow-none transition-colors duration-300"
         style={{ backgroundColor: colors.primary }}
-        initial={{ opacity: 0.001, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 2, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: -100 }}
+        animate={{ 
+          opacity: isVisible ? 1 : 0,
+          y: isVisible ? 0 : -100
+        }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-center justify-between px-3 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-2 sm:py-3 md:py-4 w-full max-w-screen-2xl mx-auto">
           {/* Left - Logo */}
@@ -73,24 +107,14 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
             </motion.button>
           </div>
           
-          {/* Center - Description with Theme Toggle */}
-          <div className="flex-1 flex items-center justify-center min-w-0 px-2 gap-3">
+          {/* Center - Description */}
+          <div className="flex-1 flex items-center justify-center min-w-0 px-2">
             <motion.div 
               className="font-mono uppercase tracking-wide text-center"
               style={{ color: colors.text.primary }}
             >
               <span className="hidden sm:block md:hidden text-sm">(WRITER, ARTIST & PUBLIC SPEAKER)</span>
               <span className="hidden md:block text-[13px] lg:text-[13px] xl:text-[13px]">(WRITER, ARTIST & PUBLIC SPEAKER)</span>
-            </motion.div>
-            
-            {/* Theme Toggle - Positioned in center area but to the right of description on desktop */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              className="hidden sm:block"
-            >
-              <ThemeToggle size="default" />
             </motion.div>
           </div>
           
@@ -151,18 +175,14 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage }) => {
                 
                 {/* Close Button and Theme Toggle */}
                 <div className="flex justify-between items-center mb-8 sm:mb-10 md:mb-12">
-                  {/* Mobile Theme Toggle - Only show on mobile */}
+                  {/* Theme Toggle in Menu */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.3, duration: 0.5 }}
-                    className="sm:hidden"
                   >
                     <ThemeToggle size="default" />
                   </motion.div>
-                  <div className="hidden sm:block text-xs sm:text-sm font-mono uppercase tracking-wide opacity-70"
-                       style={{ color: colors.text.primary }}>
-                  </div>
                   <motion.button
                     className="font-mono uppercase tracking-wide hover:opacity-70 transition-opacity p-2 -m-2"
                     style={{ color: colors.text.primary }}

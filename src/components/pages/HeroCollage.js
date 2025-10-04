@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const HeroCollage = ({ isLoadingComplete }) => {
   const { isDark, colors } = useTheme();
   const [showWords, setShowWords] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   const containerRef = useRef(null);
+  const scrollTimeoutRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -17,11 +19,31 @@ const HeroCollage = ({ isLoadingComplete }) => {
     return () => clearTimeout(timer);
   }, [isLoadingComplete]);
 
-  const wordPieces = [
+  // Detect scrolling state to disable expensive hover effects
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const wordPieces = useMemo(() => [
     { 
       id: 'theres', 
       src: '/assets/images/theres.png', 
-      // Mobile: top, left, width | Tablet: top, left, width | Desktop: original
       mobile: { top: '5%', left: '15%', maxWidth: '130px' },
       tablet: { top: '10%', left: '12%', maxWidth: '160px' },
       desktop: { top: '10%', left: '15%', maxWidth: '180px' },
@@ -129,7 +151,7 @@ const HeroCollage = ({ isLoadingComplete }) => {
       scrollSpeed: 0.2,
       horizontalShift: 15
     }
-  ];
+  ], []);
 
   const pieceVariants = {
     hidden: { opacity: 0, scale: 0.7, filter: "blur(14px)", y: -50 },
@@ -172,6 +194,7 @@ const HeroCollage = ({ isLoadingComplete }) => {
               scrollYProgress={scrollYProgress}
               isDark={isDark}
               pieceVariants={pieceVariants}
+              isScrolling={isScrolling}
             />
           ))}
         </AnimatePresence>
@@ -180,8 +203,9 @@ const HeroCollage = ({ isLoadingComplete }) => {
   );
 };
 
-const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
+const WordPiece = React.memo(({ piece, scrollYProgress, isDark, pieceVariants, isScrolling }) => {
   const [dimensions, setDimensions] = useState(piece.mobile);
+  const resizeTimeoutRef = useRef(null);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -195,11 +219,24 @@ const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
       }
     };
 
+    const debouncedResize = () => {
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+      resizeTimeoutRef.current = setTimeout(updateDimensions, 100);
+    };
+
     updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+    window.addEventListener('resize', debouncedResize);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+    };
   }, [piece]);
 
+  // Combine all transforms into single calculations
   const y = useTransform(
     scrollYProgress,
     [0, 1],
@@ -218,6 +255,13 @@ const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
     [1, 0.8, 0]
   );
 
+  const filter = useMemo(() => 
+    isDark
+      ? 'brightness(0.95) drop-shadow(2px 3px 6px rgba(0,0,0,0.2))'
+      : 'brightness(1.05) drop-shadow(2px 3px 6px rgba(0,0,0,0.15))',
+    [isDark]
+  );
+
   return (
     <motion.img
       src={piece.src}
@@ -226,7 +270,7 @@ const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
       variants={pieceVariants}
       initial="hidden"
       animate="visible"
-      whileHover="hover"
+      whileHover={isScrolling ? undefined : "hover"}
       exit="hidden"
       style={{
         position: 'absolute',
@@ -240,12 +284,16 @@ const WordPiece = ({ piece, scrollYProgress, isDark, pieceVariants }) => {
         y,
         x,
         opacity,
-        filter: isDark
-          ? 'brightness(0.95) drop-shadow(2px 3px 6px rgba(0,0,0,0.2))'
-          : 'brightness(1.05) drop-shadow(2px 3px 6px rgba(0,0,0,0.15))',
+        filter,
+        willChange: 'transform, opacity',
+        transform: 'translate3d(0, 0, 0)',
       }}
+      loading="eager"
+      decoding="async"
     />
   );
-};
+});
+
+WordPiece.displayName = 'WordPiece';
 
 export default HeroCollage;

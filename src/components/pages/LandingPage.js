@@ -9,6 +9,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
   const [showContent, setShowContent] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const heroRef = useRef(null);
+  const [isHeroLoaded, setIsHeroLoaded] = useState(false);
+
   
   // Get theme context
   const { isDark, colors } = useTheme();
@@ -55,10 +57,14 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         isLandingPage={true}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isHeroLoaded={isHeroLoaded}
+
       />
 
       {/* Hero Collage Section */}
-      <HeroCollage isLoadingComplete={isLoadingComplete} />
+      <HeroCollage isLoadingComplete={isLoadingComplete}
+      onHeroLoaded={() => setIsHeroLoaded(true)}
+ />
 
       {/* Title + Subtitle Section */}
       <section className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"

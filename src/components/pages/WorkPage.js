@@ -465,7 +465,7 @@ UNRELEASED TRACKS
             </motion.div>
             
             {/* Music Projects Grid */}
-            <ProjectGrid items={musicItems} sectionDelay={1.7} />
+            <ProjectGrid items={musicItems} sectionDelay={0.2} />
           </div>
         </div>
       </div>
