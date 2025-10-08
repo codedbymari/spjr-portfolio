@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
 import HeroCollage from './HeroCollage';
-import HeroImage from './HeroImage'; // Import the new HeroImage component
+import HeroImage from './HeroImage';
 
 const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingComplete = true }) => {
   const [showContent, setShowContent] = useState(false);
@@ -11,27 +11,23 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
   const heroRef = useRef(null);
   const [isHeroLoaded, setIsHeroLoaded] = useState(false);
 
-  
-  // Get theme context
   const { isDark, colors } = useTheme();
 
-  // Animation variants that respect loading state
   const getInitialState = (defaultInitial) => {
     if (!isLoadingComplete) {
-      return { opacity: 0, y: 100 }; // Keep hidden while loading
+      return { opacity: 0, y: 100 };
     }
     return defaultInitial;
   };
 
   const getAnimateState = (defaultAnimate) => {
     if (!isLoadingComplete) {
-      return { opacity: 0, y: 100 }; // Keep hidden while loading
+      return { opacity: 0, y: 100 };
     }
     return defaultAnimate;
   };
 
   useEffect(() => {
-    // Only start animations after loading is complete
     if (isLoadingComplete) {
       const contentTimer = setTimeout(() => {
         setShowContent(true);
@@ -46,7 +42,10 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
   return (
     <div 
       className="w-screen min-h-screen overflow-x-hidden relative transition-colors duration-500"
-      style={{ backgroundColor: colors.primary }}
+      style={{ 
+        backgroundColor: colors.primary,
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif'
+      }}
     >
       {/* Header */}
       <Header 
@@ -58,25 +57,25 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         isHeroLoaded={isHeroLoaded}
-
       />
 
       {/* Hero Collage Section */}
-      <HeroCollage isLoadingComplete={isLoadingComplete}
-      onHeroLoaded={() => setIsHeroLoaded(true)}
- />
+      <HeroCollage 
+        isLoadingComplete={isLoadingComplete}
+        onHeroLoaded={() => setIsHeroLoaded(true)}
+      />
 
       {/* Title + Subtitle Section */}
-      <section className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
-        style={{ backgroundColor: colors.primary }}>
-        
-        {/* Title + Subtitle Row */}
-        <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 md:mb-12 lg:mb-[40px]">
+      <section 
+        className="w-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
+        style={{ backgroundColor: colors.primary }}
+      >
+        <div className="w-full flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 md:mb-10">
           {/* Content can be added here if needed */}
         </div>
       </section>
 
-      {/* New Hero Image Component with Advanced Animations */}
+      {/* New Hero Image Component */}
       <HeroImage 
         isInitialLoad={isInitialLoad}
         isLoadingComplete={isLoadingComplete}
@@ -86,18 +85,16 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         colors={colors}
       />
 
-     {/* Selected Works Section - Enhanced Mobile Grid */}
+      {/* Selected Works Section */}
       <section 
-        className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
+        className="flex flex-col items-center justify-center min-h-screen py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative z-10 transition-colors duration-500"
         style={{ backgroundColor: colors.primary }}
       >
-        
-        {/* Section Header with Refined Typography */}
-        <div className="flex flex-col items-start w-full max-w-[1200px] mb-8 sm:mb-12 md:mb-16 lg:mb-24">
-          
-          {/* Subtle divider line */}
+        {/* Section Header */}
+        <div className="flex flex-col items-start w-full max-w-[1200px] mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          {/* Divider line */}
           <motion.div 
-            className="w-full h-px mb-4 sm:mb-6 md:mb-8 lg:mb-12"
+            className="w-full h-px mb-6 sm:mb-8 md:mb-10 lg:mb-12"
             initial={getInitialState({ scaleX: 0 })}
             whileInView={getAnimateState({ scaleX: 1 })}
             transition={{ 
@@ -117,8 +114,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             />
           </motion.div>
 
-          {/* Title Treatment */}
-          <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4 lg:mb-6">
+          {/* Title */}
+          <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4">
             <motion.div
               initial={getInitialState({ opacity: 0, y: 40 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -129,7 +126,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               viewport={{ once: true, margin: '-100px' }}
               className="font-normal leading-[1] transition-colors duration-500"
               style={{
-                fontFamily: 'Switzer, sans-serif',
                 fontSize: 'clamp(32px, 8.5vw, 60px)',
                 fontWeight: 400,
                 letterSpacing: '-0.03em',
@@ -138,38 +134,15 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             >
               SELECTED WORKS
             </motion.div>
-            
-            {/* Refined subtitle */}
-            <motion.div
-              initial={getInitialState({ opacity: 0, y: 30 })}
-              whileInView={getAnimateState({ opacity: 1, y: 0 })}
-              transition={{ 
-                duration: 1, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.2 : 0 
-              }}
-              viewport={{ once: true, margin: '-100px' }}
-              className="font-light tracking-[0.02em] uppercase transition-colors duration-500"
-              style={{
-                fontFamily: 'Azeret Mono, monospace',
-                fontSize: 'clamp(8px, 2vw, 12px)',
-                letterSpacing: '0.1em',
-                color: colors.text.accent
-              }}
-            >
-              A curated collection
-            </motion.div>
           </div>
         </div>
        
-        {/* Projects Grid - Better Mobile/Tablet Handling */}
-        <div className="w-full max-w-[1200px] space-y-12 sm:space-y-16 md:space-y-20 lg:space-y-24">
-          
-                  {/* First Project Row - Enhanced Responsive Layout */}
+        {/* Projects Grid */}
+        <div className="w-full max-w-[1200px] space-y-10 sm:space-y-12 md:space-y-16 lg:space-y-20">
+          {/* First Project Row */}
           <div className="flex flex-col xl:flex-row gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-6">
-            
             {/* Large Project - The Ocean */}
-            <div className="flex-[2_0_0] space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10">
+            <div className="flex-[2_0_0] space-y-4 sm:space-y-6">
               <motion.div
                 className="group relative cursor-pointer"
                 initial={getInitialState({ opacity: 0, y: 140 })}
@@ -205,15 +178,12 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   <div 
                     className="absolute inset-0 transition-all duration-300" 
                     style={{
-                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)',
-                      '&:hover': {
-                        backgroundColor: isDark ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)'
-                      }
+                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'
                     }}
                   />
                 </div>
                 
-                {/* Project Info - Enhanced Hover Animation */}
+                {/* Project Info */}
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
                   <span 
                     className="font-normal tracking-[-0.01em] uppercase font-mono transition-colors duration-300"
@@ -230,7 +200,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                     }}
                   >/</span>
                   <div className="flex-1 relative h-[14px] sm:h-[15px] md:h-[16px] lg:h-[17px] overflow-hidden">
-                    {/* Default Title - Completely disappears on hover */}
                     <motion.div 
                       className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
                       style={{
@@ -243,7 +212,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                     >
                       The Ocean
                     </motion.div>
-                    {/* Hover Title - Takes over completely */}
                     <motion.div 
                       className="absolute top-0 left-0 font-normal tracking-[-0.01em] uppercase font-mono leading-none transition-colors duration-300"
                       style={{
@@ -261,9 +229,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               </motion.div>
             </div>
 
-            {/* Two Smaller Projects - Better Mobile Spacing */}
+            {/* Two Smaller Projects */}
             <div className="flex-1 space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
-              
               {/* Project 2 - Mphepo */}
               <motion.div
                 className="group relative cursor-pointer"
@@ -292,12 +259,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                     alt="Beyond the Frame"
                     style={{
                       filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
-                    }}
-                  />
-                  <div 
-                    className="absolute inset-0 transition-all duration-300"
-                    style={{
-                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'
                     }}
                   />
                 </div>
@@ -376,12 +337,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                       filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
                     }}
                   />
-                  <div 
-                    className="absolute inset-0 transition-all duration-300"
-                    style={{
-                      backgroundColor: isDark ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0)'
-                    }}
-                  />
                 </div>
                 
                 <div className="flex items-start justify-start w-full pt-3 md:pt-4 overflow-hidden">
@@ -431,8 +386,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </div>
         </div>
 
-        {/* View All Button - Fixed visibility */}
-        <div className="flex items-center justify-center w-full pt-10 sm:pt-12 md:pt-14 lg:pt-16">
+        {/* View All Button */}
+        <div className="flex items-center justify-center w-full pt-8 sm:pt-10 md:pt-12 lg:pt-14">
           <motion.button
             whileInView={getAnimateState({ opacity: 1 })}
             transition={{ 
@@ -441,7 +396,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               delay: isLoadingComplete ? 0.5 : 0 
             }}
             viewport={{ once: true, margin: '-100px' }}
-            onClick={() => onNavigate('work')}
+            onClick={() => onNavigate('writing')}
             className="font-normal tracking-[-0.01em] uppercase font-mono hover:opacity-70 transition-all duration-300 cursor-pointer"
             style={{
               color: colors.text.primary,
@@ -453,28 +408,26 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </div>
       </section>
 
-      {/* About Section - Refined Mobile Experience with Rounded Bottom Corners */}
+      {/* About Section */}
       <section 
-        className="flex flex-col items-center justify-center min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative transition-all duration-700"
+        className="flex flex-col items-center justify-center min-h-screen py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 relative transition-all duration-700"
         style={{ 
           backgroundColor: colors.primary,
           position: 'relative',
           zIndex: 2,
           borderBottomLeftRadius: 'clamp(40px, 8vw, 120px)',
           borderBottomRightRadius: 'clamp(40px, 8vw, 120px)',
-          paddingBottom: 'clamp(80px, 12vw, 160px)',
+          paddingBottom: 'clamp(60px, 10vw, 120px)',
           boxShadow: isDark 
             ? '0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)' 
             : '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1)'
         }}
       >
-        
-        {/* Section Header with Refined Typography */}
-        <div className="flex flex-col items-start w-full max-w-[1200px] mb-8 sm:mb-12 md:mb-16 lg:mb-24">
-          
-          {/* Subtle divider line */}
+        {/* Section Header */}
+        <div className="flex flex-col items-start w-full max-w-[1200px] mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          {/* Divider line */}
           <motion.div 
-            className="w-full h-px mb-4 sm:mb-6 md:mb-8 lg:mb-12"
+            className="w-full h-px mb-6 sm:mb-8 md:mb-10 lg:mb-12"
             initial={getInitialState({ scaleX: 0 })}
             whileInView={getAnimateState({ scaleX: 1 })}
             transition={{ 
@@ -494,8 +447,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             />
           </motion.div>
 
-          {/* Title Treatment */}
-          <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4 lg:mb-6">
+          {/* Title */}
+          <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-3 md:mb-4">
             <motion.div
               initial={getInitialState({ opacity: 0, y: 40 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -505,8 +458,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               }}
               viewport={{ once: true, margin: '-100px' }}
               className="font-normal tracking-[-0.04em] leading-[0.85] transition-colors duration-500"
-                style={{
-                fontFamily: 'Switzer, sans-serif',
+              style={{
                 fontSize: 'clamp(32px, 8.5vw, 80px)',
                 fontWeight: 400,
                 letterSpacing: '-0.03em',
@@ -516,7 +468,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               ABOUT
             </motion.div>
             
-            {/* Refined subtitle */}
+            {/* Subtitle */}
             <motion.div
               initial={getInitialState({ opacity: 0, y: 30 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -526,9 +478,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 delay: isLoadingComplete ? 0.2 : 0 
               }}
               viewport={{ once: true, margin: '-100px' }}
-              className="font-light tracking-[0.02em] uppercase transition-colors duration-500"
+              className="font-light tracking-[0.02em] uppercase font-mono transition-colors duration-500"
               style={{
-                fontFamily: 'Azeret Mono, monospace',
                 fontSize: 'clamp(8px, 2vw, 12px)',
                 letterSpacing: '0.1em',
                 color: colors.text.accent
@@ -539,13 +490,11 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           </div>
         </div>
 
-        {/* Main Content Grid - Mobile-First Approach */}
+        {/* Main Content Grid */}
         <div className="w-full max-w-[1200px]">
-          
-          {/* Mobile Layout (< lg) - Stacked vertically */}
+          {/* Mobile Layout */}
           <div className="lg:hidden flex flex-col gap-6 sm:gap-8">
-            
-            {/* Mobile Image - Optimized size and positioning */}
+            {/* Mobile Image */}
             <motion.div
               initial={getInitialState({ opacity: 0, scale: 0.95 })}
               whileInView={getAnimateState({ opacity: 1, scale: 1 })}
@@ -567,8 +516,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                       filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
                     }}
                   />
-                  
-                  {/* Subtle overlay for depth */}
                   <div 
                     className="absolute inset-0 z-10" 
                     style={{
@@ -577,8 +524,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                         : 'linear-gradient(to bottom right, transparent, transparent, rgba(255,255,255,0.2))'
                     }}
                   />
-                  
-                  {/* Subtle border effect */}
                   <div 
                     className="absolute inset-0 border rounded-sm"
                     style={{
@@ -591,8 +536,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             
             {/* Mobile Content */}
             <div className="flex flex-col space-y-4 sm:space-y-5">
-              
-              {/* Primary Description - Mobile optimized */}
+              {/* Primary Description */}
               <motion.div
                 initial={getInitialState({ opacity: 0, y: 40 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -604,7 +548,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 viewport={{ once: true, margin: '-100px' }}
                 className="font-light leading-[1.5] tracking-[-0.01em] text-center sm:text-left transition-colors duration-500"
                 style={{
-                  fontFamily: 'Fahkwang, sans-serif',
                   fontSize: 'clamp(16px, 4.2vw, 20px)',
                   color: colors.text.primary
                 }}
@@ -616,7 +559,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 </span>
               </motion.div>
               
-              {/* Secondary Description - Mobile optimized */}
+              {/* Secondary Description */}
               <motion.div
                 initial={getInitialState({ opacity: 0, y: 40 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -628,7 +571,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 viewport={{ once: true, margin: '-100px' }}
                 className="font-light leading-[1.6] tracking-[-0.005em] text-center sm:text-left transition-colors duration-500"
                 style={{
-                  fontFamily: 'Fahkwang, sans-serif',
                   fontSize: 'clamp(14px, 3.5vw, 17px)',
                   color: colors.text.muted
                 }}
@@ -636,7 +578,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 He believes that growth is a cycle of inhaling hope and exhaling purpose, and his work serves as both compass and companion for that journey.
               </motion.div>
 
-              {/* Mobile CTA Button - Centered */}
+              {/* Mobile CTA Button */}
               <motion.div
                 initial={getInitialState({ opacity: 0, y: 20 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
@@ -652,7 +594,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   onClick={() => onNavigate('about')}
                   className="group relative overflow-hidden"
                 >
-                  {/* Button background with hover effect */}
                   <div 
                     className="absolute inset-0 rounded-sm transition-all duration-300" 
                     style={{
@@ -668,21 +609,16 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                       borderColor: isDark ? '#555555' : '#c4c1b9'
                     }}
                   />
-                  
-                  {/* Button content */}
                   <div className="relative px-5 sm:px-6 py-3 sm:py-3 flex items-center gap-2 sm:gap-3">
                     <span 
-                      className="font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
+                      className="font-normal tracking-[0.05em] uppercase font-mono transition-all duration-300 group-hover:tracking-[0.08em]"
                       style={{
-                        fontFamily: 'Azeret Mono, monospace',
                         fontSize: 'clamp(10px, 2.4vw, 12px)',
                         color: colors.text.primary
                       }}
                     >
                       Read More
                     </span>
-                    
-                    {/* Arrow icon */}
                     <div className="w-3 h-3 sm:w-4 sm:h-4 relative overflow-hidden">
                       <div className="absolute inset-0 transform transition-transform duration-300 group-hover:translate-x-1">
                         <svg 
@@ -708,10 +644,9 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
             </div>
           </div>
 
-          {/* Desktop Layout (lg+) - Side by side with existing positioning */}
+          {/* Desktop Layout */}
           <div className="hidden lg:grid grid-cols-12 gap-12 xl:gap-16 items-start">
-            
-            {/* Desktop Image Column - Keep existing positioning */}
+            {/* Desktop Image Column */}
             <div className="col-span-5" style={{ position: 'relative', top: '-90px' }}>
               <motion.div
                 initial={getInitialState({ opacity: 0, scale: 0.95 })}
@@ -734,8 +669,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                         filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
                       }}
                     />
-                    
-                    {/* Subtle overlay for depth */}
                     <div 
                       className="absolute inset-0 z-10" 
                       style={{
@@ -744,8 +677,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                           : 'linear-gradient(to bottom right, transparent, transparent, rgba(255,255,255,0.2))'
                       }}
                     />
-                    
-                    {/* Subtle border effect */}
                     <div 
                       className="absolute inset-0 border rounded-sm"
                       style={{
@@ -757,9 +688,8 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               </motion.div>
             </div>
             
-            {/* Desktop Content Column - Keep existing */}
+            {/* Desktop Content Column */}
             <div className="col-span-7 flex flex-col justify-start space-y-10">
-              
               {/* Primary Description */}
               <motion.div
                 initial={getInitialState({ opacity: 0, y: 40 })}
@@ -772,7 +702,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 viewport={{ once: true, margin: '-100px' }}
                 className="font-light leading-[1.6] tracking-[-0.01em] transition-colors duration-500"
                 style={{
-                  fontFamily: 'Fahkwang, sans-serif',
                   fontSize: 'clamp(15px, 3.8vw, 22px)',
                   color: colors.text.primary
                 }}
@@ -796,7 +725,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 viewport={{ once: true, margin: '-100px' }}
                 className="font-light leading-[1.7] tracking-[-0.005em] transition-colors duration-500"
                 style={{
-                  fontFamily: 'Fahkwang, sans-serif',
                   fontSize: 'clamp(13px, 3.2vw, 18px)',
                   color: colors.text.muted
                 }}
@@ -820,7 +748,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                   onClick={() => onNavigate('about')}
                   className="group relative overflow-hidden"
                 >
-                  {/* Button background with hover effect */}
                   <div 
                     className="absolute inset-0 rounded-sm transition-all duration-300" 
                     style={{
@@ -836,21 +763,16 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                       borderColor: isDark ? '#555555' : '#c4c1b9'
                     }}
                   />
-                  
-                  {/* Button content */}
                   <div className="relative px-6 py-3 flex items-center gap-3">
                     <span 
-                      className="font-normal tracking-[0.05em] uppercase transition-all duration-300 group-hover:tracking-[0.08em]"
+                      className="font-normal tracking-[0.05em] uppercase font-mono transition-all duration-300 group-hover:tracking-[0.08em]"
                       style={{
-                        fontFamily: 'Azeret Mono, monospace',
                         fontSize: 'clamp(9px, 2.2vw, 12px)',
                         color: colors.text.primary
                       }}
                     >
                       Read More
                     </span>
-                    
-                    {/* Arrow icon */}
                     <div className="w-4 h-4 relative overflow-hidden">
                       <div className="absolute inset-0 transform transition-transform duration-300 group-hover:translate-x-1">
                         <svg 
@@ -878,25 +800,15 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </div>
       </section>
 
-     {/* Footer Image Section with Overlapping Reveal Effect */}
+      {/* Footer Image Section - Always Visible */}
       <section 
         className="w-full relative"
         style={{ 
-          marginTop: 'clamp(-40px, -8vw, -120px)',
+          marginTop: 'clamp(-30px, -6vw, -80px)',
           zIndex: 0
         }}
       >
-        <motion.div
-          initial={getInitialState({ opacity: 0, y: 50 })}
-          whileInView={getAnimateState({ opacity: 1, y: 0 })}
-          transition={{ 
-            duration: 1.6, 
-            ease: [0.16, 1, 0.3, 1],
-            delay: isLoadingComplete ? 0.3 : 0 
-          }}
-          viewport={{ once: true, margin: '-150px' }}
-          className="relative w-full"
-        >
+        <div className="relative w-full">
           {/* Footer Image */}
           <div className="w-full aspect-[21/9] relative">
             <img
@@ -907,8 +819,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
                 filter: isDark ? 'brightness(0.9) contrast(1.05)' : 'brightness(1.05) contrast(0.95)'
               }}
             />
-            
-            {/* Subtle vignette effect */}
             <div 
               className="absolute inset-0"
               style={{
@@ -918,11 +828,10 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
               }}
             />
           </div>
-        </motion.div>
+        </div>
       </section>
       
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         
         * {
@@ -932,7 +841,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         body {
           margin: 0;
           padding: 0;
-          font-family: 'Inter', sans-serif;
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
           background-color: #f6f3ec;
         }
         
@@ -940,48 +849,31 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
           font-family: 'Azeret Mono', monospace;
         }
 
-        /* Custom breakpoint for extra small devices */
-        @media (min-width: 475px) {
-          .xs:h-\[260px\] {
-            height: 260px !important;
-          }
-        }
-
-        /* Enhanced mobile optimizations */
         @media (max-width: 640px) {
-          /* Prevent horizontal scroll on mobile */
           body {
             overflow-x: hidden;
           }
           
-          /* Better touch targets on mobile */
           button {
             min-height: 44px;
             min-width: 44px;
           }
+          
+          section[style*="borderBottomLeftRadius"] {
+            border-bottom-left-radius: 40px !important;
+            border-bottom-right-radius: 40px !important;
+          }
         }
 
-        /* Tablet optimizations */
         @media (min-width: 641px) and (max-width: 1024px) {
-          /* Optimize spacing for tablets */
           .space-y-12 > * + * {
             margin-top: 2.5rem !important;
           }
         }
 
-        /* Desktop-specific styles for better image alignment */
         @media (min-width: 1024px) {
-          /* Better aspect ratio for desktop to align with content height */
-          .lg\:aspect-\[4\/6\] {
+          .lg\\:aspect-\\[4\\/6\\] {
             aspect-ratio: 4/6 !important;
-          }
-        }
-
-        /* Smooth rounded corners for overlapping effect */
-        @media (max-width: 640px) {
-          section[style*="borderBottomLeftRadius"] {
-            border-bottom-left-radius: 40px !important;
-            border-bottom-right-radius: 40px !important;
           }
         }
       `}</style>

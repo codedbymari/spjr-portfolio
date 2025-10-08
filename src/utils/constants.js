@@ -2,7 +2,7 @@
 
 export const PAGES = {
   LANDING: 'landing',
-  WORK: 'work',
+  WRITING: 'writing',
   ABOUT: 'about',
   OCEAN: 'ocean',
   POETRY_IN_MOTION: 'poetry-in-motion',

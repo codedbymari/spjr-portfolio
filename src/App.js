@@ -1,5 +1,5 @@
 // src/App.js 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useAudio } from './hooks/useAudio';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
@@ -11,13 +11,21 @@ import LandingPage from './components/pages/LandingPage';
 import WorkPage from './components/pages/WorkPage';
 import AboutPage from './components/pages/AboutPage';
 import Pen2PurposePage from './components/pages/Pen2PurposePage';
+import MusicPage from './components/pages/MusicPage';
+
 // Story components
 import OceanPage from './components/pages/stories/OceanPage';
 import MphepoPage from './components/pages/stories/MphepoPage';
 import PowerGracePage from './components/pages/stories/PowerGracePage';
 import RicosStoryPage from './components/pages/stories/RicosStoryPage';
 import PoetryInMotionPage from './components/pages/stories/PoetryInMotionPage';
+// Music components
 import WithIntentionsPage from './components/pages/music/WithIntentionsPage';
+import SonOfAFarmerPage from './components/pages/music/SonOfAFarmerPage';
+import GreatExpectationPage from './components/pages/music/GreatExpectationPage';
+import PracticePage from './components/pages/music/PracticePage';
+import CrossroadsToHomePage from './components/pages/music/CrossroadsToHomePage';
+import Tucker1955Page from './components/pages/music/Tucker1955Page';
 
 // Styles
 import './styles/animations.css';
@@ -29,7 +37,8 @@ const AppContent = () => {
     const page = path.substring(1) || 'landing';
     const validPages = [
       'landing', 
-      'work', 
+      'writing', 
+      'music',
       'about', 
       'pen2purpose',
       'ocean', 
@@ -38,17 +47,21 @@ const AppContent = () => {
       'vessels', 
       'ricos-story', 
       'poetry-in-motion',
-      'with-intentions'
+      'with-intentions',
+      'son-of-a-farmer',
+      'great-expectation',
+      'practice',
+      'crossroads-to-home',
+      'tucker-1955'
     ];
     return validPages.includes(page) ? page : 'landing';
   };
 
   const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [isReadingMode, setIsReadingMode] = useState(false);
-  // const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
-  // const [animationStage, setAnimationStage] = useState('loading');
   const [pageKey, setPageKey] = useState(0);
-  // const [loadingProgress, setLoadingProgress] = useState(0);
+  const scrollPositions = useRef({});
+  const isNavigatingBack = useRef(false);
   
   const { isAudioPlaying, audioRef, toggleAudio, stopAudio } = useAudio();
   
@@ -77,19 +90,15 @@ const AppContent = () => {
     requestAnimationFrame(animateScroll);
   };
   
-  // Calculate if loading is complete - always true now
-  const isLoadingComplete = true; // hasLoadedOnce && animationStage === 'complete';
-  
-  // Only show loading screen on landing page and only once
-  // const shouldShowLoadingScreen = currentPage === 'landing' && !hasLoadedOnce && animationStage !== 'complete';
-  const shouldShowLoadingScreen = false; // Disabled loading screen
+  const isLoadingComplete = true;
+  const shouldShowLoadingScreen = false;
   
   // Reset page to beginning - with option to skip full reload and smooth scroll
   const resetPageState = (skipReload = false, useSmootScroll = false) => {
     if (useSmootScroll) {
-      smoothScrollTo(0, 600); // Smooth scroll to top with 600ms duration
+      smoothScrollTo(0, 600);
     } else {
-      window.scrollTo(0, 0); // Instant scroll to top
+      window.scrollTo(0, 0);
     }
     
     document.body.style.cursor = 'default';
@@ -117,22 +126,29 @@ const AppContent = () => {
   
   // Add CSS for smooth scrolling behavior
   useEffect(() => {
-    // Add smooth scroll behavior to html element
     document.documentElement.style.scrollBehavior = 'smooth';
-    
-    // Optional: Add scroll padding for fixed headers
     document.documentElement.style.scrollPaddingTop = '2rem';
     
     return () => {
-      // Clean up on unmount
       document.documentElement.style.scrollBehavior = '';
       document.documentElement.style.scrollPaddingTop = '';
     };
   }, []);
   
+  // Save scroll position before leaving a page
+  useEffect(() => {
+    const saveScrollPosition = () => {
+      scrollPositions.current[currentPage] = window.scrollY;
+    };
+    
+    window.addEventListener('scroll', saveScrollPosition);
+    return () => window.removeEventListener('scroll', saveScrollPosition);
+  }, [currentPage]);
+  
   // Handle browser back/forward buttons
   useEffect(() => {
     const handlePopState = (event) => {
+      isNavigatingBack.current = true;
       const newPage = getInitialPage();
       setCurrentPage(newPage);
       stopAudio();
@@ -142,16 +158,37 @@ const AppContent = () => {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [stopAudio]);
 
-  // Navigation handler with URL update and smooth scroll
+  // Restore scroll position after page change (for back navigation)
+  useEffect(() => {
+    if (isNavigatingBack.current) {
+      // Use setTimeout to ensure DOM has rendered
+      setTimeout(() => {
+        const savedPosition = scrollPositions.current[currentPage];
+        if (savedPosition !== undefined) {
+          window.scrollTo(0, savedPosition);
+        }
+        isNavigatingBack.current = false;
+      }, 0);
+    }
+  }, [currentPage]);
+
+  // Navigation handler with URL update
   const navigateTo = (page, options = {}) => {
-    const { scrollToTop = true, useSmootScroll = true } = options;
+    const { scrollToTop = true } = options;
+    
+    // Save current scroll position
+    scrollPositions.current[currentPage] = window.scrollY;
+    
+    // Set position to top BEFORE changing page
+    if (scrollToTop) {
+      window.scrollTo(0, 0);
+    }
+    
+    // Always reset to top for forward navigation (clear any saved position)
+    scrollPositions.current[page] = 0;
     
     setCurrentPage(page);
     stopAudio();
-    
-    if (scrollToTop) {
-      resetPageState(false, useSmootScroll);
-    }
     
     const url = page === 'landing' ? '/' : `/${page}`;
     window.history.pushState({ page }, '', url);
@@ -161,18 +198,18 @@ const AppContent = () => {
   useKeyboardNavigation(currentPage, navigateTo);
   
   const renderCurrentPage = () => {
+    // Props without key - key should be passed directly to components
     const pageProps = {
       currentPage,
       onNavigate: navigateTo,
-      scrollToElement, // Pass scroll function to pages
-      smoothScrollTo, // Pass smooth scroll utility
+      scrollToElement,
+      smoothScrollTo,
       isAudioPlaying,
       onToggleAudio: toggleAudio,
       isReadingMode,
       onToggleReadingMode: () => setIsReadingMode(!isReadingMode),
       audioRef,
-      isInitialLoad: false, // !hasLoadedOnce - always false now
-      key: pageKey
+      isInitialLoad: false
     };
     
     switch (currentPage) {
@@ -184,14 +221,14 @@ const AppContent = () => {
             onNavigate={navigateTo} 
             scrollToElement={scrollToElement}
             smoothScrollTo={smoothScrollTo}
-            isInitialLoad={false} // !hasLoadedOnce - always false now
+            isInitialLoad={false}
             isLoadingComplete={isLoadingComplete}
           />
         );
-      case 'work': 
+      case 'writing': 
         return (
           <WorkPage 
-            key={`work-${pageKey}`}
+            key={`writing-${pageKey}`}
             currentPage={currentPage} 
             onNavigate={navigateTo}
             scrollToElement={scrollToElement}
@@ -207,6 +244,17 @@ const AppContent = () => {
             onNavigate={navigateTo}
             scrollToElement={scrollToElement}
             smoothScrollTo={smoothScrollTo}
+          />
+        );
+      case 'music': 
+        return (
+          <MusicPage 
+            key={`music-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
+            isLoadingComplete={isLoadingComplete} 
           />
         );
       case 'pen2purpose': 
@@ -241,6 +289,61 @@ const AppContent = () => {
             isLoadingComplete={isLoadingComplete} 
           />
         );
+      case 'son-of-a-farmer':
+        return (
+          <SonOfAFarmerPage 
+            key={`son-of-a-farmer-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
+      case 'great-expectation':
+        return (
+          <GreatExpectationPage 
+            key={`great-expectation-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
+      case 'practice':
+        return (
+          <PracticePage 
+            key={`practice-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
+      case 'crossroads-to-home':
+        return (
+          <CrossroadsToHomePage 
+            key={`crossroads-to-home-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
+      case 'tucker-1955':
+        return (
+          <Tucker1955Page 
+            key={`tucker-1955-${pageKey}`}
+            currentPage={currentPage} 
+            onNavigate={navigateTo}
+            scrollToElement={scrollToElement}
+            smoothScrollTo={smoothScrollTo}
+            isLoadingComplete={isLoadingComplete} 
+          />
+        );
       default: 
         return (
           <LandingPage 
@@ -249,7 +352,7 @@ const AppContent = () => {
             onNavigate={navigateTo}
             scrollToElement={scrollToElement}
             smoothScrollTo={smoothScrollTo}
-            isInitialLoad={false} // !hasLoadedOnce - always false now
+            isInitialLoad={false}
             isLoadingComplete={isLoadingComplete}
           />
         );
@@ -260,7 +363,7 @@ const AppContent = () => {
   
   return (
     <div className="relative min-h-screen theme-transition">
-      {/* Loading Screen Component with progress prop - COMMENTED OUT */}
+      {/* Loading Screen Component - COMMENTED OUT */}
       {/*
       {showLoadingScreen && (
         <LoadingScreen 

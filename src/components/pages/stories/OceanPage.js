@@ -63,7 +63,7 @@ const OceanPage = ({
         transition={{ duration: 0.3 }}
       >
         <motion.button
-          onClick={() => onNavigate('work')}
+          onClick={() => onNavigate('writing')}
           className="w-12 h-12 bg-black/30 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white/70 hover:text-white hover:bg-black/50 transition-all duration-300 opacity-0 group-hover:opacity-100"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -105,7 +105,7 @@ const OceanPage = ({
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="w-16 h-[1px] bg-white/30"></div>
                 <span className="text-white/60 text-[14px] font-mono uppercase tracking-[0.2em]">
-                  BY SIR PRACTICE
+                  BY SIR PRACTICE JR.
                 </span>
                 <div className="w-16 h-[1px] bg-white/30"></div>
               </div>

@@ -5,20 +5,18 @@ import Header from '../../common/Header';
 
 const WithIntentionsPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isStreamOpen, setIsStreamOpen] = useState(false);
   const { isDark, colors } = useTheme();
 
-  // Animation helper functions (matching your project style)
   const getInitialState = (props) => props;
   const getAnimateState = (props) => props;
 
-  // Spotify Logo SVG Component
   const SpotifyLogo = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" fill="#1DB954"/>
     </svg>
   );
 
-  // Apple Music Logo SVG Component
   const AppleMusicLogo = () => (
     <svg width="24" height="24" viewBox="0 0 361 361" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -35,7 +33,7 @@ const WithIntentionsPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   return (
     <div 
       className="w-screen min-h-screen relative overflow-x-hidden transition-colors duration-500"
-      style={{ backgroundColor: colors.primary }}
+      style={{ backgroundColor: isDark ? '#000000' : 'rgb(251, 249, 247)' }}
     >
       <Header 
         isMenuOpen={isMenuOpen}
@@ -44,271 +42,217 @@ const WithIntentionsPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
         onNavigate={onNavigate}
       />
       
-      {/* Main Content */}
-      <div className="pt-20 px-8">
-        <div className="max-w-[1200px] mx-auto">
+      <div className="pt-20 px-6">
+        <div className="max-w-[1400px] mx-auto">
           
-          {/* Hero Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 py-16 lg:py-24">
-            
-            {/* Left Column - Album Art */}
-            <motion.div
-              className="relative"
-              initial={getInitialState({ opacity: 0.001, x: -60 })}
-              whileInView={getAnimateState({ opacity: 1, x: 0 })}
-              transition={{ 
-                duration: 2, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.3 : 0 
-              }}
-              viewport={{ once: true }}
-            >
-              <div className="aspect-square relative overflow-hidden rounded-sm transition-colors duration-500" style={{ 
-                backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
-              }}>
+          <section className="px-0 py-7">
+            <div className="grid items-start gap-6 grid-cols-1 md:grid-cols-2 h-full">
+              
+              <motion.div 
+                className="relative px-0 aspect-square w-full h-full"
+                initial={getInitialState({ opacity: 0.001, scale: 0.95 })}
+                whileInView={getAnimateState({ opacity: 1, scale: 1 })}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.2 : 0 
+                }}
+                viewport={{ once: true }}
+              >
                 <img
-                  src="./assets/images/music.jpeg"
+                  src="./assets/images/75155340_8290242.webp"
                   alt="With intentions feat. Practice album cover"
-                  className="w-full h-full object-cover transition-all duration-300"
+                  className="w-full h-full object-cover"
                   style={{
-                    filter: isDark ? 'brightness(0.95)' : 'brightness(1.05)'
+                    backgroundColor: '#e2e0e1'
                   }}
                 />
-              </div>
-            </motion.div>
+              </motion.div>
 
-            {/* Right Column - Song Info */}
-            <motion.div
-              className="flex flex-col justify-center space-y-8"
-              initial={getInitialState({ opacity: 0.001, x: 60 })}
-              whileInView={getAnimateState({ opacity: 1, x: 0 })}
-              transition={{ 
-                duration: 2, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.5 : 0 
-              }}
-              viewport={{ once: true }}
-            >
-              
-              {/* Song Title */}
-              <h1 
-                className="text-[42px] md:text-[56px] lg:text-[64px] font-light tracking-[-0.02em] uppercase font-mono leading-tight transition-colors duration-500"
-                style={{ color: colors.text.primary }}
+              <motion.div 
+                className="col-span-1 h-full p-6 md:pt-0 md:px-0 pb-2 md:pb-0"
+                initial={getInitialState({ opacity: 0.001, y: 40 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 1.2, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.4 : 0 
+                }}
+                viewport={{ once: true }}
               >
-                WITH<br />
-                INTENTIONS
-              </h1>
+                <section className="flex flex-col justify-between h-full">
+                  <div className="grid gap-2">
+                    <div className="font-bold whitespace-normal text-2xl">
+                      <h1 
+                        className="whitespace-pre-wrap max-w-prose font-bold text-base md:text-2xl"
+                        style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                      >
+                        Svn T
+                      </h1>
+                      <p 
+                        className="max-w-prose whitespace-pre-wrap text-base md:text-2xl -mt-1 md:mt-0"
+                        style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                      >
+With intentions                      </p>
+                      <p 
+                        className="max-w-prose whitespace-pre-wrap text-base md:text-2xl -mt-1 md:mt-0"
+                        style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                      >
+feat. Practice                      </p>
+                    </div>
+                  </div>
 
-              {/* Featuring */}
-              <div 
-                className="text-[18px] md:text-[24px] font-light tracking-[-0.01em] uppercase font-mono transition-colors duration-500"
-                style={{ color: colors.text.primary, opacity: 0.8 }}
-              >
-                FEAT. PRACTICE
-              </div>
-
-              {/* Song Details */}
-              <div className="space-y-4 pt-8">
-                <div className="flex items-center space-x-8">
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary, opacity: 0.6 }}
-                  >
-                    Artist
-                  </div>
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary }}
-                  >
-                    SVN T
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-8">
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary, opacity: 0.6 }}
-                  >
-                    Duration
-                  </div>
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary }}
-                  >
-                    3:03
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-8">
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary, opacity: 0.6 }}
-                  >
-                    Released
-                  </div>
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary }}
-                  >
-                    2025
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-8">
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary, opacity: 0.6 }}
-                  >
-                    Label
-                  </div>
-                  <div 
-                    className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                    style={{ color: colors.text.primary }}
-                  >
-                    NII Productions
-                  </div>
-                </div>
-              </div>
-
-              {/* Stream Links */}
-              <div className="pt-8 space-y-4">
-                <div 
-                  className="text-[12px] font-mono uppercase tracking-wide mb-4 transition-colors duration-500"
-                  style={{ color: colors.text.primary, opacity: 0.6 }}
-                >
-                  Stream Now
-                </div>
-                
-                <motion.a
-                  href="https://open.spotify.com/album/7zD50SjOzbnjVpk3BjIT6J"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center space-x-4 text-[12px] font-mono uppercase tracking-wide hover:opacity-80 transition-all duration-300"
-                  style={{ color: colors.text.primary }}
-                  whileHover={{ x: 10 }}
-                >
-                  <div className="flex items-center justify-center w-8 transition-all duration-300">
-                    <SpotifyLogo />
-                  </div>
-                  <span>Spotify</span>
-                </motion.a>
-                
-                <motion.a
-                  href="https://music.apple.com/us/album/with-intentions-feat-practice-single/1840211102"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center space-x-4 text-[12px] font-mono uppercase tracking-wide hover:opacity-80 transition-all duration-300"
-                  style={{ color: colors.text.primary }}
-                  whileHover={{ x: 10 }}
-                >
-                  <div className="flex items-center justify-center w-8 transition-all duration-300">
-                    <AppleMusicLogo />
-                  </div>
-                  <span>Apple Music</span>
-                </motion.a>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Credits Section */}
-          <motion.div
-            className="py-24 border-t transition-colors duration-500"
-            style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}
-            initial={getInitialState({ opacity: 0.001, y: 60 })}
-            whileInView={getAnimateState({ opacity: 1, y: 0 })}
-            transition={{ 
-              duration: 2, 
-              ease: [0.16, 1, 0.3, 1], 
-              delay: isLoadingComplete ? 0.9 : 0 
-            }}
-            viewport={{ once: true }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-              <div className="lg:col-span-1">
-                <h3 
-                  className="text-[24px] font-light tracking-[-0.01em] uppercase font-mono mb-8 transition-colors duration-500"
-                  style={{ color: colors.text.primary }}
-                >
-                  Credits
-                </h3>
-              </div>
-              
-              <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div 
-                      className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                      style={{ color: colors.text.primary, opacity: 0.6 }}
+                  <div>
+                   
+                    <button
+                      onClick={() => setIsStreamOpen(!isStreamOpen)}
+                      className="text-base w-full p-6 relative font-bold cursor-pointer text-left flex items-center justify-between transition-colors duration-200"
+                      style={{ 
+                        color: isDark ? '#FFFFFF' : '#000000',
+                        borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'}`
+                      }}
                     >
-                      Artists
-                    </div>
-                    <div className="space-y-2">
-                      <div 
-                        className="text-[14px] font-mono transition-colors duration-500"
-                        style={{ color: colors.text.primary }}
+                      <span>Stream</span>
+                      <motion.div
+                        animate={{ rotate: isStreamOpen ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        SVN T
-                      </div>
-                      <div 
-                        className="text-[14px] font-mono transition-colors duration-500"
-                        style={{ color: colors.text.primary }}
-                      >
-                        Practice
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div 
-                      className="text-[12px] font-mono uppercase tracking-wide transition-colors duration-500"
-                      style={{ color: colors.text.primary, opacity: 0.6 }}
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </motion.div>
+                    </button>
+
+                    <motion.div
+                      initial={false}
+                      animate={{ 
+                        height: isStreamOpen ? 'auto' : 0,
+                        opacity: isStreamOpen ? 1 : 0
+                      }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                      style={{ 
+                        borderTop: isStreamOpen ? `1px solid ${isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'}` : 'none'
+                      }}
                     >
-                      Production
-                    </div>
-                    <div className="space-y-2">
-                      
-                      <div 
-                        className="text-[14px] font-mono transition-colors duration-500"
-                        style={{ color: colors.text.primary }}
-                      >
-                        ℗ 2025 NII Productions
+                      <div className="pt-6 pb-4 px-6 space-y-4">
+                        <motion.a
+                          href="https://open.spotify.com/album/7zD50SjOzbnjVpk3BjIT6J"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center space-x-4 text-sm font-bold uppercase tracking-wide transition-all duration-300"
+                          style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                          whileHover={{ x: 10, opacity: 0.7 }}
+                        >
+                          <div className="flex items-center justify-center w-8">
+                            <SpotifyLogo />
+                          </div>
+                          <span>Spotify</span>
+                        </motion.a>
+                        
+                        <motion.a
+                          href="https://music.apple.com/us/album/with-intentions-feat-practice-single/1840211102"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center space-x-4 text-sm font-bold uppercase tracking-wide transition-all duration-300"
+                          style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                          whileHover={{ x: 10, opacity: 0.7 }}
+                        >
+                          <div className="flex items-center justify-center w-8">
+                            <AppleMusicLogo />
+                          </div>
+                          <span>Apple Music</span>
+                        </motion.a>
                       </div>
-                    </div>
+                    </motion.div>
                   </div>
-                </div>
-              </div>
+                </section>
+              </motion.div>
             </div>
-          </motion.div>
+          </section>
 
-          {/* Navigation Footer */}
-          <motion.div
-            className="py-16 border-t transition-colors duration-500"
-            style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)' }}
+          <motion.header 
+            className="items-center justify-center hidden md:flex"
             initial={getInitialState({ opacity: 0.001 })}
             whileInView={getAnimateState({ opacity: 1 })}
             transition={{ 
-              duration: 1.5, 
+              duration: 1, 
               ease: [0.16, 1, 0.3, 1], 
-              delay: isLoadingComplete ? 1.1 : 0 
+              delay: isLoadingComplete ? 0.6 : 0 
             }}
             viewport={{ once: true }}
           >
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <button
-                onClick={() => onNavigate('work')}
-                className="group flex items-center space-x-4 text-[12px] font-mono uppercase tracking-wide hover:opacity-80 transition-all duration-300"
-                style={{ color: colors.text.primary }}
-              >
-                <div 
-                  className="w-8 h-[1px] group-hover:w-12 transition-all duration-300"
-                  style={{ backgroundColor: colors.text.primary, opacity: 0.3 }}
-                ></div>
-                <span>Back to Work</span>
-              </button>
-              
-              
+            <h1 
+              className="whitespace-pre-wrap max-w-prose-narrow font-bold text-base md:text-2xl w-full flex items-center justify-center py-14 border-t border-b"
+              style={{ 
+                color: isDark ? '#FFFFFF' : '#000000',
+                borderColor: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'
+              }}
+            >
+Listen to more of my tracks
+            </h1>
+          </motion.header>
+
+          <motion.section
+            className="py-12 border-b"
+            style={{ borderColor: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)' }}
+            initial={getInitialState({ opacity: 0.001 })}
+            whileInView={getAnimateState({ opacity: 1 })}
+            transition={{ 
+              duration: 1, 
+              ease: [0.16, 1, 0.3, 1], 
+              delay: isLoadingComplete ? 0.8 : 0 
+            }}
+            viewport={{ once: true }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[
+                { title: 'Tucker 1955', page: 'tucker-1955', image: './assets/images/tucker.webp'},
+                { title: 'Son of a Farmer', page: 'son-of-a-farmer', image: './assets/images/sofaf.webp'},
+                { title: 'Practice', page: 'practice', image: './assets/images/practice-p.webp'},
+                { title: 'Crossroads to Home', page: 'crossroads-to-home', image: './assets/images/crossroads.webp' },
+                { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.webp'}
+              ].map((track, index) => (
+                <motion.button
+                  key={track.page}
+                  onClick={() => onNavigate(track.page)}
+                  className="group w-full cursor-pointer text-left"
+                  initial={getInitialState({ opacity: 0.001, y: 20 })}
+                  whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                  transition={{ 
+                    duration: 0.8, 
+                    ease: [0.16, 1, 0.3, 1], 
+                    delay: isLoadingComplete ? 0.1 * index : 0 
+                  }}
+                  viewport={{ once: true }}
+                >
+                  <div className="relative aspect-video w-full overflow-hidden mb-4">
+                    <img
+                      src={track.image}
+                      alt={track.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 
+                      className="font-normal text-base"
+                      style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                    >
+                      {track.title}
+                    </h3>
+                    <span 
+                      className="font-normal text-base whitespace-nowrap"
+                      style={{ color: isDark ? '#FFFFFF' : '#000000' }}
+                    >
+                      {track.duration}
+                    </span>
+                  </div>
+                </motion.button>
+              ))}
             </div>
-          </motion.div>
+          </motion.section>
+
+          
         </div>
       </div>
     </div>
