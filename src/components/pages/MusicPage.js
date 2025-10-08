@@ -23,46 +23,45 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
     return props;
   };
 
-  // Music projects data (6 tracks)
+  // Music projects data (6 tracks) - sorted alphabetically
   const musicItems = [
     {
-      id: 'with-intentions',
-      title: 'With intentions ft. Practice',
-      imageSrc: './assets/images/withintens.webp',
+      id: 'crossroads-to-home',
+      title: 'Crossroads to Home',
+      imageSrc: './assets/images/crossroads.webp',
       number: '1'
-    },
-    {
-      id: 'son-of-a-farmer',
-      title: 'Son of a Farmer',
-      imageSrc: './assets/images/sofaf.webp',
-      number: '2'
     },
     {
       id: 'great-expectation',
       title: 'Great Expectation',
       imageSrc: './assets/images/greatexpec.webp',
-      number: '3'
+      number: '2'
     },
     {
       id: 'practice',
       title: 'Practice',
       imageSrc: './assets/images/practice-p.webp',
-      number: '4'
+      number: '3'
     },
     {
-      id: 'crossroads-to-home',
-      title: 'Crossroads to Home',
-      imageSrc: './assets/images/crossroads.webp',
-      number: '5'
+      id: 'son-of-a-farmer',
+      title: 'Son of a Farmer',
+      imageSrc: './assets/images/sofaf.webp',
+      number: '4'
     },
     {
       id: 'tucker-1955',
       title: 'Tucker 1955',
       imageSrc: './assets/images/tucker.webp',
+      number: '5'
+    },
+    {
+      id: 'with-intentions',
+      title: 'With intentions ft. Practice',
+      imageSrc: './assets/images/withintens.webp',
       number: '6'
     }
   ];
-
   // Custom project grid for music
   const MusicGrid = ({ items, sectionDelay = 0 }) => {
     return (

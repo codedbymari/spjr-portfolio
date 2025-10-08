@@ -352,7 +352,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
                   <div className="grid grid-cols-1 gap-3 sm:gap-4">
                     {[
                       { text: "Instagram", href: "https://www.instagram.com/sirpractice/" },
-                      { text: "Email", href: "#email" }
+                      { text: "Email", href: "mailto:sirpracticejnr@gmail.com" }
                     ].map((link, index) => (
                       <a
                         key={index}
