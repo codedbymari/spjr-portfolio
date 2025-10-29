@@ -86,7 +86,7 @@ const PracticePage = ({ currentPage, onNavigate, isLoadingComplete }) => {
     { title: 'Son of a Farmer', page: 'son-of-a-farmer', image: './assets/images/sofaf.webp'},
     { title: 'With Intentions', page: 'with-intentions', image: './assets/images/withintens.webp'},
     { title: 'Crossroads to Home', page: 'crossroads-to-home', image: './assets/images/crossroads.webp' },
-    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.webp'}
+    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.png'}
   ];
 
   return (

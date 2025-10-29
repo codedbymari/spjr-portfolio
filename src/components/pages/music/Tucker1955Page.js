@@ -86,7 +86,7 @@ const Tucker1955Page = ({ currentPage, onNavigate, isLoadingComplete }) => {
     { title: 'With Intentions', page: 'with-intentions', image: './assets/images/withintens.webp'},
     { title: 'Practice', page: 'practice', image: './assets/images/practice-p.webp'},
     { title: 'Crossroads to Home', page: 'crossroads-to-home', image: './assets/images/crossroads.webp' },
-    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.webp'}
+    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.png'}
   ];
 
   return (
@@ -162,7 +162,7 @@ const Tucker1955Page = ({ currentPage, onNavigate, isLoadingComplete }) => {
                       className="text-sm md:text-base font-bold leading-relaxed"
                       style={{ color: isDark ? '#FFFFFF' : '#000000' }}
                     >
-"So deeper than the ocean, show you what my motion do,<br/>
+"Soul deeper than the ocean, show you what my motion do,<br/>
 Spend time with people that have chosen you,<br/>
 Breaking through the concrete — what a rose will do.<br/>
 Born to be a statement, first estate was mama's golden womb,<br/>

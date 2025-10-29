@@ -111,7 +111,7 @@ const GreatExpectationPage = ({ currentPage, onNavigate, isLoadingComplete }) =>
                 viewport={{ once: true }}
               >
                 <img
-                  src="./assets/images/greatexpec.webp"
+                  src="./assets/images/greatexpec.png"
                   alt="Great Expectation album cover"
                   className="w-full h-full object-cover"
                   style={{

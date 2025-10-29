@@ -72,14 +72,14 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           {featuredItem && (
             <motion.div
               className="group relative cursor-pointer"
-              initial={getInitialState({ opacity: 0, y: 140 })}
+              initial={getInitialState({ opacity: 0, y: 60 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
               transition={{ 
-                duration: 2, 
+                duration: 0.8, 
                 ease: [0.16, 1, 0.3, 1], 
                 delay: isLoadingComplete ? sectionDelay : 0 
               }}
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: '-50px' }}
               whileHover={{ scale: 1.02 }}
               onClick={() => onNavigate(featuredItem.id)}
             >
@@ -171,14 +171,14 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
               <motion.div
                 key={item.id}
                 className="group relative cursor-pointer"
-                initial={getInitialState({ opacity: 0, y: 140 })}
+                initial={getInitialState({ opacity: 0, y: 60 })}
                 whileInView={getAnimateState({ opacity: 1, y: 0 })}
                 transition={{ 
-                  duration: 2, 
+                  duration: 0.8, 
                   ease: [0.16, 1, 0.3, 1], 
-                  delay: isLoadingComplete ? sectionDelay + ((index + 1) * 0.1) : 0 
+                  delay: isLoadingComplete ? sectionDelay + ((index + 1) * 0.05) : 0 
                 }}
-                viewport={{ once: true, margin: '-100px' }}
+                viewport={{ once: true, margin: '-50px' }}
                 whileHover={{ scale: 1.02 }}
                 onClick={() => onNavigate(item.id)}
               >
@@ -269,14 +269,14 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
             <motion.div
               key={item.id}
               className="group relative cursor-pointer"
-              initial={getInitialState({ opacity: 0, y: 140 })}
+              initial={getInitialState({ opacity: 0, y: 60 })}
               whileInView={getAnimateState({ opacity: 1, y: 0 })}
               transition={{ 
-                duration: 2, 
+                duration: 0.8, 
                 ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? sectionDelay + ((index + 3) * 0.1) : 0 
+                delay: isLoadingComplete ? sectionDelay + ((index + 3) * 0.05) : 0 
               }}
-              viewport={{ once: true, margin: '-100px' }}
+              viewport={{ once: true, margin: '-50px' }}
               whileHover={{ scale: 1.02 }}
               onClick={() => onNavigate(item.id)}
             >
@@ -462,7 +462,7 @@ const WorkPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
             </motion.div>
             
             {/* Writing Projects Grid */}
-            <ProjectGrid items={writingItems} sectionDelay={0.9} />
+            <ProjectGrid items={writingItems} sectionDelay={0.3} />
           </div>
         </div>
       </div>

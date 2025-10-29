@@ -6,7 +6,7 @@ import Header from '../../common/Header';
 const WithIntentionsPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isStreamOpen, setIsStreamOpen] = useState(false);
-  const { isDark, colors } = useTheme();
+  const { isDark } = useTheme();
 
   const getInitialState = (props) => props;
   const getAnimateState = (props) => props;
@@ -211,7 +211,7 @@ Listen to more of my tracks
                 { title: 'Son of a Farmer', page: 'son-of-a-farmer', image: './assets/images/sofaf.webp'},
                 { title: 'Practice', page: 'practice', image: './assets/images/practice-p.webp'},
                 { title: 'Crossroads to Home', page: 'crossroads-to-home', image: './assets/images/crossroads.webp' },
-                { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.webp'}
+                { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.png'}
               ].map((track, index) => (
                 <motion.button
                   key={track.page}

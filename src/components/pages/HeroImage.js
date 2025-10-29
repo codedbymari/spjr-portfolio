@@ -104,9 +104,6 @@ const HeroImage = ({ isDark, colors }) => {
   const endRadius = 0;
   const currentRadius = startRadius + (endRadius - startRadius) * radiusProgress;
 
-  // No padding animation
-  const currentPadding = 0;
-
   const textLines = [
     { text: "SIR PRACTICE.", className: "text-5xl md:text-6xl lg:text-7xl font-medium" },
     { text: "STORYTELLER. ARTIST.", className: "text-2xl md:text-3xl lg:text-4xl font-light tracking-wide" },

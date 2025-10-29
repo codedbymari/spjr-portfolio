@@ -9,7 +9,7 @@ const Pen2PurposePage = ({ currentPage, onNavigate, isInitialLoad = true, isLoad
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  const { isDark, colors } = useTheme();
+  const {colors } = useTheme();
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
@@ -314,7 +314,7 @@ const Pen2PurposePage = ({ currentPage, onNavigate, isInitialLoad = true, isLoad
 
       </main>
 
-      <style jsx global>{`
+      <style jsx="true">{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@200;300;400;500;600;700&display=swap');

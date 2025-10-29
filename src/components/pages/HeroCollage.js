@@ -6,7 +6,6 @@ const HeroCollage = ({ isLoadingComplete }) => {
   const { isDark, colors } = useTheme();
   const [showWords, setShowWords] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [imagesLoaded, setImagesLoaded] = useState(0);
   const containerRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
@@ -130,22 +129,11 @@ const HeroCollage = ({ isLoadingComplete }) => {
 
   // Preload images
   useEffect(() => {
-    let loadedCount = 0;
-    const totalImages = wordPieces.length;
-
     const imagePromises = wordPieces.map(piece => {
       return new Promise((resolve) => {
         const img = new Image();
-        img.onload = () => {
-          loadedCount++;
-          setImagesLoaded(loadedCount);
-          resolve();
-        };
-        img.onerror = () => {
-          loadedCount++;
-          setImagesLoaded(loadedCount);
-          resolve();
-        };
+        img.onload = resolve;
+        img.onerror = resolve;
         img.src = piece.src;
       });
     });

@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
 import HeroCollage from './HeroCollage';
 import HeroImage from './HeroImage';
 
 const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingComplete = true }) => {
-  const [showContent, setShowContent] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const heroRef = useRef(null);
   const [isHeroLoaded, setIsHeroLoaded] = useState(false);
 
   const { isDark, colors } = useTheme();
@@ -26,18 +24,6 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
     }
     return defaultAnimate;
   };
-
-  useEffect(() => {
-    if (isLoadingComplete) {
-      const contentTimer = setTimeout(() => {
-        setShowContent(true);
-      }, 300);
-
-      return () => {
-        clearTimeout(contentTimer);
-      };
-    }
-  }, [isLoadingComplete]);
 
   return (
     <div 
@@ -831,7 +817,7 @@ const LandingPage = ({ currentPage, onNavigate, isInitialLoad = true, isLoadingC
         </div>
       </section>
       
-      <style jsx global>{`
+      <style jsx="true">{`
         @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         
         * {

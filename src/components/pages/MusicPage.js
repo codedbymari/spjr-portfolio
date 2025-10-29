@@ -1,12 +1,33 @@
 // src/components/pages/MusicPage.js
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../contexts/ThemeContext';
 import Header from '../common/Header';
+import EmailGate from '../EmailGate';
+import { hasMusicAccess } from '../../services/storageService';
 
 const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [isCheckingAccess, setIsCheckingAccess] = useState(true);
   const { isDark, colors } = useTheme();
+  
+  // Check access on mount
+  useEffect(() => {
+    const checkAccess = () => {
+      const access = hasMusicAccess();
+      setHasAccess(access);
+      setIsCheckingAccess(false);
+    };
+    
+    // Small delay to prevent flash
+    setTimeout(checkAccess, 100);
+  }, []);
+  
+  // Handle successful verification
+  const handleVerified = () => {
+    setHasAccess(true);
+  };
   
   // Animation helper functions
   const getInitialState = (props) => {
@@ -23,18 +44,18 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
     return props;
   };
 
-  // Music projects data (6 tracks) - sorted alphabetically
+  // Music projects data (6 tracks) - ordered by number
   const musicItems = [
     {
-      id: 'crossroads-to-home',
-      title: 'Crossroads to Home',
-      imageSrc: './assets/images/crossroads.webp',
+      id: 'tucker-1955',
+      title: 'Tucker 1955',
+      imageSrc: './assets/images/tucker.webp',
       number: '1'
     },
     {
       id: 'great-expectation',
       title: 'Great Expectation',
-      imageSrc: './assets/images/greatexpec.webp',
+      imageSrc: './assets/images/greatexpec.png',
       number: '2'
     },
     {
@@ -50,9 +71,9 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
       number: '4'
     },
     {
-      id: 'tucker-1955',
-      title: 'Tucker 1955',
-      imageSrc: './assets/images/tucker.webp',
+      id: 'crossroads-to-home',
+      title: 'Crossroads to Home',
+      imageSrc: './assets/images/crossroads.webp',
       number: '5'
     },
     {
@@ -62,6 +83,7 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
       number: '6'
     }
   ];
+  
   // Custom project grid for music
   const MusicGrid = ({ items, sectionDelay = 0 }) => {
     return (
@@ -70,14 +92,14 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
           <motion.div
             key={item.id}
             className="group relative cursor-pointer"
-            initial={getInitialState({ opacity: 0, y: 140 })}
+            initial={getInitialState({ opacity: 0, y: 60 })}
             whileInView={getAnimateState({ opacity: 1, y: 0 })}
             transition={{ 
-              duration: 2, 
+              duration: 0.8, 
               ease: [0.16, 1, 0.3, 1], 
-              delay: isLoadingComplete ? sectionDelay + (index * 0.1) : 0 
+              delay: isLoadingComplete ? sectionDelay + (index * 0.05) : 0 
             }}
-            viewport={{ once: true, margin: '-100px' }}
+            viewport={{ once: true, margin: '-50px' }}
             whileHover={{ scale: 1.02 }}
             onClick={() => onNavigate(item.id)}
           >
@@ -163,6 +185,28 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
     );
   };
 
+  // Show loading state briefly
+  if (isCheckingAccess) {
+    return (
+      <div 
+        className="w-screen min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: colors.primary }}
+      >
+        <div
+          className="animate-pulse uppercase tracking-wide"
+          style={{
+            color: colors.text.primary,
+            opacity: 0.5,
+            fontSize: 'clamp(10px, 2vw, 12px)',
+            fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif'
+          }}
+        >
+          Loading...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
       className="w-screen min-h-screen overflow-x-hidden relative transition-colors duration-500"
@@ -172,102 +216,115 @@ const MusicPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
         MozOsxFontSmoothing: 'grayscale'
       }}
     >
-      <Header 
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        currentPage={currentPage}
-        onNavigate={onNavigate}
-        isHeroLoaded={true}
-      />
-      
-      {/* Main Content Container */}
-      <div className="flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-16 sm:py-20 md:py-24">
-        {/* Page Title */}
-        <motion.div
-          className="mb-16 sm:mb-20 md:mb-24"
-          initial={getInitialState({ opacity: 0, y: 60 })}
-          whileInView={getAnimateState({ opacity: 1, y: 0 })}
-          transition={{ 
-            duration: 1.5, 
-            ease: [0.16, 1, 0.3, 1], 
-            delay: isLoadingComplete ? 0.5 : 0 
-          }}
-          viewport={{ once: true }}
-        >
-          <h1 
-            className="font-light tracking-[-0.02em] uppercase text-center transition-colors duration-500"
-            style={{
-              color: colors.text.primary,
-              fontSize: 'clamp(32px, 8.5vw, 72px)',
-              fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
-              fontWeight: 400,
-              letterSpacing: '-0.03em',
-              WebkitFontSmoothing: 'antialiased',
-              MozOsxFontSmoothing: 'grayscale'
-            }}
+      <AnimatePresence mode="wait">
+        {!hasAccess ? (
+          <EmailGate key="email-gate" onVerified={handleVerified} />
+        ) : (
+          <motion.div
+            key="music-content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            MUSIC
-          </h1>
-        </motion.div>
-
-        {/* Content Container */}
-        <div className="w-full max-w-[1200px]">
-          {/* Music Section */}
-          <div className="space-y-12 sm:space-y-14 md:space-y-16">
-            {/* Music Section Title */}
-            <motion.div
-              className="relative"
-              initial={getInitialState({ opacity: 0, y: 40 })}
-              whileInView={getAnimateState({ opacity: 1, y: 0 })}
-              transition={{ 
-                duration: 1.5, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: isLoadingComplete ? 0.7 : 0 
-              }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center justify-start mb-2">
-                <div 
-                  className="w-8 sm:w-10 md:w-12 h-[1px] mr-4 sm:mr-5 md:mr-6 transition-colors duration-500"
-                  style={{ backgroundColor: colors.text.primary, opacity: 0.3 }}
-                ></div>
-                <h2 
-                  className="font-light tracking-[-0.01em] uppercase transition-colors duration-500"
+            <Header 
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              currentPage={currentPage}
+              onNavigate={onNavigate}
+              isHeroLoaded={true}
+            />
+            
+            {/* Main Content Container */}
+            <div className="flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-16 sm:py-20 md:py-24">
+              {/* Page Title */}
+              <motion.div
+                className="mb-16 sm:mb-20 md:mb-24"
+                initial={getInitialState({ opacity: 0, y: 60 })}
+                whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                transition={{ 
+                  duration: 1.5, 
+                  ease: [0.16, 1, 0.3, 1], 
+                  delay: isLoadingComplete ? 0.5 : 0 
+                }}
+                viewport={{ once: true }}
+              >
+                <h1 
+                  className="font-light tracking-[-0.02em] uppercase text-center transition-colors duration-500"
                   style={{
                     color: colors.text.primary,
-                    fontSize: 'clamp(18px, 4.5vw, 32px)',
+                    fontSize: 'clamp(32px, 8.5vw, 72px)',
                     fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
-                    fontWeight: 300,
+                    fontWeight: 400,
+                    letterSpacing: '-0.03em',
                     WebkitFontSmoothing: 'antialiased',
                     MozOsxFontSmoothing: 'grayscale'
                   }}
                 >
-                  TRACKS & COLLABORATIONS
-                </h2>
+                  MUSIC
+                </h1>
+              </motion.div>
+
+              {/* Content Container */}
+              <div className="w-full max-w-[1200px]">
+                {/* Music Section */}
+                <div className="space-y-12 sm:space-y-14 md:space-y-16">
+                  {/* Music Section Title */}
+                  <motion.div
+                    className="relative"
+                    initial={getInitialState({ opacity: 0, y: 40 })}
+                    whileInView={getAnimateState({ opacity: 1, y: 0 })}
+                    transition={{ 
+                      duration: 1.5, 
+                      ease: [0.16, 1, 0.3, 1], 
+                      delay: isLoadingComplete ? 0.7 : 0 
+                    }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="flex items-center justify-start mb-2">
+                      <div 
+                        className="w-8 sm:w-10 md:w-12 h-[1px] mr-4 sm:mr-5 md:mr-6 transition-colors duration-500"
+                        style={{ backgroundColor: colors.text.primary, opacity: 0.3 }}
+                      ></div>
+                      <h2 
+                        className="font-light tracking-[-0.01em] uppercase transition-colors duration-500"
+                        style={{
+                          color: colors.text.primary,
+                          fontSize: 'clamp(18px, 4.5vw, 32px)',
+                          fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
+                          fontWeight: 300,
+                          WebkitFontSmoothing: 'antialiased',
+                          MozOsxFontSmoothing: 'grayscale'
+                        }}
+                      >
+                        TRACKS & COLLABORATIONS
+                      </h2>
+                    </div>
+                    <p 
+                      className="uppercase tracking-[-0.01em] ml-12 sm:ml-14 md:ml-18 transition-colors duration-500"
+                      style={{
+                        color: colors.text.primary,
+                        opacity: 0.6,
+                        fontSize: 'clamp(10px, 2.5vw, 14px)',
+                        fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
+                        WebkitFontSmoothing: 'antialiased',
+                        MozOsxFontSmoothing: 'grayscale'
+                      }}
+                    >
+                      FEATURES, COLLABORATIONS & UNRELEASED TRACKS
+                    </p>
+                  </motion.div>
+                  
+                  {/* Music Projects Grid */}
+                  <MusicGrid items={musicItems} sectionDelay={0.3} />
+                </div>
               </div>
-              <p 
-                className="uppercase tracking-[-0.01em] ml-12 sm:ml-14 md:ml-18 transition-colors duration-500"
-                style={{
-                  color: colors.text.primary,
-                  opacity: 0.6,
-                  fontSize: 'clamp(10px, 2.5vw, 14px)',
-                  fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
-                  WebkitFontSmoothing: 'antialiased',
-                  MozOsxFontSmoothing: 'grayscale'
-                }}
-              >
-                FEATURES, COLLABORATIONS & UNRELEASED TRACKS
-              </p>
-            </motion.div>
-            
-            {/* Music Projects Grid */}
-            <MusicGrid items={musicItems} sectionDelay={0.9} />
-          </div>
-        </div>
-      </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Global styles */}
-      <style jsx global>{`
+      <style jsx="true">{`
         * {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;

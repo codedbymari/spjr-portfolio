@@ -86,7 +86,7 @@ const SonOfAFarmerPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
     { title: 'With Intentions', page: 'with-intentions', image: './assets/images/withintens.webp'},
     { title: 'Practice', page: 'practice', image: './assets/images/practice-p.webp'},
     { title: 'Crossroads to Home', page: 'crossroads-to-home', image: './assets/images/crossroads.webp' },
-    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.webp'}
+    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.png'}
   ];
 
   return (
@@ -119,7 +119,7 @@ const SonOfAFarmerPage = ({ currentPage, onNavigate, isLoadingComplete }) => {
                 viewport={{ once: true }}
               >
                 <img
-                  src="./assets/images/sonofafarmer.png"
+                  src="./assets/images/sofaf.webp"
                   alt="Son of a Farmer album cover"
                   className="w-full h-full object-cover"
                   style={{

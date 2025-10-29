@@ -24,17 +24,15 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
   };
 
   const handleMenuToggle = (e) => {
-    // Prevent all default behaviors
     if (e) {
       e.preventDefault();
       e.stopPropagation();
       if (e.nativeEvent) {
+        e.nativeEvent.preventDefault();
         e.nativeEvent.stopImmediatePropagation();
       }
     }
-    // Toggle menu state
     setIsMenuOpen(prev => !prev);
-    // Return false to prevent any form submission or navigation
     return false;
   };
 
@@ -64,41 +62,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
     }
   };
 
-  // Hook to detect if device supports hover (desktop) vs touch (mobile)
-  const [isHoverDevice, setIsHoverDevice] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    // Check if device supports hover and is not a touch device
-    const checkHoverCapability = () => {
-      const hasHover = window.matchMedia('(hover: hover)').matches;
-      const hasPointer = window.matchMedia('(pointer: fine)').matches;
-      setIsHoverDevice(hasHover && hasPointer);
-    };
-
-    // Check if device is mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkHoverCapability();
-    checkMobile();
-    
-    // Listen for changes
-    const hoverQuery = window.matchMedia('(hover: hover)');
-    const pointerQuery = window.matchMedia('(pointer: fine)');
-    
-    hoverQuery.addListener(checkHoverCapability);
-    pointerQuery.addListener(checkHoverCapability);
-    window.addEventListener('resize', checkMobile);
-
-    return () => {
-      hoverQuery.removeListener(checkHoverCapability);
-      pointerQuery.removeListener(checkHoverCapability);
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
-
   // Auto-hide header on scroll
   useEffect(() => {
     const handleScroll = () => {
@@ -119,14 +82,18 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
   }, [lastScrollY]);
 
   // Show header after hero is loaded
-  useEffect(() => {
-    if (isHeroLoaded) {
+ useEffect(() => {
+    if (currentPage !== 'landing') {
+      // For non-landing pages, show header immediately
+      setIsVisible(true);
+    } else if (isHeroLoaded) {
+      // For landing page, show after hero loads
       const timer = setTimeout(() => {
         setIsVisible(true);
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [isHeroLoaded]);
+  }, [isHeroLoaded, currentPage]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -146,6 +113,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
   return (
     <>
       <motion.nav 
+        layout="position" 
         className="fixed top-0 right-0 left-0 z-50 shadow-none transition-colors duration-300"
         style={{ 
           backgroundColor: colors.primary,
@@ -175,7 +143,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleLogoClick}
-              onMouseDown={(e) => e.preventDefault()}
             >
               SPJr
             </motion.button>
@@ -212,9 +179,9 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
               onMouseDown={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                return false;
               }}
               onTouchStart={(e) => {
-                e.preventDefault();
                 e.stopPropagation();
               }}
               whileHover={{ scale: 1.02 }}
@@ -246,7 +213,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={handleBackdropClick}
-              onMouseDown={(e) => e.preventDefault()}
             />
             
             {/* Menu Panel - Slides in from the right */}
@@ -292,7 +258,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
                       MozOsxFontSmoothing: 'grayscale'
                     }}
                     onClick={handleMenuClose}
-                    onMouseDown={(e) => e.preventDefault()}
                     aria-label="Close menu"
                   >
                     <span className="hidden xs:inline">CLOSE</span>
@@ -300,7 +265,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
                   </button>
                 </div>
 
-                {/* Menu Items - NO ANIMATIONS */}
+                {/* Menu Items */}
                 <div className="flex-1 flex flex-col justify-center space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10">
                   {[
                     { text: "writing", page: "writing" },
@@ -322,7 +287,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
                         MozOsxFontSmoothing: 'grayscale'
                       }}
                       onClick={(e) => handleMenuItemClick(e, item.page)}
-                      onMouseDown={(e) => e.preventDefault()}
                     >
                       <span className="relative">
                         {item.text}
@@ -366,16 +330,6 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
                           WebkitFontSmoothing: 'antialiased',
                           MozOsxFontSmoothing: 'grayscale'
                         }}
-                        onClick={(e) => {
-                          if (link.href === "#email") {
-                            e.preventDefault();
-                          }
-                        }}
-                        onMouseDown={(e) => {
-                          if (link.href === "#email") {
-                            e.preventDefault();
-                          }
-                        }}
                       >
                         <span className="relative z-10 text-sm sm:text-base md:text-lg">{link.text}</span>
                         <span
@@ -403,7 +357,7 @@ const Header = ({ isMenuOpen, setIsMenuOpen, onNavigate, currentPage, isHeroLoad
       </AnimatePresence>
 
       {/* Enhanced Custom CSS */}
-      <style jsx>{`
+      <style jsx="true">{`
         @media (min-width: 480px) {
           .xs\\:block { display: block; }
           .xs\\:hidden { display: none; }

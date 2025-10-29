@@ -8,6 +8,10 @@
     transform: scale(1.05) translateY(-5px); 
   }
 }
+/* In your global CSS or animations.css */
+[data-framer-scroll] {
+  position: relative;
+}
 
 @keyframes fadeInUp {
   from { 

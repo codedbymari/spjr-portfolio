@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useTheme } from '../../../contexts/ThemeContext';
 import Header from '../../common/Header';
 
@@ -9,13 +9,20 @@ const CrossroadsToHomePage = ({ currentPage, onNavigate, isLoadingComplete }) =>
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [expandedTrack, setExpandedTrack] = useState(null);
-  const [trackStates, setTrackStates] = useState({});
   const audioRef = useRef(null);
-  const trackAudioRefs = useRef({});
   const { isDark } = useTheme();
 
   const getInitialState = (props) => props;
   const getAnimateState = (props) => props;
+
+  // Memoize tracks array to prevent re-creation on every render
+  const tracks = useMemo(() => [
+    { title: 'Tucker 1955', page: 'tucker-1955', image: './assets/images/tucker.webp', audio: './assets/audio/tucker-snippet.mp3', snippet: 'Smooth intro with jazzy undertones...'},
+    { title: 'Son of a Farmer', page: 'son-of-a-farmer', image: './assets/images/sofaf.webp', audio: './assets/audio/farmer-snippet.mp3', snippet: 'Storytelling about roots and heritage...'},
+    { title: 'With Intentions', page: 'with-intentions', image: './assets/images/withintens.webp', audio: './assets/audio/intentions-snippet.mp3', snippet: 'Reflective melody with deep lyrics...'},
+    { title: 'Practice', page: 'practice', image: './assets/images/practice-p.webp', audio: './assets/audio/practice-snippet.mp3', snippet: 'Rhythmic beats with motivational flow...'},
+    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.png', audio: './assets/audio/expectation-snippet.mp3', snippet: 'Uplifting chorus with powerful message...'}
+  ], []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -48,34 +55,6 @@ const CrossroadsToHomePage = ({ currentPage, onNavigate, isLoadingComplete }) =>
     setIsPlaying(!isPlaying);
   };
 
-  const toggleTrackPlay = (trackId) => {
-    const audio = trackAudioRefs.current[trackId];
-    if (!audio) return;
-
-    const isCurrentlyPlaying = trackStates[trackId]?.isPlaying || false;
-
-    // Pause all other tracks
-    Object.keys(trackAudioRefs.current).forEach(id => {
-      if (id !== trackId && trackAudioRefs.current[id]) {
-        trackAudioRefs.current[id].pause();
-      }
-    });
-
-    if (isCurrentlyPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-
-    setTrackStates(prev => ({
-      ...prev,
-      [trackId]: {
-        ...prev[trackId],
-        isPlaying: !isCurrentlyPlaying
-      }
-    }));
-  };
-
   const handleSeek = (e) => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -84,16 +63,6 @@ const CrossroadsToHomePage = ({ currentPage, onNavigate, isLoadingComplete }) =>
     const x = e.clientX - rect.left;
     const percentage = x / rect.width;
     audio.currentTime = percentage * duration;
-  };
-
-  const handleTrackSeek = (e, trackId) => {
-    const audio = trackAudioRefs.current[trackId];
-    if (!audio) return;
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = x / rect.width;
-    audio.currentTime = percentage * audio.duration;
   };
 
   const formatTime = (time) => {
@@ -120,61 +89,6 @@ const CrossroadsToHomePage = ({ currentPage, onNavigate, isLoadingComplete }) =>
       <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
-
-  const tracks = [
-    { title: 'Tucker 1955', page: 'tucker-1955', image: './assets/images/tucker.webp', audio: './assets/audio/tucker-snippet.mp3', snippet: 'Smooth intro with jazzy undertones...'},
-    { title: 'Son of a Farmer', page: 'son-of-a-farmer', image: './assets/images/sofaf.webp', audio: './assets/audio/farmer-snippet.mp3', snippet: 'Storytelling about roots and heritage...'},
-    { title: 'With Intentions', page: 'with-intentions', image: './assets/images/withintens.webp', audio: './assets/audio/intentions-snippet.mp3', snippet: 'Reflective melody with deep lyrics...'},
-    { title: 'Practice', page: 'practice', image: './assets/images/practice-p.webp', audio: './assets/audio/practice-snippet.mp3', snippet: 'Rhythmic beats with motivational flow...'},
-    { title: 'Great Expectation', page: 'great-expectation', image: './assets/images/greatexpec.webp', audio: './assets/audio/expectation-snippet.mp3', snippet: 'Uplifting chorus with powerful message...'}
-  ];
-
-  useEffect(() => {
-    tracks.forEach(track => {
-      const audio = trackAudioRefs.current[track.page];
-      if (!audio) return;
-
-      const updateTrackTime = () => {
-        setTrackStates(prev => ({
-          ...prev,
-          [track.page]: {
-            ...prev[track.page],
-            currentTime: audio.currentTime
-          }
-        }));
-      };
-
-      const updateTrackDuration = () => {
-        setTrackStates(prev => ({
-          ...prev,
-          [track.page]: {
-            ...prev[track.page],
-            duration: audio.duration
-          }
-        }));
-      };
-
-      const handleTrackEnded = () => {
-        setTrackStates(prev => ({
-          ...prev,
-          [track.page]: {
-            ...prev[track.page],
-            isPlaying: false
-          }
-        }));
-      };
-
-      audio.addEventListener('timeupdate', updateTrackTime);
-      audio.addEventListener('loadedmetadata', updateTrackDuration);
-      audio.addEventListener('ended', handleTrackEnded);
-
-      return () => {
-        audio.removeEventListener('timeupdate', updateTrackTime);
-        audio.removeEventListener('loadedmetadata', updateTrackDuration);
-        audio.removeEventListener('ended', handleTrackEnded);
-      };
-    });
-  }, []);
 
   return (
     <div 
@@ -363,7 +277,8 @@ const CrossroadsToHomePage = ({ currentPage, onNavigate, isLoadingComplete }) =>
                 borderColor: isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)'
               }}
             >
-more of my tracks            </h1>
+              more of my tracks
+            </h1>
           </motion.header>
 
           <motion.section

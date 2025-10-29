@@ -59,11 +59,23 @@ const AppContent = () => {
 
   const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [isReadingMode, setIsReadingMode] = useState(false);
-  const [pageKey, setPageKey] = useState(0);
+  const [pageKey] = useState(0);
   const scrollPositions = useRef({});
   const isNavigatingBack = useRef(false);
   
   const { isAudioPlaying, audioRef, toggleAudio, stopAudio } = useAudio();
+  
+  // Prevent any form submissions globally
+  useEffect(() => {
+    const preventFormSubmit = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+    
+    document.addEventListener('submit', preventFormSubmit, true);
+    return () => document.removeEventListener('submit', preventFormSubmit, true);
+  }, []);
   
   // Smooth scroll utility function
   const smoothScrollTo = (targetY, duration = 800) => {
@@ -92,27 +104,6 @@ const AppContent = () => {
   
   const isLoadingComplete = true;
   const shouldShowLoadingScreen = false;
-  
-  // Reset page to beginning - with option to skip full reload and smooth scroll
-  const resetPageState = (skipReload = false, useSmootScroll = false) => {
-    if (useSmootScroll) {
-      smoothScrollTo(0, 600);
-    } else {
-      window.scrollTo(0, 0);
-    }
-    
-    document.body.style.cursor = 'default';
-    
-    if (!skipReload) {
-      setPageKey(prev => prev + 1);
-    }
-    
-    const animatedElements = document.querySelectorAll('[class*="animate"]');
-    animatedElements.forEach(el => {
-      el.style.animationPlayState = 'running';
-      el.style.animationDelay = '0s';
-    });
-  };
   
   // Enhanced scroll to element function
   const scrollToElement = (elementId, offset = 0) => {

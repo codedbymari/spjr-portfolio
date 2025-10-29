@@ -219,22 +219,30 @@ const AboutPage = ({ currentPage, onNavigate }) => {
               delay: 3.0
             }}
           >
-            <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
-              <div className="flex-1">
-                <h3 
-                  className="text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono transition-colors duration-500"
-                  style={{ color: colors.text.primary }}
-                >
-                  Background
-                </h3>
-                <p 
-                  className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
-                  style={{ color: colors.text.secondary }}
-                >
-                  Sir Practice Jr. is a writer, public speaker, and cultural architect whose work fuses storytelling with lived experience across continents. Drawing from roots that stretch from London's estates to global diasporic communities, he crafts narratives that explore faith, identity, ambition, and belonging - always with an eye toward transformation and empowerment. His voice moves fluidly between poetry, prose, and spoken word, carrying the cadence of the street and the weight of philosophy. Through his distinctive command of voice - both written and spoken - he builds bridges between tradition and innovation, preservation and reinvention. His multidisciplinary approach, spanning literature, performance, and community-driven projects like Pen2Purpose, creates work that is at once intimate and expansive, preserving cultural memory while reimagining what it means to speak with power and grace in the modern world.
-                </p>
-              </div>
-              
+       <div className="flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-16">
+  <div className="flex-1">
+    <h3 
+      className="text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono transition-colors duration-500"
+      style={{ color: colors.text.primary }}
+    >
+      Background
+    </h3>
+    <div className="space-y-6">
+      <p 
+        className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
+        style={{ color: colors.text.secondary }}
+      >
+        Sir Practice Jr. is a writer, public speaker, and cultural architect whose work fuses storytelling with lived experience across continents. Drawing from roots that stretch from the lungs of Africa to London's estates and global diasporic communities, he crafts narratives that explore faith, identity, ambition, and belonging - always with an eye toward transformation and empowerment.
+      </p>
+
+      <p 
+        className="text-[14px] sm:text-[15px] md:text-[16px] font-normal leading-[1.6] transition-colors duration-500"
+        style={{ color: colors.text.secondary }}
+      >
+        His voice moves fluidly between poetry, prose, and spoken word, carrying the cadence of the street and the weight of philosophy. Through his distinctive command of voice - both written and spoken - he builds bridges between tradition and innovation, preservation and reinvention. His multidisciplinary approach, spanning literature, performance, and community-driven projects like Pen2Purpose, creates work that is at once intimate and expansive, preserving cultural memory while reimagining what it means to speak with power and grace in the modern world.
+      </p>
+    </div>
+  </div>
               <div className="flex-1">
                 <h3 
                   className="text-[20px] sm:text-[22px] md:text-[24px] font-normal uppercase tracking-[-0.01em] mb-4 md:mb-6 font-mono transition-colors duration-500"
@@ -266,7 +274,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
         </div>
       </section>
 
-      <style jsx global>{`
+      <style jsx="true">{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Fahkwang:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
@@ -292,7 +300,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .light .aspect-[3\/4] img {
+        .light .aspect-\\[3\\/4\\] img {
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
 
@@ -301,7 +309,7 @@ const AboutPage = ({ currentPage, onNavigate }) => {
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
-        .dark .aspect-[3\/4] img {
+        .dark .aspect-\\[3\\/4\\] img {
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
         }
 
