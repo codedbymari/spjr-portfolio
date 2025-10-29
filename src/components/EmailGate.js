@@ -65,11 +65,11 @@ const EmailGate = ({ onVerified = () => {} }) => {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center px-6 overflow-y-auto py-16 md:py-12 transition-colors duration-500"
+      className="fixed inset-0 px-6 overflow-y-auto py-16 md:py-12 transition-colors duration-500 md:flex md:items-center md:justify-center"
       style={{ backgroundColor: colors.primary }}
     >
-      <div className="w-full max-w-xl">
-        <div className="space-y-10 py-8 md:py-0 w-full">
+      <div className="w-full max-w-xl mx-auto">
+        <div className="space-y-10 w-full">
           {/* Header */}
           <div className="space-y-2 text-center">
             <h1
